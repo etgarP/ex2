@@ -8,6 +8,7 @@ import {
     validateUsername, validatePassword, validateConfirmPass, validateDisplayName,
     validatePicture
 } from "./submitFuncs.js"
+import { postReq } from "./TokenPost.js"
 import { useNavigate } from 'react-router-dom'
 
 function Form({ users, setUsers }) {
@@ -26,7 +27,7 @@ function Form({ users, setUsers }) {
     const [reqPiText, setPiText] = useState("You must upload a picture of the following formats: .jpg, .jpeg, .png, with a max size of 5MB.")
     const [reqPext, setPText] = useState("Your password must be 8-20 characters long, must contain a uppercase letter, lower case charecter and a number.")
     // on submit, if the input are valid, saves them and go to sign in page
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault()
         // check the field is valid and changes the explanation text if its not valid
         var nameFlag = validateUsername(name, users, setRUText)
@@ -34,16 +35,28 @@ function Form({ users, setUsers }) {
         var cPassFlag = validateConfirmPass(password, cPassword, setCpText)
         var dNameFlag = validateDisplayName(displayName, setDnText)
         var picFlag = validatePicture(picture, setPiText)
+        console.log(picture)
 
         // if all are valid, we add the details and move to sign in page
         if (nameFlag && passFlag && cPassFlag && dNameFlag && picFlag) {
-            const newUser = {
-                name: name, password: password,
-                displayName: displayName, picture: picture
-            }
-            setUsers([...users, newUser])
-            // goes to sign in
-            navigate('/')
+            const fileReader = new FileReader();
+            fileReader.onload = async function (event) {
+                const base64Image = event.target.result;
+                const newUser = {
+                  username: name,
+                  password: password,
+                  displayName: displayName,
+                  profilePic: base64Image // Assign the base64 image to the profilePic property
+                };
+                setUsers([...users, newUser]);
+                var response = await postReq(newUser, "http://localhost:5000/api/Users");
+                console.log("response" + response);
+          
+                // goes to sign in
+                navigate("/");
+              };
+          
+              fileReader.readAsDataURL(picture);
         }
     }
     return (
