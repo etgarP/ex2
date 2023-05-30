@@ -17,11 +17,13 @@ function Form({ setUser }) {
         e.preventDefault()
         const data = { username: name, password : password }
         try {
-            var res = await postReq(data, "http://localhost:5000/api/Tokens");
+            const url = "http://localhost:5000/api/Tokens" 
+            var res = await postReq(data, url);
+            //todo delete log
             console.log(res.status)
             const token = (await res.text()).trim()
-            const url = `http://localhost:5000/api/Users/${name}` 
-            var res2 = await getReq(url, token) 
+            const url2 = `http://localhost:5000/api/Users/${name}` 
+            var res2 = await getReq(url2, token) 
             const user = await res2.json()
             if (res2.ok) {
                 setUser(user)

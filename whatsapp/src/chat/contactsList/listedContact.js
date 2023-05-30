@@ -18,8 +18,8 @@ function ListedContact(props) {
                 <div className={`row`}>
                     {/* the image of the contact */}
                     <ContactImage picture={picture}></ContactImage>
-                    <div class="col desc-col">
-                        <div class="row">
+                    <div className="col desc-col">
+                        <div className="row">
                             {/* the name of the contact */}
                             <ContactName contactName={contactName}></ContactName>
                             {/* the date of the last message the contact recieved */}

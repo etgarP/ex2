@@ -6,16 +6,14 @@ function DeleteContactIcon(props) {
     const [value, setValue] = useState("")
     // deletes contact from contacts list
     const deletePersonButtonHandler = () => {
-        // todo
-        // user = find user in contacts
-        // if(user){
-        // setContacts((prevContacts) => ([...prevContacts, newContact]))
-        //}
         if (inputRef.current.value) {
+            // finds user in contacts
+
             const existingContact = contacts.find(
                 (contact) => contact.contactName === inputRef.current.value
             );
 
+            // deletes contact from contacts
             if (existingContact) {
                 setContacts((prevContacts) =>
                     prevContacts.filter(

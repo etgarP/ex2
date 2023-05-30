@@ -39,6 +39,8 @@ function Chat(props) {
             <div className="list-group">
               {/* ContactsList holds the list of all contacts */}
               <ContactsList contacts={contacts} setContactId={setContactId} upH={updateHeight}></ContactsList>
+              {/* //todo */}
+              {/* token={user.token} */}
             </div>
           </div>
           {/* PrivateChat holds the whole chat section */}

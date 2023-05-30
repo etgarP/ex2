@@ -4,7 +4,6 @@ function LeftCol() {
     return (
         <div className="col left-col">
             <img src={pastoralPic} className="photo"></img>
-
         </div>
     )
 }
