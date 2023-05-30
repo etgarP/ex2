@@ -12,6 +12,7 @@ function AddContactIcon(props) {
             const newContact = {
                 id: newContactId++,
                 contactName: inputRef.current.value,
+                // todo: make this into a real boy picture
                 picture: defaultProfilePicture,
                 date: "",
                 lastMessage: "",
