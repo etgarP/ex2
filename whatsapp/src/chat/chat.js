@@ -24,7 +24,7 @@ function Chat(props) {
     return () => {
       window.removeEventListener('resize', updateHeight)
     }
-  }, [])
+  })
   return (
     <>
       <div className='chat-area'>
