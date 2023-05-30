@@ -1,8 +1,17 @@
+import { useState } from 'react'
 function Picture({ value, set, text, setText }) {
     // sets the state using the value that changed
+    const [picture, setPicture] = useState("");
     function setInfo(e) {
         const file = e.target.files[0]
         set(file)
+        const fileReader = new FileReader();
+        fileReader.onload = async function (event) {
+            const base64Image = event.target.result;
+            console.log(base64Image)
+            setPicture(base64Image);
+        }
+        fileReader.readAsDataURL(file);
     }
     // removes error text on click of the input
     function changeReq(e) {

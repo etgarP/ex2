@@ -7,7 +7,7 @@ function RightCol({ users, setUser }) {
     <div className="col right-col">
       <div className="p-5">
         <Welcome></Welcome>
-        <Form users={users} setUser={setUser}></Form>
+        <Form setUser={setUser}></Form>
         <ToRegister ></ToRegister>
       </div>
     </div>
