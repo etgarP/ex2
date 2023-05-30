@@ -1,19 +1,14 @@
 // checks if the username is valid, if so returns true
-export function validateUsername(name, users, setText) {
-    // checks if the username exist already
-    const userFound = users.find(user => user.name === name)
+export function validateUsername(name, setText) {
     // checks the if the input is correct
-    if (!userFound) {
-        // only letters numbers '_' and length 5 to 20
-        const regex = /^[a-zA-Z0-9_]{5,20}$/
-        if (regex.test(name)) {
-            return true
-        } else {
-            // if the input isnt correct sets error text
-            setText("Please enter a valid username.")
-        }
+    // only letters numbers '_' and length 5 to 20
+    const regex = /^[a-zA-Z0-9_]{5,20}$/
+    if (regex.test(name)) {
+        return true
+    } else {
+        // if the input isnt correct sets error text
+        setText("Please enter a valid username.")
     }
-    setText("Username is taken.")
     return false
 }
 // checks if the password is valid, if so returns true

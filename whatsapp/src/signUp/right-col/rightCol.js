@@ -8,7 +8,7 @@ function RightCol({ users, setUsers }) {
       <div className="p-5">
         {/* the register area */}
         <Welcome></Welcome>
-        <Form users={users} setUsers={setUsers}></Form>
+        <Form ></Form>
         <ToSign></ToSign>
       </div>
     </div>
