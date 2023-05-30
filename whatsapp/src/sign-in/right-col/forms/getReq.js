@@ -1,12 +1,12 @@
-export async function postReq(data, url) {
+export async function getReq(url, token) {
     try {
         const res = await fetch(url, {
-            method: 'post',
+            method: 'get',
             headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
+                'authorization': 'bearer ' + token // attach the token
+            }
+        })
         return res;
     } catch (error) {
         throw error; // Rethrow the error to propagate it to the caller

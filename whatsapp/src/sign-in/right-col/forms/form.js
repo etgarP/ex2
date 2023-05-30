@@ -3,6 +3,8 @@ import Username from "./user-name"
 import Password from "./password"
 import { useNavigate } from 'react-router-dom'
 import {postReq} from './postReq.js'
+import {getReq} from './getReq.js'
+
 
 function Form({ users, setUser }) {
     // needed to use navigate in and inner function context
@@ -20,16 +22,22 @@ function Form({ users, setUser }) {
             var res = await postReq(data, "http://localhost:5000/api/Tokens");
             console.log(res.status)
             const token = (await res.text()).trim()
-            console.log(token)
-            if (res.ok) {
-                // setUser({username, token})
-                navigate('/chat')
+            const url = `http://localhost:5000/api/Users/${username}` 
+            var res2 = await getReq(url, token) 
+            console.log(res2.status)
+            const user = await res2.json()
+            if (res2.ok) {
+                setUser(user)
+                console.log(user)
+                // navigate('/chat')
+                return;
             } else {
-                setError('Wrong Credentials')
+                setError("Wrong Credentials")
+                return;
             }
         } catch (error){
-            console.error('Error', error)
-            setError('An error occured. Please try again.')
+            // console.error('Error', error)
+            setError("Oops! Our server seems to be taking a coffee break ☕️. We're working hard to fix it and get things back on track. Please bear with us and try again shortly. Thank you for your patience!")
         }
         
         // const user = users.find(user => user.name === name && user.password === password)
