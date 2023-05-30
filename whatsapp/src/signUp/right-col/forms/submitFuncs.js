@@ -32,7 +32,7 @@ export function validatePassword(password, setText) {
 // checks if the confirm password is valid, if so returns true
 export function validateConfirmPass(password, conPass, setText) {
     // checks if the confirm doesnt match or empty
-    if (!(password === conPass) || conPass == '') {
+    if (!(password === conPass) || conPass === '') {
         // if the input isnt correct sets error text
         setText("Please fill this field correctly.")
         return false
@@ -56,12 +56,12 @@ export function validateDisplayName(name, setText) {
 // checks if the picture is valid, if so returns true
 export function validatePicture(picture, setText) {
     const MAXSIZE = 5 * 1024 * 1024
-    if (picture != '' && picture.size > MAXSIZE) {
+    if (picture !== '' && picture.size > MAXSIZE) {
         // if the input isnt correct sets error text
         setText("Max size of picture is 5MB!")
         return false
     }
-    if (picture == '') {
+    if (picture === '') {
         // if the input isnt correct sets error text
         setText("Please enter an image.")
         return false

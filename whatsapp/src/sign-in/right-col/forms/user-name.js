@@ -1,8 +1,7 @@
-
-function Username({ setName }) {
+function Username({ setUsername }) {
     // saves the value change
     function changeVal(e) {
-        setName(e.target.value)
+        setUsername(e.target.value)
     }
     return (
         <div className="col mb-3">

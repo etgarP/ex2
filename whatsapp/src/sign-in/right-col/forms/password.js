@@ -1,4 +1,3 @@
-
 function Password({ setPassword }) {
     // saves the password change
     function updatePassword(e) {
