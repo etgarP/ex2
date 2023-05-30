@@ -26,6 +26,7 @@ function Form({ users, setUsers }) {
     const [reqDnext, setDnText] = useState("Your Displayname must be 3-20 characters long, and may contain letters, numbers and spaces")
     const [reqPiText, setPiText] = useState("You must upload a picture of the following formats: .jpg, .jpeg, .png, with a max size of 5MB.")
     const [reqPext, setPText] = useState("Your password must be 8-20 characters long, must contain a uppercase letter, lower case charecter and a number.")
+    const [badConnction, setBadCon] = useState("")
     // on submit, if the input are valid, saves them and go to sign in page
     async function handleSubmit(e) {
         e.preventDefault()
@@ -35,7 +36,6 @@ function Form({ users, setUsers }) {
         var cPassFlag = validateConfirmPass(password, cPassword, setCpText)
         var dNameFlag = validateDisplayName(displayName, setDnText)
         var picFlag = validatePicture(picture, setPiText)
-        console.log(picture)
 
         // if all are valid, we add the details and move to sign in page
         if (nameFlag && passFlag && cPassFlag && dNameFlag && picFlag) {
@@ -46,14 +46,18 @@ function Form({ users, setUsers }) {
                   username: name,
                   password: password,
                   displayName: displayName,
-                  profilePic: base64Image // Assign the base64 image to the profilePic property
+                  profilePic: base64Image // assign the base64 image to the profilePic property
                 };
                 setUsers([...users, newUser]);
-                var response = await postReq(newUser, "http://localhost:5000/api/Users");
-                console.log("response" + response);
+                try {
+                    var response = await postReq(newUser, "http://localhost:5000/api/Users");
+                    console.log("response" + response);
+                    // goes to sign in
+                    navigate("/");
+                } catch (error) {
+                    setBadCon("Oops! Our server seems to be taking a coffee break ☕️. We're working hard to fix it and get things back on track. Please bear with us and try again shortly. Thank you for your patience!")
+                }
           
-                // goes to sign in
-                navigate("/");
               };
           
               fileReader.readAsDataURL(picture);
@@ -67,7 +71,10 @@ function Form({ users, setUsers }) {
             <ConfirmPassword text={reqCpText} setText={setCpText} value={cPassword} set={setCPassword}></ConfirmPassword>
             <DisplayName text={reqDnext} setText={setDnText} value={displayName} set={setDisplayName}></DisplayName>
             <Picture text={reqPiText} setText={setPiText} value={picture} set={setPicture}></Picture>
-            <button type="submit" className="btn btn-primary">Register</button>
+            <button type="submit" className="btn btn-primary">Register</button> <br/>
+            <small id="passwordHelpBlock" className="form-text text-danger small-txt">
+                {badConnction}
+            </small>
         </form>
     )
 }
