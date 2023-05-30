@@ -51,10 +51,10 @@ function Form() {
                 try {
                     var response = await postReq(newUser, "http://localhost:5000/api/Users");
                     var stat = response.status;
-                    if (stat == 409) {
+                    if (stat === 409) {
                         setRUText("Username is taken.")
                         return;
-                    } else if (stat == 400) {
+                    } else if (stat === 400) {
                         console.log("returned 400");
                         return;
                     } else if (!response.ok) {
