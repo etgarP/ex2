@@ -2,8 +2,8 @@ import { useState } from "react"
 import Username from "./user-name"
 import Password from "./password"
 import { useNavigate } from 'react-router-dom'
-import { postReq } from './postReq.js'
-import { getReq } from './getReq.js'
+import { postReq } from '../../../postReq.js'
+import { getReq } from '../../../getReq.js'
 
 function Form({ setUser }) {
     // needed to use navigate in and inner function context

@@ -8,7 +8,7 @@ import {
     validateUsername, validatePassword, validateConfirmPass, validateDisplayName,
     validatePicture
 } from "./submitFuncs.js"
-import { postReq } from "./TokenPost.js"
+import { postReq } from '../../../postReq.js'
 import { useNavigate } from 'react-router-dom'
 
 function Form() {
