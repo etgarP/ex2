@@ -13,20 +13,19 @@ function Form({ setUser }) {
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
     // checks if the details are correct and if so connects to chat page and saves user info
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault()
+        const data = { username: name, password : password }
         try {
             var res = await postReq(data, "http://localhost:5000/api/Tokens");
             console.log(res.status)
             const token = (await res.text()).trim()
-            const url = `http://localhost:5000/api/Users/${username}` 
+            const url = `http://localhost:5000/api/Users/${name}` 
             var res2 = await getReq(url, token) 
-            console.log(res2.status)
             const user = await res2.json()
             if (res2.ok) {
                 setUser(user)
-                console.log(user)
-                // navigate('/chat')
+                navigate('/chat')
                 return;
             } else {
                 setError("Wrong Credentials")

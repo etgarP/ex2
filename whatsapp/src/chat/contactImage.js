@@ -1,12 +1,12 @@
 import defaultUserAvatar from './pictures/default-avatar.jpg'
 
-function ContactImage(props) {
-    const { picture = defaultUserAvatar } = props
+function ContactImage({ picture }) {
+    console.log(picture)
     return (
         // contact's picture
         <div className='picture-col'>
             <div id={`photo-container`}>
-                <img src={picture} id={`photo`} alt={`a person`}></img>
+                <img src={`${picture}`} id={`photo`} alt={`a person`}></img>
             </div>
         </div>
     )
