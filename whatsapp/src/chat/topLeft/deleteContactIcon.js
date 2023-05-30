@@ -2,7 +2,7 @@ import { useRef, useState } from "react"
 import defaultProfilePicture from '../pictures/Default_ProfilePicture.png'
 
 function DeleteContactIcon(props) {
-    const { setContacts } = props
+    const { setContacts, contacts } = props
     const inputRef = useRef(null)
     const [value, setValue] = useState("")
     // deletes contact from contacts list
