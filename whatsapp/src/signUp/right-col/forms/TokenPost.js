@@ -7,7 +7,7 @@ export async function postReq(data, url) {
             },
             body: JSON.stringify(data),
         });
-        return res.status;
+        return res;
     } catch (error) {
         // Handle the error here
         // console.error('An error occurred:', error);

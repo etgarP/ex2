@@ -3,7 +3,7 @@ import Username from "./user-name"
 import Password from "./password"
 import { useNavigate } from 'react-router-dom'
 
-function Form({ users, setUser }) {
+function Form({ setUser }) {
     // needed to use navigate in and inner function context
     const navigate = useNavigate()
     // saves the name password and error
@@ -13,9 +13,9 @@ function Form({ users, setUser }) {
     // checks if the details are correct and if so connects to chat page and saves user info
     function handleSubmit(e) {
         e.preventDefault()
-        const user = users.find(user => user.name === name && user.password === password)
+        var user = true;
         if (user) {
-            setUser(user)
+            setUser("")
             // changes the page
             navigate('/chat')
         }

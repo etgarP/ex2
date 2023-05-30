@@ -6,8 +6,6 @@ import Chat from "./chat/chat"
 import { useRef } from 'react'
 
 function Site() {
-  // hook for the users list
-  const [users, setUsers] = useState([])
   // hook to save the username of the signed in user
   const [user, setUser] = useState(null)
   const middleElement = useRef(null)
@@ -18,11 +16,11 @@ function Site() {
         <Routes>
           <Route
             path="/"
-            element={<SignIn users={users} setUser={setUser} />}
+            element={<SignIn setUser={setUser} />}
           />
           <Route
             path="/signup"
-            element={<SignUp users={users} setUsers={setUsers} />}
+            element={<SignUp/>}
           />
           {/* set user to null to return to sign in */}
           <Route

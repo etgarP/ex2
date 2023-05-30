@@ -11,7 +11,7 @@ import {
 import { postReq } from "./TokenPost.js"
 import { useNavigate } from 'react-router-dom'
 
-function Form({ users, setUsers }) {
+function Form() {
     // needed to use the function in an inner function context
     const navigate = useNavigate()
     //sets states for all of the fields
@@ -31,7 +31,7 @@ function Form({ users, setUsers }) {
     async function handleSubmit(e) {
         e.preventDefault()
         // check the field is valid and changes the explanation text if its not valid
-        var nameFlag = validateUsername(name, users, setRUText)
+        var nameFlag = validateUsername(name, setRUText)
         var passFlag = validatePassword(password, setPText)
         var cPassFlag = validateConfirmPass(password, cPassword, setCpText)
         var dNameFlag = validateDisplayName(displayName, setDnText)
@@ -48,16 +48,23 @@ function Form({ users, setUsers }) {
                   displayName: displayName,
                   profilePic: base64Image // assign the base64 image to the profilePic property
                 };
-                setUsers([...users, newUser]);
                 try {
                     var response = await postReq(newUser, "http://localhost:5000/api/Users");
-                    console.log("response" + response);
+                    var stat = response.status;
+                    if (stat == 409) {
+                        setRUText("Username is taken.")
+                        return;
+                    } else if (stat == 400) {
+                        console.log("returned 400");
+                        return;
+                    } else if (!response.ok) {
+                        console.log("didnt come through");
+                    }
                     // goes to sign in
                     navigate("/");
                 } catch (error) {
                     setBadCon("Oops! Our server seems to be taking a coffee break ☕️. We're working hard to fix it and get things back on track. Please bear with us and try again shortly. Thank you for your patience!")
                 }
-          
               };
           
               fileReader.readAsDataURL(picture);
