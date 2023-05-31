@@ -3,7 +3,7 @@ import SendMessage from "./sendMessage"
 import background from "../pictures/whotsApp.png"
 
 function PrivateChat(props) {
-    const { setContacts, contactId, contacts, setContacts1, contacts1 } = props
+    const { setContacts, contactId, contacts, setContacts1, contacts1, user } = props
     var contact = null;
     if (contacts1 != null)
         contact = contacts1.find(contact => contact.id === contactId)
@@ -16,19 +16,19 @@ function PrivateChat(props) {
         )
     }
     // creates chat log in the chat
-    // todo: return this after updating messeges from the server
-    // const mappedarray = contact.messages.map(message =>
-    //     <Message
-    //         key={message.id}
-    //         content={message.content}
-    //         side={message.side}
-    //     ></Message>)
+    var mappedArray = contact.messages.reverse().map(message =>
+        <Message
+            key={message.id}
+            content={message.content}
+            side={user.username === message.sender.username ? "right" : "left"}
+        ></Message>)
+    mappedArray = mappedArray.reverse()
     return (
         <div className="col-7 right-side" id='bottom-right'>
             <div className="page-within">
                 <section className="message-rapper">
                     {/* prints the chat log */}
-                    {/* {mappedarray} */}
+                    {mappedArray}
                 </section>
             </div>
             {/* send message area */}

@@ -6,7 +6,7 @@ import defaultUserAvatar from '../pictures/default-avatar.jpg'
 import { getReq } from "../../getReq"
 
 function ListedContact(props) {
-    const { id, picture, contactName, date = "", lastMessage = "", setContactId, upH, setContact1, contacts1, user } = props
+    const { id, picture, contactName, date = "", lastMessage = "", setContactId, upH, setContacts1, contacts1, user } = props
     function setMesseges() {
 
     }
@@ -28,7 +28,29 @@ function ListedContact(props) {
     // change the contact to the contact chosen
     const changeContact = async () => {
         var messages = await getMesseges(id)
-        
+        setContacts1(contacts1 => {
+            const index = contacts1.findIndex(contact => contact.id === id);
+            if (index !== -1) {
+                const updatedContact = {
+                    ...contacts1[index],
+                    messages: messages
+                };
+                const updatedContactsList = [
+                    ...contacts1.slice(0, index),
+                    updatedContact,
+                    ...contacts1.slice(index + 1)
+                ];
+                return updatedContactsList;
+            }
+            return contacts1;
+        });
+        console.log(contacts1)
+        console.log(contacts1[0].messages)
+        // console.log(contacts1[0].messages[0].content)
+        // console.log(contacts1[0].messages[0].created)
+        // console.log(contacts1[0].messages[0].id)
+        // if (contacts1[0].messages[0].sender != null)
+        //     console.log(contacts1[0].messages[0].sender.username)
         setContactId(id)
     }
     return (

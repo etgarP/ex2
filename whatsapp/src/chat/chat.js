@@ -44,7 +44,7 @@ function Chat(props) {
                         </div>
                     </div>
                     {/* PrivateChat holds the whole chat section */}
-                    <PrivateChat setContacts1={setContacts1} contacts1={contacts1} setContacts={setContacts} contactId={contactId} contacts={contacts}></PrivateChat>
+                    <PrivateChat user={user} setContacts1={setContacts1} contacts1={contacts1} setContacts={setContacts} contactId={contactId} contacts={contacts}></PrivateChat>
                 </div>
             </div>
         </>
