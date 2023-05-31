@@ -7,6 +7,9 @@ import ContactsList from './contactsList/contactsList'
 
 function Chat(props) {
   const { user, setUser, middleElement } = props
+  console.log("user.token");
+  console.log(user.token);
+  console.log("user.token");
   const [contacts, setContacts] = useState([])
   const [contactId, setContactId] = useState(-1)
   const topElem = useRef(null)
@@ -30,7 +33,7 @@ function Chat(props) {
       <div className='chat-area'>
         <div className="row row-cols-2 no-margin" ref={topElem}>
           {/* TopLeft holds the user info from login*/}
-          <TopLeft picture={user.profilePic} displayName={user.displayName} setContacts={setContacts} setUser={setUser} contacts={contacts}></TopLeft>
+          <TopLeft picture={user.profilePic} displayName={user.displayName} setContacts={setContacts} setUser={setUser} contacts={contacts} token={user.token}></TopLeft>
           {/* TopRight holds the info of contact we talk to */}
           <TopRight contacts={contacts} contactId={contactId}></TopRight>
         </div>

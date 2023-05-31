@@ -1,5 +1,4 @@
 import ListedContact from "./listedContact"
-import { getReq } from "../../getReq"
 
 function ContactsList(props) {
     const { contacts, setContactId, upH } = props 

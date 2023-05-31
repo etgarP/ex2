@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { postReq } from '../../../postReq.js'
 import { getReq } from '../../../getReq.js'
 
-function Form({ setUser }) {
+function Form({ setUser, setContacts }) {
     // needed to use navigate in and inner function context
     const navigate = useNavigate()
     // saves the name password and error
@@ -15,19 +15,34 @@ function Form({ setUser }) {
     // checks if the details are correct and if so connects to chat page and saves user info
     async function handleSubmit(e) {
         e.preventDefault()
+        async function getChats() {
+            try {
+                const url = "http://localhost:5000/api/Chats"
+                var res = await getReq(url, user.token);
+                var gotten = await res.json();
+                if (Array.isArray(gotten)) {
+                    setContacts(gotten);
+                } else {
+                    // Handle the case where the response is not a valid array
+                    console.error("Invalid data format: ", gotten);
+                }
+            } catch (error) {
+    
+            }
+        }
         const data = { username: name, password : password }
         try {
-            const url = "http://localhost:5000/api/Tokens" 
+            const url = "http://localhost:5000/api/Tokens"
             var res = await postReq(data, url);
-            //todo delete log
-            console.log(res.status)
             const token = (await res.text()).trim()
             const url2 = `http://localhost:5000/api/Users/${name}` 
             var res2 = await getReq(url2, token) 
-            const user = await res2.json()
+            var user = await res2.json()
+            user = {...user, token: token};
             if (res2.ok) {
                 setUser(user)
                 navigate('/chat')
+                getChats();
                 return;
             } else {
                 setError("Wrong Credentials")

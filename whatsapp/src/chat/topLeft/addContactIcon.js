@@ -1,26 +1,59 @@
 import { useRef, useState } from "react"
 import defaultProfilePicture from '../pictures/Default_ProfilePicture.png'
+import { postReqAuthorized } from "../../postReqAuthorized"
+import { getReq } from "../../getReq"
+
 let newContactId = 1
 
 function AddContactIcon(props) {
-    const { setContacts } = props
+    const { setContacts, token } = props
     const inputRef = useRef(null)
     const [value, setValue] = useState("")
     // adding contact to contacts list
+    //todo 
+    
+    async function addPerson(input){
+        try {
+            const url = "http://localhost:5000/api/Chats" 
+            const data = {username : input}
+            var res = await postReqAuthorized(data, url, token)
+            //todo delete
+            console.log(res.status)
+            if (res.ok) {
+                var res2 = await getReq(url, token)
+                //todo delete
+                console.log(res2.status)
+                //todo add popup
+                // "person added successfully"
+            } else {
+                //todo add message
+                // setError("Wrong username.")
+            }
+        } catch (error){
+            // console.error('Error', error)
+            // setError("Oops! Our server seems to be taking a coffee break ☕️. We're working hard to fix it and get things back on track. Please bear with us and try again shortly. Thank you for your patience!")
+        }
+    }
+
+
     const addPersonButtonHandler = () => {
         if (inputRef.current.value) {
-            const newContact = {
-                id: newContactId++,
-                contactName: inputRef.current.value,
-                picture: defaultProfilePicture,
-                date: "",
-                lastMessage: "",
-                messages: []
-            }
-            setContacts((prevContacts) => ([...prevContacts, newContact]))
+            addPerson(inputRef.current.value)
+            // const newContact = {
+            //     id: newContactId++,
+            //     contactName: inputRef.current.value,
+            //     picture: defaultProfilePicture,
+            //     date: "",
+            //     lastMessage: "",
+            //     messages: []
+            // }
+            //todo get chats i guess
+            // setContacts((prevContacts) => ([...prevContacts, newContact]))
             setValue("")
         }
     }
+    
+
     return (
         <div className="col-2 center align-right">
             {/* Add person icon modal */}
