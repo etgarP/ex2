@@ -9,7 +9,6 @@ function AddContactIcon(props) {
     const { setContacts, token } = props
     const inputRef = useRef(null)
     const [value, setValue] = useState("")
-    // adding contact to contacts list
     async function getNewContacts(username) {
         try {
             const url = "http://localhost:5000/api/Chats"
@@ -30,6 +29,7 @@ function AddContactIcon(props) {
         }
     }
 
+    // adding contact to contacts list
     async function addPersonToServer(input) {
         try {
             const url = "http://localhost:5000/api/Chats"

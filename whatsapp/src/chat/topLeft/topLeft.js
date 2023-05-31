@@ -17,7 +17,7 @@ function TopLeft(props) {
                             <DisplayName displayName={displayName}></DisplayName>
                             {/* icons */}
                             <AddContactIcon setContacts={setContacts} token={token}></AddContactIcon>
-                            <DeleteContactIcon contacts={contacts} setContacts={setContacts}></DeleteContactIcon>
+                            <DeleteContactIcon contacts={contacts} setContacts={setContacts} token={token}></DeleteContactIcon>
                             <EscapeIcon setUser={setUser}></EscapeIcon>
                         </div>
                     </div>

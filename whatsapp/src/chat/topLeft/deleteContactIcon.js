@@ -1,33 +1,57 @@
 import { useRef, useState } from "react"
 
 function DeleteContactIcon(props) {
-    const { setContacts, contacts } = props
+    const { setContacts, contacts, token } = props
     const inputRef = useRef(null)
     const [value, setValue] = useState("")
     // deletes contact from contacts list
-    const deletePersonButtonHandler = () => {
+    async function deletePersonFromServer(input) {
+        try {
+            const url = "http://localhost:5000/api/Chats"
+            const data = { id: input }
+            var res = await deleteReq(data, url, token)
+            if (res.ok) {
+                window.alert("person removed successfully");
+            } else if (res.status === 400) {
+                window.alert("Wrong username");
+            } else if (res.status === 401) {
+                window.alert("Unauthorized token. Please refresh the page and start again.");
+            } else {
+                //todo
+            }
+            return res.ok
+        } catch (error) {
+            // console.error('Error', error)
+            // setError("Oops! Our server seems to be taking a coffee break ☕️. We're working hard to fix it and get things back on track. Please bear with us and try again shortly. Thank you for your patience!")
+        }
+    }
+
+    const deletePersonButtonHandler = async () => {
         if (inputRef.current.value) {
-            // finds user in contacts
-
-            const existingContact = contacts.find(
-                (contact) => contact.contactName === inputRef.current.value
-            );
-
-            // deletes contact from contacts
-            if (existingContact) {
-                setContacts((prevContacts) =>
-                    prevContacts.filter(
-                        (contact) => contact.contactName !== inputRef.current.value
-                    )
-                );
+            let input = inputRef.current.value
+            if (input) {
+                let ok = await deletePersonFromServer(input)
+                if(ok){
+                    getNewContacts(input)
+                }
+                setValue("")
             }
 
-            //todo add popup user deleted
+            //todo delete
+            // // finds user in contacts
+            // const existingContact = contacts.find(
+            //     (contact) => contact.contactName === inputRef.current.value
+            // );
+
+            // // deletes contact from contacts
+            // if (existingContact) {
+            //     setContacts((prevContacts) =>
+            //         prevContacts.filter(
+            //             (contact) => contact.contactName !== inputRef.current.value
+            //         )
+            //     );
+            // }
         }
-        else{
-            //todo add popup user not found
-        }
-        
     }
     return (
         <div className="col-2 center align-right">
