@@ -20,6 +20,7 @@ function Form({ setUser, setContacts }) {
                 const url = "http://localhost:5000/api/Chats"
                 var res = await getReq(url, user.token);
                 var gotten = await res.json();
+                // todo delete
                 // for (var key in gotten) {
                 //     console.log(gotten[key].id);
                 //     console.log(gotten[key].user.username);
@@ -39,10 +40,11 @@ function Form({ setUser, setContacts }) {
         }
         const data = { username: name, password : password }
         try {
-            var res = await postReq(data, "http://localhost:5000/api/Tokens");
+            const url =  "http://localhost:5000/api/Tokens"
+            var res = await postReq(data, url);
             const token = (await res.text()).trim()
-            const url = `http://localhost:5000/api/Users/${name}` 
-            var res2 = await getReq(url, token) 
+            const url2 = `http://localhost:5000/api/Users/${name}` 
+            var res2 = await getReq(url2, token) 
             var user = await res2.json()
             user = {...user, token: token};
             if (res2.ok) {
