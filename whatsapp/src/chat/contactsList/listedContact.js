@@ -2,12 +2,14 @@ import ContactImage from "../contactImage"
 import ContactName from "../contactName"
 import Date from "./date"
 import LastMessage from "./lastMassage"
-import defaultUserAvatar from '../pictures/default-avatar.jpg'
+import { applyMessages } from './getMessages.js'
 
 function ListedContact(props) {
-    const { id, picture = defaultUserAvatar, contactName, date = "", lastMessage = "", setContactId, upH } = props
+    const { id, picture, contactName, date = "", lastMessage = "", setContactId, upH, setContacts1, contacts1, user } = props
+
     // change the contact to the contact chosen
-    const changeContact = () => {
+    const changeContact = async () => {
+        applyMessages(user, id, setContacts1)
         setContactId(id)
     }
     return (
@@ -18,8 +20,8 @@ function ListedContact(props) {
                 <div className={`row`}>
                     {/* the image of the contact */}
                     <ContactImage picture={picture}></ContactImage>
-                    <div class="col desc-col">
-                        <div class="row">
+                    <div className="col desc-col">
+                        <div className="row">
                             {/* the name of the contact */}
                             <ContactName contactName={contactName}></ContactName>
                             {/* the date of the last message the contact recieved */}

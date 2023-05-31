@@ -1,9 +1,10 @@
-export async function postReq(data, url) {
+export async function deleteReq(data, url, token) {
     try {
         const res = await fetch(url, {
-            method: 'post',
+            method: 'delete',
             headers: {
                 'Content-Type': 'application/json',
+                'authorization': 'bearer ' + token
             },
             body: JSON.stringify(data),
         });

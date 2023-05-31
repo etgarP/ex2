@@ -8,7 +8,6 @@ function Picture({ value, set, text, setText }) {
         const fileReader = new FileReader();
         fileReader.onload = async function (event) {
             const base64Image = event.target.result;
-            console.log(base64Image)
             setPicture(base64Image);
         }
         fileReader.readAsDataURL(file);

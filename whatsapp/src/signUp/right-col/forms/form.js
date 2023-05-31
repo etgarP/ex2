@@ -8,7 +8,7 @@ import {
     validateUsername, validatePassword, validateConfirmPass, validateDisplayName,
     validatePicture
 } from "./submitFuncs.js"
-import { postReq } from "./TokenPost.js"
+import { postReq } from '../../../postReq.js'
 import { useNavigate } from 'react-router-dom'
 
 function Form() {
@@ -43,13 +43,13 @@ function Form() {
             fileReader.onload = async function (event) {
                 const base64Image = event.target.result;
                 const newUser = {
-                  username: name,
-                  password: password,
-                  displayName: displayName,
-                  profilePic: base64Image // assign the base64 image to the profilePic property
+                    username: name,
+                    password: password,
+                    displayName: displayName,
+                    profilePic: base64Image // assign the base64 image to the profilePic property
                 };
                 try {
-                    var response = await postReq(newUser, "http://localhost:5000/api/Users");
+                    var response = await postReq(newUser, "https://localhost:5000/api/Users");
                     var stat = response.status;
                     if (stat === 409) {
                         setRUText("Username is taken.")
@@ -65,9 +65,9 @@ function Form() {
                 } catch (error) {
                     setBadCon("Oops! Our server seems to be taking a coffee break ☕️. We're working hard to fix it and get things back on track. Please bear with us and try again shortly. Thank you for your patience!")
                 }
-              };
-          
-              fileReader.readAsDataURL(picture);
+            };
+
+            fileReader.readAsDataURL(picture);
         }
     }
     return (
@@ -78,7 +78,7 @@ function Form() {
             <ConfirmPassword text={reqCpText} setText={setCpText} value={cPassword} set={setCPassword}></ConfirmPassword>
             <DisplayName text={reqDnext} setText={setDnText} value={displayName} set={setDisplayName}></DisplayName>
             <Picture text={reqPiText} setText={setPiText} value={picture} set={setPicture}></Picture>
-            <button type="submit" className="btn btn-primary">Register</button> <br/>
+            <button type="submit" className="btn btn-primary">Register</button> <br />
             <small id="passwordHelpBlock" className="form-text text-danger small-txt">
                 {badConnction}
             </small>
