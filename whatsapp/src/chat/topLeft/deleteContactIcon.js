@@ -1,19 +1,20 @@
 import { useRef, useState } from "react"
+import { deleteReq } from "../../deleteReq"
 
 function DeleteContactIcon(props) {
     const { setContacts, contacts, token } = props
     const inputRef = useRef(null)
     const [value, setValue] = useState("")
     // deletes contact from contacts list
-    async function deletePersonFromServer(input) {
+    async function deletePersonFromServer(id) {
         try {
-            const url = "http://localhost:5000/api/Chats"
-            const data = { id: input }
+            const url = `http://localhost:5000/api/Chats/${id}`
+            const data = { id: id }
             var res = await deleteReq(data, url, token)
             if (res.ok) {
-                window.alert("person removed successfully");
+                window.alert("Person removed successfully");
             } else if (res.status === 400) {
-                window.alert("Wrong username");
+                window.alert("Wrong id");
             } else if (res.status === 401) {
                 window.alert("Unauthorized token. Please refresh the page and start again.");
             } else {
@@ -21,6 +22,7 @@ function DeleteContactIcon(props) {
             }
             return res.ok
         } catch (error) {
+            //todo
             // console.error('Error', error)
             // setError("Oops! Our server seems to be taking a coffee break ☕️. We're working hard to fix it and get things back on track. Please bear with us and try again shortly. Thank you for your patience!")
         }
@@ -32,7 +34,8 @@ function DeleteContactIcon(props) {
             if (input) {
                 let ok = await deletePersonFromServer(input)
                 if(ok){
-                    getNewContacts(input)
+                    //todo add implementation
+                    //getNewContacts(input)
                 }
                 setValue("")
             }
@@ -55,7 +58,7 @@ function DeleteContactIcon(props) {
     }
     return (
         <div className="col-2 center align-right">
-            {/* delete person icon modal */}
+            {/* Delete person icon modal */}
             <button className="icons-background no-border" type="button" data-bs-toggle="modal" data-bs-target="#deletePersonModal">
                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" className="bi bi-person-dash no-borderFicon" viewBox="0 0 16 16">
                     <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7ZM11 12h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1 0-1Zm0-7a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" />

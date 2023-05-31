@@ -3,8 +3,6 @@ import defaultProfilePicture from '../pictures/Default_ProfilePicture.png'
 import { postReqAuthorized } from "../../postReqAuthorized"
 import { getReq } from "../../getReq"
 
-let newContactId = 1
-
 function AddContactIcon(props) {
     const { setContacts, token } = props
     const inputRef = useRef(null)
@@ -38,7 +36,7 @@ function AddContactIcon(props) {
             //todo delete
             console.log(res.status)
             if (res.ok) {
-                window.alert("person added successfully");
+                window.alert("Person added successfully");
             } else if (res.status === 400) {
                 window.alert("Wrong username");
             } else if (res.status === 401) {
@@ -59,7 +57,6 @@ function AddContactIcon(props) {
         if (input) {
             let ok = addPersonToServer(input)
             if(ok){
-                //todo add implementation
                 getNewContacts(input)
             }
             setValue("")
