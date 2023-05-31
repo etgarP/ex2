@@ -3,11 +3,32 @@ import ContactName from "../contactName"
 import Date from "./date"
 import LastMessage from "./lastMassage"
 import defaultUserAvatar from '../pictures/default-avatar.jpg'
+import { getReq } from "../../getReq"
 
 function ListedContact(props) {
-    const { id, picture, contactName, date = "", lastMessage = "", setContactId, upH } = props
+    const { id, picture, contactName, date = "", lastMessage = "", setContactId, upH, setContact1, contacts1, user } = props
+    function setMesseges() {
+
+    }
+    async function getMesseges(id) {
+        try {
+            const url = `http://localhost:5000/api/Chats/${id}/Messages`
+            var res = await getReq(url, user.token);
+            var data = await res.json();
+            if (Array.isArray(data)) {
+                return data;
+            } else {
+                // Handle the case where the response is not a valid array
+                console.error("Invalid data format: ", data);
+            }
+        } catch (error) {
+
+        }
+    }
     // change the contact to the contact chosen
-    const changeContact = () => {
+    const changeContact = async () => {
+        var messages = await getMesseges(id)
+        
         setContactId(id)
     }
     return (

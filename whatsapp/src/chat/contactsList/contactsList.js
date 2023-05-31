@@ -1,7 +1,7 @@
 import ListedContact from "./listedContact";
 
 function ContactsList(props) {
-  const { contacts1, setContactId, upH } = props;
+  const { contacts1, setContacts1, setContactId, upH, user } = props;
 
   if (Array.isArray(contacts1)) {
     const mappedarray = contacts1.map((contact) => {
@@ -23,6 +23,9 @@ function ContactsList(props) {
         lastMessage={contact.lastMessage ? contact.lastMessage.content: null}
         setContactId={setContactId}
         upH={upH}
+        setContacts1={setContacts1}
+        contacts1={contacts1}
+        user={user}
         />
     );
     });

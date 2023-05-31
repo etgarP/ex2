@@ -16,6 +16,7 @@ function PrivateChat(props) {
         )
     }
     // creates chat log in the chat
+    // todo: return this after updating messeges from the server
     // const mappedarray = contact.messages.map(message =>
     //     <Message
     //         key={message.id}

@@ -25,7 +25,6 @@ function Form({ setUser, setContacts }) {
                 //     console.log(gotten[key].user.username);
                 //     console.log(gotten[key].user.displayName);
                 //     console.log(gotten[key].created);
-                //     // console.log(gotten[key].user.profilePic);
                 //     console.log(gotten[key].lastMessage);
                 // }
                 if (Array.isArray(gotten)) {
