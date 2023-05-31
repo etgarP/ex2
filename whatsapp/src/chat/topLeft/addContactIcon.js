@@ -59,6 +59,7 @@ function AddContactIcon(props) {
         if (input) {
             let ok = addPersonToServer(input)
             if(ok){
+                //todo add implementation
                 getNewContacts(input)
             }
             setValue("")
