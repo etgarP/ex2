@@ -16,13 +16,17 @@ function PrivateChat(props) {
         )
     }
     // creates chat log in the chat
-    var mappedArray = contact.messages.reverse().map(message =>
-        <Message
-            key={message.id}
-            content={message.content}
-            side={user.username === message.sender.username ? "right" : "left"}
-        ></Message>)
-    mappedArray = mappedArray.reverse()
+    let mappedArray = [];
+    if (contact.messages) {
+        mappedArray = contact.messages
+            .map((message) => (
+                <Message
+                    key={message.id}
+                    content={message.content}
+                    side={user.username === message.sender.username ? "right" : "left"}
+                />
+            )).reverse();
+    }
     return (
         <div className="col-7 right-side" id='bottom-right'>
             <div className="page-within">
@@ -32,7 +36,7 @@ function PrivateChat(props) {
                 </section>
             </div>
             {/* send message area */}
-            <SendMessage setContacts={setContacts} contactId={contactId}></SendMessage>
+            <SendMessage user={user} setContacts1={setContacts1} contactId={contactId}></SendMessage>
         </div>
     )
 }

@@ -1,41 +1,35 @@
 import { useRef, useState } from "react"
+import { postReqAuthorized } from "../../postReq"
+import { applyMessages } from "../contactsList/getMessages"
 
 let newMessageId = 1
 
 function SendMessage(props) {
-    const { setContacts, contactId } = props
+    const { user, setContacts1, contactId } = props
     const inputRef = useRef(null)
     const [value, setValue] = useState("")
     // enter sends the message
+    // sending the message when pressing on button/enter
+    const sendButtonHandler = async () => {
+        if (inputRef.current.value.trim() !== '') {
+            let message = inputRef.current.value.trim();
+            const newMessage = { msg : message }
+            try {
+                const url = `http://localhost:5000/api/Chats/1/Messages`
+                var res = await postReqAuthorized(newMessage, url, user.token)
+                console.log(res.status);
+            } catch (error) {
+                // todo: do something here maybe
+                console.log("error in send message.js", error)
+            }
+            setValue("")
+            applyMessages(user, contactId, setContacts1)
+        }
+    }
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
             event.preventDefault()
             sendButtonHandler()
-        }
-    }
-    // sending the message when pressing on button/enter
-    const sendButtonHandler = () => {
-        if (inputRef.current.value.trim() !== '') {
-            // creating info on message put in array
-            const date = new Date()
-            const hours = date.getHours()
-            const minutes = date.getMinutes()
-            const currentTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`
-            const currentDateTime = `${date.toLocaleDateString()} ${currentTime}`
-            const newMessage = { id: newMessageId++, content: inputRef.current.value, side: 'right', date: currentDateTime }
-            // puts the message info in the array of the person by the contactId (active person)
-            setContacts(prevContacts => {
-                const newContacts = prevContacts.map(contact => {
-                    if (contactId === contact.id) {
-                        const updatedMesages = [...contact.messages, newMessage]
-                        return { ...contact, messages: updatedMesages }
-                    }
-                    return contact
-                })
-                return newContacts
-            })
-            // deletes the input value
-            setValue("")
         }
     }
     return (

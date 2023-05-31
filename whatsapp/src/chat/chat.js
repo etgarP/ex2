@@ -4,7 +4,6 @@ import PrivateChat from './privateChat/privateChat'
 import { useState, useRef, useEffect } from 'react'
 import './chat.css'
 import ContactsList from './contactsList/contactsList'
-import { getReq } from '../getReq'
 
 function Chat(props) {
     const { user, setUser, middleElement, setContacts1, contacts1 } = props
@@ -25,7 +24,7 @@ function Chat(props) {
         return () => {
             window.removeEventListener('resize', updateHeight)
         }
-    }, [])
+    })
 
     return (
         <>
