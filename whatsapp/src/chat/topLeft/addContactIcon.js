@@ -10,49 +10,61 @@ function AddContactIcon(props) {
     const inputRef = useRef(null)
     const [value, setValue] = useState("")
     // adding contact to contacts list
-    //todo 
-    
-    async function addPerson(input){
+    async function getNewContacts(username) {
         try {
-            const url = "http://localhost:5000/api/Chats" 
-            const data = {username : input}
+            const url = "http://localhost:5000/api/Chats"
+            var res = await getReq(url, token)
+            if (res.ok) {
+                var newContacts = await res.json()
+                const newContact = newContacts.find((contact)=>{
+                    if(contact.user.username===username){
+                        return contact
+                    }
+                })
+                setContacts((prevContacts) => ([...prevContacts, newContact]))
+            } else {
+                //todo
+            }
+        } catch {
+
+        }
+    }
+
+    async function addPersonToServer(input) {
+        try {
+            const url = "http://localhost:5000/api/Chats"
+            const data = { username: input }
             var res = await postReqAuthorized(data, url, token)
             //todo delete
             console.log(res.status)
             if (res.ok) {
-                var res2 = await getReq(url, token)
-                //todo delete
-                console.log(res2.status)
-                //todo add popup
-                // "person added successfully"
+                window.alert("person added successfully");
+            } else if (res.status === 400) {
+                window.alert("Wrong username");
+            } else if (res.status === 401) {
+                window.alert("Unauthorized token. Please refresh the page and start again.");
             } else {
-                //todo add message
-                // setError("Wrong username.")
+                //todo
             }
-        } catch (error){
+            return res.ok
+        } catch (error) {
             // console.error('Error', error)
             // setError("Oops! Our server seems to be taking a coffee break ☕️. We're working hard to fix it and get things back on track. Please bear with us and try again shortly. Thank you for your patience!")
         }
     }
 
 
-    const addPersonButtonHandler = () => {
-        if (inputRef.current.value) {
-            addPerson(inputRef.current.value)
-            // const newContact = {
-            //     id: newContactId++,
-            //     contactName: inputRef.current.value,
-            //     picture: defaultProfilePicture,
-            //     date: "",
-            //     lastMessage: "",
-            //     messages: []
-            // }
-            //todo get chats i guess
-            // setContacts((prevContacts) => ([...prevContacts, newContact]))
+    const addPersonButtonHandler = async () => {
+        let input = inputRef.current.value
+        if (input) {
+            let ok = addPersonToServer(input)
+            if(ok){
+                getNewContacts(input)
+            }
             setValue("")
         }
     }
-    
+
 
     return (
         <div className="col-2 center align-right">
