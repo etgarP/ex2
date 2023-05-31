@@ -5,7 +5,7 @@ import LastMessage from "./lastMassage"
 import defaultUserAvatar from '../pictures/default-avatar.jpg'
 
 function ListedContact(props) {
-    const { id, picture = defaultUserAvatar, contactName, date = "", lastMessage = "", setContactId, upH } = props
+    const { id, picture, contactName, date = "", lastMessage = "", setContactId, upH } = props
     // change the contact to the contact chosen
     const changeContact = () => {
         setContactId(id)

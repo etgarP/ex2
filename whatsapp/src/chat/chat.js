@@ -7,13 +7,12 @@ import ContactsList from './contactsList/contactsList'
 import { getReq } from '../getReq'
 
 function Chat(props) {
-    const { user, setUser, middleElement } = props
+    const { user, setUser, middleElement, setContacts1, contacts1 } = props
     const [contacts, setContacts] = useState([])
     const [contactId, setContactId] = useState(-1)
     const topElem = useRef(null)
     const bottom = useRef(null)
     const [elementHeight, setElementHeight] = useState(0)
-    const [contacts2, setContacts2] = useState([])
     // adjust the height to fill the area
     const updateHeight = () => {
         const newHeight = middleElement.current.offsetHeight - topElem.current.offsetHeight
@@ -28,23 +27,6 @@ function Chat(props) {
         }
     }, [])
 
-    async function getChats() {
-        try {
-            const url = "http://localhost:5000/api/Chats"
-            var res = await getReq(url, user.token);
-            var gotten = await res.json();
-            if (Array.isArray(gotten)) {
-                setContacts2(gotten);
-            } else {
-                // Handle the case where the response is not a valid array
-                console.error("Invalid data format: ", gotten);
-            }
-        } catch (error) {
-
-        }
-    }
-    getChats();
-
     return (
         <>
             <div className='chat-area'>
@@ -58,11 +40,11 @@ function Chat(props) {
                     <div className="col-5 no-padding" id='bottom-left'>
                         <div className="list-group">
                             {/* ContactsList holds the list of all contacts */}
-                            <ContactsList contacts={contacts} setContactId={setContactId} upH={updateHeight}></ContactsList>
+                            <ContactsList contacts1={contacts1} setContactId={setContactId} upH={updateHeight}></ContactsList>
                         </div>
                     </div>
                     {/* PrivateChat holds the whole chat section */}
-                    <PrivateChat setContacts={setContacts} contactId={contactId} contacts={contacts}></PrivateChat>
+                    <PrivateChat setContacts1={setContacts1} contacts1={contacts1} setContacts={setContacts} contactId={contactId} contacts={contacts}></PrivateChat>
                 </div>
             </div>
         </>

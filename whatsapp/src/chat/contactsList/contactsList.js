@@ -1,23 +1,37 @@
-import ListedContact from "./listedContact"
+import ListedContact from "./listedContact";
 
 function ContactsList(props) {
-    const { contacts, setContactId, upH } = props
-    // creates an array of contacts list
-    const mappedarray = contacts.map(contact =>
-        <ListedContact
-            id={contact.id}
-            contactName={contact.contactName}
-            picture={contact.picture}
-            date={contact.messages.length > 0 ? contact.messages[contact.messages.length - 1].date : ''}
-            lastMessage={contact.messages.length > 0 ? contact.messages[contact.messages.length - 1].content : ''}
-            setContactId={setContactId}
-            upH={upH}
-        ></ListedContact>)
+  const { contacts1, setContactId, upH } = props;
+
+  if (Array.isArray(contacts1)) {
+    const mappedarray = contacts1.map((contact) => {
+    var timeAndDate;
+    if (contact.lastMessage != null) {
+        var dateString = contact.lastMessage.created;
+        const dateObject = new Date(dateString);
+        const formattedDate = dateObject.toLocaleDateString(); 
+        const formattedTime = dateObject.toLocaleTimeString();
+        timeAndDate = formattedDate + " " + formattedTime;
+    }
     return (
-        <>
-            {/* prints an array of contacts list */}
-            {mappedarray}
-        </>
-    )
+        <ListedContact
+        key={contact.id}
+        id={contact.id}
+        contactName={contact.user.displayName}
+        picture={contact.user.profilePic}
+        date={contact.lastMessage ? timeAndDate : null}
+        lastMessage={contact.lastMessage ? contact.lastMessage.content: null}
+        setContactId={setContactId}
+        upH={upH}
+        />
+    );
+    });
+
+    return <>{mappedarray}</>;
+  } else {
+    console.log("contacts1 is not an array or is null/undefined.");
+    return null;
+  }
 }
-export default ContactsList
+
+export default ContactsList;
