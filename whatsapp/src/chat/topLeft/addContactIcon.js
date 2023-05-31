@@ -1,27 +1,69 @@
 import { useRef, useState } from "react"
 import defaultProfilePicture from '../pictures/Default_ProfilePicture.png'
-let newContactId = 1
+import { postReqAuthorized } from "../../postReq"
+import { getReq } from "../../getReq"
 
 function AddContactIcon(props) {
-    const { setContacts } = props
+    const { setContacts1, token } = props
     const inputRef = useRef(null)
     const [value, setValue] = useState("")
     // adding contact to contacts list
-    const addPersonButtonHandler = () => {
-        if (inputRef.current.value) {
-            const newContact = {
-                id: newContactId++,
-                contactName: inputRef.current.value,
-                // todo: make this into a real boy picture
-                picture: defaultProfilePicture,
-                date: "",
-                lastMessage: "",
-                messages: []
+    async function getNewContacts(username) {
+        try {
+            const url = "http://localhost:5000/api/Chats"
+            var res = await getReq(url, token)
+            if (res.ok) {
+                var newContacts = await res.json()
+                const newContact = newContacts.find((contact)=>{
+                    if(contact.user.username===username){
+                        return contact
+                    }
+                })
+                setContacts1((prevContacts) => ([...prevContacts, newContact]))
+
+            } else {
+                //todo
             }
-            setContacts((prevContacts) => ([...prevContacts, newContact]))
+        } catch (error) {
+
+        }
+    }
+
+    async function addPersonToServer(input) {
+        try {
+            const url = "http://localhost:5000/api/Chats"
+            const data = { username: input }
+            var res = await postReqAuthorized(data, url, token)
+            //todo delete
+            if (res.ok) {
+                window.alert("person added successfully");
+            } else if (res.status === 400) {
+                window.alert("Wrong username");
+            } else if (res.status === 401) {
+                window.alert("Unauthorized token. Please refresh the page and start again.");
+            } else {
+                //todo
+            }
+            return res.ok
+        } catch (error) {
+            // console.error('Error', error)
+            // setError("Oops! Our server seems to be taking a coffee break ☕️. We're working hard to fix it and get things back on track. Please bear with us and try again shortly. Thank you for your patience!")
+        }
+    }
+
+
+    const addPersonButtonHandler = async () => {
+        let input = inputRef.current.value
+        if (input) {
+            let ok = addPersonToServer(input)
+            if(ok){
+                getNewContacts(input)
+            }
             setValue("")
         }
     }
+
+
     return (
         <div className="col-2 center align-right">
             {/* Add person icon modal */}

@@ -31,7 +31,7 @@ function Chat(props) {
             <div className='chat-area'>
                 <div className="row row-cols-2 no-margin" ref={topElem}>
                     {/* TopLeft holds the user info from login*/}
-                    <TopLeft picture={user.profilePic} displayName={user.displayName} setContacts={setContacts} setUser={setUser}></TopLeft>
+                    <TopLeft token={user.token} picture={user.profilePic} displayName={user.displayName} setContacts1={setContacts1} setUser={setUser}></TopLeft>
                     {/* TopRight holds the info of contact we talk to */}
                     <TopRight contacts={contacts} contactId={contactId}></TopRight>
                 </div>

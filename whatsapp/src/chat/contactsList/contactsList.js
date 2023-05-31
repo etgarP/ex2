@@ -28,7 +28,7 @@ function ContactsList(props) {
         user={user}
         />
     );
-    });
+  });
 
     return <>{mappedarray}</>;
   } else {
