@@ -1,15 +1,31 @@
 import { useRef, useState } from "react"
 import { postReqAuthorized } from "../../postReq"
 import { applyMessages } from "../contactsList/getMessages"
+import { getReq } from "../../getReq"
 
 let newMessageId = 1
 
 function SendMessage(props) {
-    const { user, setContacts1, contactId } = props
+    const { user, contact, setContacts1, contactId } = props
     const inputRef = useRef(null)
     const [value, setValue] = useState("")
     // enter sends the message
     // sending the message when pressing on button/enter
+    const reGetContacts = async () => {
+        try {
+            const url = "http://localhost:5000/api/Chats"
+            var res = await getReq(url, user.token);
+            var gotten = await res.json();
+            if (Array.isArray(gotten)) {
+                setContacts1(gotten);
+            } else {
+                // Handle the case where the response is not a valid array
+                console.error("Invalid data format: ", gotten);
+            }
+        } catch (error) {
+
+        }
+    }
     const sendButtonHandler = async () => {
         if (inputRef.current.value.trim() !== '') {
             let message = inputRef.current.value.trim();
@@ -17,12 +33,12 @@ function SendMessage(props) {
             try {
                 const url = `http://localhost:5000/api/Chats/1/Messages`
                 var res = await postReqAuthorized(newMessage, url, user.token)
-                console.log(res.status);
             } catch (error) {
                 // todo: do something here maybe
                 console.log("error in send message.js", error)
             }
             setValue("")
+            await reGetContacts();
             applyMessages(user, contactId, setContacts1)
         }
     }

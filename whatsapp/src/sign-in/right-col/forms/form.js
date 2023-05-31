@@ -20,14 +20,6 @@ function Form({ setUser, setContacts }) {
                 const url = "http://localhost:5000/api/Chats"
                 var res = await getReq(url, user.token);
                 var gotten = await res.json();
-                // todo delete
-                // for (var key in gotten) {
-                //     console.log(gotten[key].id);
-                //     console.log(gotten[key].user.username);
-                //     console.log(gotten[key].user.displayName);
-                //     console.log(gotten[key].created);
-                //     console.log(gotten[key].lastMessage);
-                // }
                 if (Array.isArray(gotten)) {
                     setContacts(gotten);
                 } else {

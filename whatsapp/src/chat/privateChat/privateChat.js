@@ -36,7 +36,7 @@ function PrivateChat(props) {
                 </section>
             </div>
             {/* send message area */}
-            <SendMessage user={user} setContacts1={setContacts1} contactId={contactId}></SendMessage>
+            <SendMessage user={user} setContacts1={setContacts1} contact={contact} contactId={contactId}></SendMessage>
         </div>
     )
 }
