@@ -6,6 +6,8 @@ function ContactsList(props) {
   if (Array.isArray(contacts1)) {
     const mappedarray = contacts1.map((contact) => {
     var timeAndDate;
+    if (!contact) {
+    }
     if (contact.lastMessage != null) {
         var dateString = contact.lastMessage.created;
         const dateObject = new Date(dateString);

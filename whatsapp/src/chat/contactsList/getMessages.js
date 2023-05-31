@@ -17,6 +17,7 @@ async function getMesseges(id, user) {
 
 export async function applyMessages(user, id, setContacts1) {
     try {
+        console.log(id)
         var messages = await getMesseges(id, user)
     } catch (error) {
         // todo: add actions maybe

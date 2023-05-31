@@ -1,40 +1,63 @@
 import { useRef, useState } from "react"
-import defaultProfilePicture from '../pictures/Default_ProfilePicture.png'
+import { deleteReq } from "../../deleteReq"
+import { getReq } from "../../getReq"
 
 function DeleteContactIcon(props) {
-    const { setContacts } = props
+    const { setContacts1, contacts1, token } = props
     const inputRef = useRef(null)
     const [value, setValue] = useState("")
     // deletes contact from contacts list
-    const deletePersonButtonHandler = () => {
-        // todo
-        // user = find user in contacts
-        // if(user){
-        // setContacts((prevContacts) => ([...prevContacts, newContact]))
-        //}
-        if (inputRef.current.value) {
-            const existingContact = contacts.find(
-                (contact) => contact.contactName === inputRef.current.value
-            );
-
-            if (existingContact) {
-                setContacts((prevContacts) =>
-                    prevContacts.filter(
-                        (contact) => contact.contactName !== inputRef.current.value
-                    )
-                );
+    async function deletePersonFromServer(id) {
+        try {
+            const url = `http://localhost:5000/api/Chats/${id}`
+            const data = { id: id }
+            var res = await deleteReq(data, url, token)
+            if (res.ok) {
+                window.alert("Person removed successfully");
+            } else if (res.status === 400) {
+                window.alert("Wrong id");
+            } else if (res.status === 401) {
+                window.alert("Unauthorized token. Please refresh the page and start again.");
+            } else {
+                //todo
             }
+            return res.ok
+        } catch (error) {
+            //todo
+        }
+    }
 
-            //todo add popup user deleted
+    const reGetContacts = async () => {
+        try {
+            const url = "http://localhost:5000/api/Chats"
+            var res = await getReq(url, token);
+            var gotten = await res.json();
+            if (Array.isArray(gotten)) {
+                setContacts1(gotten);
+            } else {
+                // Handle the case where the response is not a valid array
+                console.error("Invalid data format: ", gotten);
+            }
+        } catch (error) {
+
         }
-        else{
-            //todo add popup user not found
+    }
+
+    const deletePersonButtonHandler = async () => {
+        if (inputRef.current.value) {
+            let input = inputRef.current.value
+            if (input) {
+                let ok = await deletePersonFromServer(input)
+                if(ok){
+                    reGetContacts()
+                }
+                setValue("")
+            }
         }
-        
     }
     return (
         <div className="col-2 center align-right">
-            {/* delete person icon modal */}
+            {/* Delete person icon modal */}
             <button className="icons-background no-border" type="button" data-bs-toggle="modal" data-bs-target="#deletePersonModal">
                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" className="bi bi-person-dash no-borderFicon" viewBox="0 0 16 16">
                     <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7ZM11 12h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1 0-1Zm0-7a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" />

@@ -1,10 +1,9 @@
 import { useRef, useState } from "react"
-import defaultProfilePicture from '../pictures/Default_ProfilePicture.png'
 import { postReqAuthorized } from "../../postReq"
 import { getReq } from "../../getReq"
 
 function AddContactIcon(props) {
-    const { setContacts1, token } = props
+    const { setContacts1, token, contacts1 } = props
     const inputRef = useRef(null)
     const [value, setValue] = useState("")
     // adding contact to contacts list
@@ -15,7 +14,7 @@ function AddContactIcon(props) {
             if (res.ok) {
                 var newContacts = await res.json()
                 const newContact = newContacts.find((contact)=>{
-                    if(contact.user.username===username){
+                    if(contact.user.username === username){
                         return contact
                     }
                 })
@@ -34,7 +33,6 @@ function AddContactIcon(props) {
             const url = "http://localhost:5000/api/Chats"
             const data = { username: input }
             var res = await postReqAuthorized(data, url, token)
-            //todo delete
             if (res.ok) {
                 window.alert("person added successfully");
             } else if (res.status === 400) {
@@ -54,8 +52,17 @@ function AddContactIcon(props) {
 
     const addPersonButtonHandler = async () => {
         let input = inputRef.current.value
+        const found = contacts1.find((contact)=>{
+            if(contact.user.username === input){
+                return input
+            }
+        })
+        if (found) {
+            window.alert("Username already exist");
+            return
+        }
         if (input) {
-            let ok = addPersonToServer(input)
+            let ok = await addPersonToServer(input)
             if(ok){
                 getNewContacts(input)
             }

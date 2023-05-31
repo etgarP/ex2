@@ -31,7 +31,7 @@ function SendMessage(props) {
             let message = inputRef.current.value.trim();
             const newMessage = { msg : message }
             try {
-                const url = `http://localhost:5000/api/Chats/1/Messages`
+                const url = `http://localhost:5000/api/Chats/${contactId}/Messages`
                 var res = await postReqAuthorized(newMessage, url, user.token)
             } catch (error) {
                 // todo: do something here maybe
@@ -39,6 +39,7 @@ function SendMessage(props) {
             }
             setValue("")
             await reGetContacts();
+            console.log(contactId)
             applyMessages(user, contactId, setContacts1)
         }
     }
