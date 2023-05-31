@@ -1,8 +1,9 @@
 import ContactImage from "./contactImage"
 import ContactName from "./contactName"
+import DeleteContactIcon from './deleteContactIcon.js'
 
 function TopRight(props) {
-    const { contacts1, contactId } = props
+    const { contacts1, contactId, user, setContacts1 } = props
     var contact = null;
     if (contacts1 != null) {
         contact = contacts1.find(contact => contact.id === contactId)
@@ -26,6 +27,7 @@ function TopRight(props) {
                         {/* name of contact we talk to */}
                             <ContactName contactName={contact.user.displayName}></ContactName>
                         </div>
+                        <DeleteContactIcon contactId={contactId} contacts1={contacts1} setContacts1={setContacts1} token={user.token}></DeleteContactIcon>
                     </div>
                 </div>
             </div>

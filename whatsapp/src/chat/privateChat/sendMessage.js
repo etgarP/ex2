@@ -39,7 +39,6 @@ function SendMessage(props) {
             }
             setValue("")
             await reGetContacts();
-            console.log(contactId)
             applyMessages(user, contactId, setContacts1)
         }
     }

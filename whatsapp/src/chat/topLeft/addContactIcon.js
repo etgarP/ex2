@@ -34,10 +34,10 @@ function AddContactIcon(props) {
             const data = { username: input }
             var res = await postReqAuthorized(data, url, token)
             if (res.ok) {
-                window.alert("person added successfully");
             } else if (res.status === 400) {
                 window.alert("Wrong username");
             } else if (res.status === 401) {
+                // todo delete
                 window.alert("Unauthorized token. Please refresh the page and start again.");
             } else {
                 //todo
@@ -52,11 +52,11 @@ function AddContactIcon(props) {
 
     const addPersonButtonHandler = async () => {
         let input = inputRef.current.value
-        const found = contacts1.find((contact)=>{
-            if(contact.user.username === input){
-                return input
+        const found = contacts1.find((contact) => {
+            if (contact.user.username === input) {
+              return contact;
             }
-        })
+        });
         if (found) {
             window.alert("Username already exist");
             return
@@ -90,7 +90,7 @@ function AddContactIcon(props) {
                         </div>
                         {/* Input */}
                         <div className="modal-body">
-                            <input className="full-width" placeholder="Contact's identifier" ref={inputRef}
+                            <input className="full-width" placeholder="Contact's username" ref={inputRef}
                                 value={value} onChange={(ev) => { setValue(ev.target.value) }}></input>
                         </div>
                         {/* Add button */}
