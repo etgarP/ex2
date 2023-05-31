@@ -40,7 +40,7 @@ function Chat(props) {
                     <div className="col-5 no-padding" id='bottom-left'>
                         <div className="list-group">
                             {/* ContactsList holds the list of all contacts */}
-                            <ContactsList contacts1={contacts1} setContactId={setContactId} upH={updateHeight}></ContactsList>
+                            <ContactsList contacts1={contacts1} setContactId={setContactId} setContacts1={setContacts1} upH={updateHeight} user={user}></ContactsList>
                         </div>
                     </div>
                     {/* PrivateChat holds the whole chat section */}
