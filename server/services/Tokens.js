@@ -10,9 +10,9 @@ const createUserPassname = async (username, password, displayName, profilePic) =
     }
 }
 
-const getUserPassName = async (username) => {
+const getUserPassName = async (username, password) => {
     try {
-        const user = await UserPassName.findOne({ "username" : username }).exec()
+        const user = await UserPassName.findOne({ "username" : username, "password" : password }).exec()
         return user
     } catch (error) {
         throw error
