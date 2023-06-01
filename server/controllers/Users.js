@@ -30,7 +30,8 @@ const postUser = async (req, res) => {
 
 const getUser = async (req, res) => {
     try {
-        const words = req.body.split(' ')
+        let aut = req.headers.authorization
+        const words = aut.split(' ')
         const token = words[1]
         jwt.verify(token, 'hemi-hemi-is-never-gonna-give-you-up')
     } catch (error) {
@@ -39,7 +40,7 @@ const getUser = async (req, res) => {
     
     try {
         const username = req.params.username;
-        const existingUser = await tokenService.getUser(username)
+        const existingUser = await userService.getUser(username)
         if (existingUser) {
             return res.status(200).send(existingUser)
         } else {

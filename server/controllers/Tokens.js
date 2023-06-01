@@ -1,4 +1,3 @@
-const userService = require('../services/Users')
 const tokenService = require('../services/Tokens')
 const jwt = require('jsonwebtoken')
 
@@ -10,19 +9,19 @@ const getToken = async (username) => {
 
 const postToken = async (req, res) => {
     try {
-        User = await req.json()
+        var user = req.body
+        console.log(user)
         // Check if required request parameters are present
-        if (!(User.username && User.password)) {
+        if (!(user.username && user.password)) {
             res.status(400).send("Invalid request parameters");
             return
         }
 
         // Check if user already exists
-        const existingUser = await tokenService.getUser(User.username, User.password);
+        const existingUser = await tokenService.getUserPassName(user.username, user.password);
         if (existingUser) {
-            let token = await getToken(username)
-            res.status(200).send(token)
-            return
+            let token = await getToken(user.username)
+            return res.status(200).send(token)
         }
         return res.status(409).send("User doesnt exists");
         // User created successfully

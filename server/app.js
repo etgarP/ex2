@@ -21,7 +21,11 @@ mongoose.connect(process.env.CONNECTION_STRING, {
 
 app.use(express.static('public'))
 
+const Chats = require('./routes/Chats')
+app.use('/api/Chats', Chats);
 const Users = require('./routes/Users')
 app.use('/api/Users', Users);
+const Tokens = require('./routes/Tokens')
+app.use('/api/Tokens', Tokens);
 
 app.listen(process.env.PORT)
