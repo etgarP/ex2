@@ -17,7 +17,7 @@ function Form({ setUser, setContacts }) {
         e.preventDefault()
         async function getChats() {
             try {
-                const url = "http://localhost:5000/api/Chats"
+                const url = "http://localhost:12345/api/Chats"
                 var res = await getReq(url, user.token);
                 var gotten = await res.json();
                 if (Array.isArray(gotten)) {
@@ -32,10 +32,10 @@ function Form({ setUser, setContacts }) {
         }
         const data = { username: name, password : password }
         try {
-            const url =  "http://localhost:5000/api/Tokens"
+            const url =  "http://localhost:12345/api/Tokens"
             var res = await postReq(data, url);
             const token = (await res.text()).trim()
-            const url2 = `http://localhost:5000/api/Users/${name}` 
+            const url2 = `http://localhost:12345/api/Users/${name}` 
             var res2 = await getReq(url2, token) 
             var user = await res2.json()
             user = {...user, token: token};

@@ -4,22 +4,22 @@ const Schema = mongoose.Schema
 
 const UserPassName = new Schema({
     username: {
-        type: string,
+        type: String,
         required: true,
         nullable: true
     },
     password: {
-        type: string,
+        type: String,
         required: true,
         nullable: true
     },
     displayName: {
-        type: string,
+        type: String,
         required: true,
         nullable: true
     },
     profilePic: {
-        type: string,
+        type: String,
         required: true,
         nullable: true
     }

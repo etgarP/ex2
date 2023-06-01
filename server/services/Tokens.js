@@ -1,4 +1,4 @@
-const UserPassName = require('../models/Token')
+const UserPassName = require('../models/Tokens.js')
 
 const createUserPassname = async (username, password, displayName, profilePic) => {
     try {
@@ -19,4 +19,4 @@ const getUserPassName = async (username, password) => {
     }
 };
 
-module.exports = { getUser, createUser }
+module.exports = { createUserPassname, getUserPassName }

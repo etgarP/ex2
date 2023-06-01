@@ -4,17 +4,17 @@ const Schema = mongoose.Schema
 
 const User = new Schema({
     username: {
-        type: string,
+        type: String,
         required: true,
         nullable: true
     },
     displayName: {
-        type: string,
+        type: String,
         required: true,
         nullable: true
     },
     profilePic: {
-        type: string,
+        type: String,
         required: true,
         nullable: true
     }

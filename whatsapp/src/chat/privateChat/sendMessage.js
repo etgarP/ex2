@@ -13,7 +13,7 @@ function SendMessage(props) {
     // sending the message when pressing on button/enter
     const reGetContacts = async () => {
         try {
-            const url = "http://localhost:5000/api/Chats"
+            const url = "http://localhost:12345/api/Chats"
             var res = await getReq(url, user.token);
             var gotten = await res.json();
             if (Array.isArray(gotten)) {
@@ -31,7 +31,7 @@ function SendMessage(props) {
             let message = inputRef.current.value.trim();
             const newMessage = { msg : message }
             try {
-                const url = `http://localhost:5000/api/Chats/${contactId}/Messages`
+                const url = `http://localhost:12345/api/Chats/${contactId}/Messages`
                 var res = await postReqAuthorized(newMessage, url, user.token)
             } catch (error) {
                 // todo: do something here maybe

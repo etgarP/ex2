@@ -9,7 +9,7 @@ function AddContactIcon(props) {
     // adding contact to contacts list
     async function getNewContacts(username) {
         try {
-            const url = "http://localhost:5000/api/Chats"
+            const url = "http://localhost:12345/api/Chats"
             var res = await getReq(url, token)
             if (res.ok) {
                 var newContacts = await res.json()
@@ -30,7 +30,7 @@ function AddContactIcon(props) {
 
     async function addPersonToServer(input) {
         try {
-            const url = "http://localhost:5000/api/Chats"
+            const url = "http://localhost:12345/api/Chats"
             const data = { username: input }
             var res = await postReqAuthorized(data, url, token)
             if (res.ok) {
