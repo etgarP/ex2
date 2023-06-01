@@ -3,9 +3,9 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const Chat = new Schema({
-    id: {type: Number},
-    users:[User],
-    messages:[Message]
+    id: { type: Number },
+    users:[{ type: User }],
+    messages:[{ type: Message }]
 })
 
 const Message = new Schema({
@@ -13,7 +13,7 @@ const Message = new Schema({
         type: Number
     },
     created:{
-        type: String,
+        type: Date,
         default: Date.now
     },
     sender: {
@@ -25,7 +25,6 @@ const Message = new Schema({
     }
 })
 
-module.exports = mongoose.model('Message', Message)
 module.exports = {
     Chat: mongoose.model('Chat', Chat),
     Message: mongoose.model('Message', Message)
