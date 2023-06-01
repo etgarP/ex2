@@ -21,27 +21,35 @@ const postUser = async (req, res) => {
         await tokenService.createUserPassname(User.username, User.password, User.displayName, User.profilePic);
 
         // User created successfully
-        res.status(200).send();
+        return res.status(200).send();
     } catch (error) {
         console.error("Error creating user:", error);
-        res.status(500).send("Internal Server Error");
+        return res.status(500).send("Internal Server Error");
     }
 };
 
 const getUser = async (req, res) => {
     try {
-        const words = req.body.split(' ');
-        const token = words[1];
-        const decoded = jwt.verify(token, 'your-secret-key');
-        const existingUser = await tokenService.getUser(decoded.username);
-        if (existingUser) {
-            res.status(200).send(existingUser);
-        } else {
-            res.status(401).send("Unable to authenticate");
-        }
+        const words = req.body.split(' ')
+        const token = words[1]
+        jwt.verify(token, 'hemi-hemi-is-never-gonna-give-you-up')
     } catch (error) {
-        res.status(401).send("Unable to authenticate");
+        return res.status(401).send("Unable to authenticate")
     }
+    
+    try {
+        const username = req.params.username;
+        const existingUser = await tokenService.getUser(username)
+        if (existingUser) {
+            return res.status(200).send(existingUser)
+        } else {
+            return res.status(404).send("User not found")
+        }
+
+    } catch (error) {
+        return res.status(500).send("Internal Server Error")
+    }
+
 };
 
 module.exports = { postUser, getUser };
