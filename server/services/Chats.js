@@ -1,4 +1,5 @@
 const Chat = require('../models/Chats')
+const User = require('../models/Users');
 const userService = require('../services/Users')
 
 id = 1
@@ -52,7 +53,8 @@ const getChatMessagesById = async (id) => {
 
 const postChatMessagesById = async (id) => {
     try {
-        const words = req.body.split(' ');
+        let aut = req.headers.authorization
+        const words = aut.split(' ')
         const newMessage = words[0];
         const messages = [...Chat.findOne({ "id": id }).exec().messages, newMessage]
         return messages

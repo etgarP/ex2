@@ -5,7 +5,8 @@ const jwt = require('jsonwebtoken')
 const getChats = async (req, res) => {
     let decoded
     try {
-        const words = req.body.split(' ');
+        let aut = req.headers.authorization
+        const words = aut.split(' ')
         const token = words[1];
         decoded = jwt.verify(token, 'hemi-hemi-is-never-gonna-give-you-up');
     } catch (error) {
@@ -22,7 +23,8 @@ const getChats = async (req, res) => {
 const postChat = async (req, res) => {
     let decoded
     try {
-        const words = req.body.split(' ');
+        let aut = req.headers.authorization
+        const words = aut.split(' ')
         const token = words[1];
         decoded = jwt.verify(token, 'hemi-hemi-is-never-gonna-give-you-up');        
     } catch (error) {
@@ -40,7 +42,8 @@ const postChat = async (req, res) => {
 //Returns 
 const getChatById = async (req, res) => {
     try {
-        const words = req.body.split(' ')
+        let aut = req.headers.authorization
+        const words = aut.split(' ')
         const token = words[1]
         jwt.verify(token, 'hemi-hemi-is-never-gonna-give-you-up')
     } catch (error) {
@@ -64,7 +67,8 @@ const getChatById = async (req, res) => {
 
 const deleteChatById = async (req, res) => {
     try {
-        const words = req.body.split(' ')
+        let aut = req.headers.authorization
+        const words = aut.split(' ')
         const token = words[1]
         jwt.verify(token, 'hemi-hemi-is-never-gonna-give-you-up')
     } catch (error) {
@@ -87,7 +91,8 @@ const deleteChatById = async (req, res) => {
 
 const postChatMessagesById = async (req, res) => {
     try {
-        const words = req.body.split(' ')
+        let aut = req.headers.authorization
+        const words = aut.split(' ')
         const token = words[1]
         jwt.verify(token, 'hemi-hemi-is-never-gonna-give-you-up')
     } catch (error) {
@@ -112,7 +117,8 @@ const postChatMessagesById = async (req, res) => {
 
 const getChatMessagesById = async (req, res) => {
     try {
-        const words = req.body.split(' ')
+        let aut = req.headers.authorization
+        const words = aut.split(' ')
         const token = words[1]
         jwt.verify(token, 'hemi-hemi-is-never-gonna-give-you-up')
     } catch (error) {
