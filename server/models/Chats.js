@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const { stringify } = require('querystring')
 
 const Schema = mongoose.Schema
 
@@ -9,4 +8,22 @@ const Chat = new Schema({
     messages:[Message]
 })
 
-module.exports = mongoose.model('Chat', Chat)
+const Message = new Schema({
+    id: {
+        type: Number
+    },
+    created:{
+        type: stringify(Date.now)
+    },
+    sender: {
+        User
+    },
+    content:{
+        type: String, 
+        nullable: true
+    }
+})
+module.exports = {
+    Chat: mongoose.model('Chat', Chat),
+    Message: mongoose.model('Message', Message)
+};
