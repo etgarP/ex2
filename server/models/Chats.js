@@ -13,7 +13,8 @@ const Message = new Schema({
         type: Number
     },
     created:{
-        type: stringify(Date.now)
+        type: String,
+        default: Date.now
     },
     sender: {
         User
@@ -23,6 +24,8 @@ const Message = new Schema({
         nullable: true
     }
 })
+
+module.exports = mongoose.model('Message', Message)
 module.exports = {
     Chat: mongoose.model('Chat', Chat),
     Message: mongoose.model('Message', Message)
