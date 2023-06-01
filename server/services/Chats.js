@@ -9,6 +9,26 @@ const getChatById = async (id) => {
     }
 };
 
+const getChatMessagesById = async (id) => {
+    try {
+        const messages = await Chat.findOne({ "id": id }).exec().messages
+        return messages
+    } catch (error) {
+        throw error
+    }
+}
+
+const postChatMessagesById = async (id) => {
+    try {
+        const words = req.body.split(' ');
+        const newMessage = words[0];
+        const messages = [...Chat.findOne({ "id": id }).exec().messages, newMessage]
+        return messages
+    } catch (error) {
+        throw error
+    }
+}
+
 const deleteChatById = async (id) => {
     try {
         const chat = await Chat.findOne({ "id": id }).exec()
@@ -54,4 +74,4 @@ const getUserChats = async (username) => {
     }
 };
 
-module.exports = { getChatById, deleteChatById, getUserChats }
+module.exports = { getChatById, deleteChatById, getUserChats, getChatMessagesById, postChatMessagesById }
