@@ -4,7 +4,7 @@ const express = require('express')
 var router = express.Router()
 
 router.route('/')
-    .get(ChatsController.getChat)
+    .get(ChatsController.getChats)
     .post(ChatsController.postChat)
 
 router.route('/:id')
