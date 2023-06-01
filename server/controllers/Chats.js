@@ -1,4 +1,4 @@
-const chatService = require('../services/Users')
+const chatService = require('../services/Chats')
 const jwt = require('jsonwebtoken')
 
 //Returns array with 
@@ -20,11 +20,20 @@ const getChats = async (req, res) => {
 }
 
 const postChat = async (req, res) => {
-    req.body.username
+    let decoded
     try {
-        let chats = chatService.createByUsername(decoded.username)
+        const words = req.body.split(' ');
+        const token = words[1];
+        decoded = jwt.verify(token, 'hemi-hemi-is-never-gonna-give-you-up');        
     } catch (error) {
-
+        return res.status(401).send("Unable to authenticate");
+    }
+    try {
+        if (chatService. findByTwoUsers(decoded.username, req.body.username)) 
+            return res.status(409).send("Chat already exists");
+        chatService.createByUsername(decoded.username, req.body.username)
+    } catch (error) {
+        return res.status(500).send("Internal Server Error");
     }
 }
 

@@ -1,4 +1,7 @@
 const Chat = require('../models/Chats')
+const userService = require('../services/Users')
+
+id = 1
 
 const getChatById = async (id) => {
     try {
@@ -9,11 +12,30 @@ const getChatById = async (id) => {
     }
 };
 
-const createByUsername = async (id) => {
+const findByTwoUsers = async (user1, user2) => {
     try {
-        const chat = new Chat({ username, displayName, profilePic })
+        const chats = await Chat.find({ "username": user1 }).exec()
+        if (!chats) return false
+        for (let chat in chats) {
+            const otherUser = chat.users.find((user) => user.username == user2);
+            if(otherUser != null) return true
+        }
+        return false
+    } catch (error) {
+        throw error
+    }
+}
+
+const createByUsername = async (myUser, otherUser) => {
+    try {
+        const chat = new Chat({
+            id: id,
+            users: [userService.getUser(myUser), userService.getUser(otherUser)],
+            messages: []
+        })
         await chat.save()
-        return 
+        id++
+        return
     } catch (error) {
         throw error
     }
@@ -22,10 +44,10 @@ const createByUsername = async (id) => {
 const deleteChatById = async (id) => {
     try {
         const chat = await Chat.findOne({ "id": id }).exec()
-        if  (!chat)  {
+        if (!chat) {
             return false
         }
-        await Chat.deleteOne({  "id": id  }).exec()
+        await Chat.deleteOne({ "id": id }).exec()
         return true
     } catch (error) {
         throw error
@@ -63,4 +85,4 @@ const getUserChats = async (username) => {
     }
 };
 
-module.exports = { getChatById, deleteChatById, getUserChats }
+module.exports = { getChatById, deleteChatById, getUserChats, createByUsername, findByTwoUsers }
