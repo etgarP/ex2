@@ -83,4 +83,4 @@ const getUserChats = async (username) => {
     }
 };
 
-module.exports = { getChatById, deleteChatById, getUserChats, getChatMessagesById, postChatMessagesById }
+module.exports = { getChatById, deleteChatById, getUserChats, getChatMessagesById, postChatMessagesById, createByUsername }
