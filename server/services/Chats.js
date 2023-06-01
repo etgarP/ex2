@@ -9,6 +9,19 @@ const getChatById = async (id) => {
     }
 };
 
+const deleteChatById = async (id) => {
+    try {
+        const chat = await Chat.findOne({ "id": id }).exec()
+        if(!chat){
+            return false
+        }
+        await Chat.deleteOne({"id": id}).exec()
+        return true
+    } catch (error) {
+        throw error
+    }
+};
+
 function getBiggest(array) {
     if (array == null) return null;
     let max = array[0];
@@ -41,4 +54,4 @@ const getUserChats = async (username) => {
     }
 };
 
-module.exports = { getChatById, }
+module.exports = { getChatById, deleteChatById}

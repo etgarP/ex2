@@ -56,6 +56,7 @@ const getChatById = async (req, res) => {
         if(existingChat){
             return res.status(200).send(existingChat)
         }
+        return res.status(404).send("Chat not found")
     } catch (error) {
         return res.status(500).send("Internal Server Error")
     }
@@ -75,10 +76,10 @@ const deleteChatById = async (req, res) => {
         if(!req.params.id){
             return res.status(400).send("Invalid request parameters")
         }
-        const existingChat = await chatService.getChatById(id)
-        if(existingChat){
-            return res.status(200).send(existingChat)
+        if(chatService.deleteChatById(id)){
+            return res.status(200).send("Chat successfully deleted")
         }
+        return res.status(404).send("Chat not found")
     } catch (error) {
         return res.status(500).send("Internal Server Error")
     }
@@ -86,23 +87,25 @@ const deleteChatById = async (req, res) => {
 
 const postChatMessagesById = async (req, res) => {
     try {
-        if(!req.body.id){
-            return res.status(400).send("Invalid request parameters")
-        }
-
+        const words = req.body.split(' ')
+        const token = words[1]
+        jwt.verify(token, 'hemi-hemi-is-never-gonna-give-you-up')
     } catch (error) {
-        
+        return res.status(401).send("Unable to authenticate")
     }
+
+
 }
 
 const getChatMessagesById = async (req, res) => {
     try {
-        if(!req.body.id){
-            return res.status(400).send("Invalid request parameters")
-        }
-
+        const words = req.body.split(' ')
+        const token = words[1]
+        jwt.verify(token, 'hemi-hemi-is-never-gonna-give-you-up')
     } catch (error) {
-        
+        return res.status(401).send("Unable to authenticate")
     }
+
+
 }
-module.exports = {  } 
+module.exports = { getChats, postChat, getChatById, deleteChatById, postChatMessagesById, getChatMessagesById } 
