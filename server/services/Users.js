@@ -3,8 +3,7 @@ const User = require('../models/Users')
 const createUser = async (username, displayName, profilePic) => {
     try {
         const user = new User({ username, displayName, profilePic })
-        await user.save()
-        return
+        return await user.save()
     } catch (error) {
         throw error
     }
