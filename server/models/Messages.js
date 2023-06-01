@@ -8,7 +8,7 @@ const Message = new Schema({
         type: Number
     },
     created:{
-        type: stringify(Date.now)
+        type: String
     },
     sender: {
         User
