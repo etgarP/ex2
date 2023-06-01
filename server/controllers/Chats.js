@@ -20,8 +20,9 @@ const getChats = async (req, res) => {
 }
 
 const postChat = async (req, res) => {
+    req.body.username
     try {
-
+        let chats = chatService.createByUsername(decoded.username)
     } catch (error) {
 
     }
