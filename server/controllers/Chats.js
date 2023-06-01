@@ -1,25 +1,15 @@
 const chatService = require('../services/Users')
 const jwt = require('jsonwebtoken')
 
-//todo
-// const authentication = (req) => {
-//     try {
-//         const words = req.body.split(' ')
-//         const token = words[1]
-//         jwt.verify(token, 'hemi-hemi-is-never-gonna-give-you-up')
-//     } catch (error) {
-//         return res.status(401).send("Unable to authenticate")
-//     }
-// }
-
 //Returns array with 
 const getChats = async (req, res) => {
+    let decoded
     try {
-    const words = req.body.split(' ');
-    const token = words[1];
-        const decoded = jwt.verify(token, 'your-secret-key');
+        const words = req.body.split(' ');
+        const token = words[1];
+        decoded = jwt.verify(token, 'hemi-hemi-is-never-gonna-give-you-up');
     } catch (error) {
-        return res.status(401).send("Unable to authenticate");   
+        return res.status(401).send("Unable to authenticate");
     }
     try {
         let chats = chatService.getUserChats(decoded.username)
@@ -31,9 +21,9 @@ const getChats = async (req, res) => {
 
 const postChat = async (req, res) => {
     try {
-        
+
     } catch (error) {
-        
+
     }
 }
 
@@ -46,14 +36,14 @@ const getChatById = async (req, res) => {
     } catch (error) {
         return res.status(401).send("Unable to authenticate")
     }
-    
+
     try {
         const id = req.params.id
-        if(!req.params.id){
+        if (!req.params.id) {
             return res.status(400).send("Invalid request parameters")
         }
         const existingChat = await chatService.getChatById(id)
-        if(existingChat){
+        if (existingChat) {
             return res.status(200).send(existingChat)
         }
         return res.status(404).send("Chat not found")
@@ -70,13 +60,13 @@ const deleteChatById = async (req, res) => {
     } catch (error) {
         return res.status(401).send("Unable to authenticate")
     }
-    
+
     try {
         const id = req.params.id
-        if(!req.params.id){
+        if (!req.params.id) {
             return res.status(400).send("Invalid request parameters")
         }
-        if(chatService.deleteChatById(id)){
+        if (chatService.deleteChatById(id)) {
             return res.status(200).send("Chat successfully deleted")
         }
         return res.status(404).send("Chat not found")
@@ -94,7 +84,7 @@ const postChatMessagesById = async (req, res) => {
         return res.status(401).send("Unable to authenticate")
     }
 
-
+    
 }
 
 const getChatMessagesById = async (req, res) => {

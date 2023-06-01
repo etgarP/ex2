@@ -12,10 +12,10 @@ const getChatById = async (id) => {
 const deleteChatById = async (id) => {
     try {
         const chat = await Chat.findOne({ "id": id }).exec()
-        if(!chat){
+        if (!chat) {
             return false
         }
-        await Chat.deleteOne({"id": id}).exec()
+        await Chat.deleteOne({ "id": id }).exec()
         return true
     } catch (error) {
         throw error
@@ -54,4 +54,4 @@ const getUserChats = async (username) => {
     }
 };
 
-module.exports = { getChatById, deleteChatById}
+module.exports = { getChatById, deleteChatById, getUserChats }
