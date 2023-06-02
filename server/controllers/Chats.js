@@ -6,6 +6,7 @@ const getChats = async (req, res) => {
     let decoded
     try {
         let aut = req.headers.authorization
+        console.log(aut)
         const words = aut.split(' ')
         const token = words[1];
         decoded = jwt.verify(token, 'hemi-hemi-is-never-gonna-give-you-up');
@@ -32,10 +33,10 @@ const postChat = async (req, res) => {
     }
     try {
         let isFound = await chatService.findByTwoUsers(decoded.username, req.body.username)
-        console.log(isFound)
         if (isFound) 
             return res.status(409).send("Chat already exists");
-        chatService.createByUsername(decoded.username, req.body.username)
+        await chatService.createByUsername(decoded.username, req.body.username)
+        return res.status(200).send("User added")
     } catch (error) {
         return res.status(500).send("Internal Server Error");
     }
@@ -45,6 +46,7 @@ const postChat = async (req, res) => {
 const getChatById = async (req, res) => {
     try {
         let aut = req.headers.authorization
+        console.log(aut)
         const words = aut.split(' ')
         const token = words[1]
         jwt.verify(token, 'hemi-hemi-is-never-gonna-give-you-up')
@@ -110,7 +112,8 @@ const postChatMessagesById = async (req, res) => {
         if (!existingChat) {
             return res.status(404).send("Chat not found")
         }
-        const messages = await chatService.postChatMessagesById(id)
+        let newMessage = req.body.msg
+        const messages = await chatService.postChatMessagesById(id, newMessage)
         return res.status(200).send(messages)
     } catch (error) {
         return res.status(500).send("Internal Server Error")

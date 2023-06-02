@@ -15,11 +15,10 @@ const getChatById = async (id) => {
 
 const findByTwoUsers = async (user1, user2) => {
     try {
-        const chats = await Chat.find({ users: { $all: [user1, user2] } }).exec();
+        const chats = await getUserChats(user1)
         if (!chats) return false
-        for (let chat in chats) {
-            const otherUser = chat.users.find((user) => user.username == user2);
-            if (otherUser != null) return true
+        for (const chat of chats) {
+            if (chat.user.username == user2) return true
         }
         return false
     } catch (error) {
@@ -51,13 +50,13 @@ const getChatMessagesById = async (id) => {
     }
 }
 
-const postChatMessagesById = async (id) => {
+const postChatMessagesById = async (id, newMessage) => {
     try {
-        let aut = req.headers.authorization
-        const words = aut.split(' ')
-        const newMessage = words[0];
-        const messages = [...Chat.findOne({ "id": id }).exec().messages, newMessage]
-        return messages
+        let chat = await Chat.findOne({ "id": id }).exec()
+        console.log(chat.messages)
+        chat.messages.updateOne({})
+        await chat.save()
+        return 
     } catch (error) {
         throw error
     }
@@ -69,7 +68,7 @@ const deleteChatById = async (id) => {
         if (!chat) {
             return false
         }
-        await Chat.deleteOne({ "id": id }).exec()
+        await Chat.deleteOne({ "id": id })
         return true
     } catch (error) {
         throw error
