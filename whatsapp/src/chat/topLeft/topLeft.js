@@ -4,7 +4,8 @@ import AddContactIcon from "./addContactIcon"
 import EscapeIcon from "./escapeIcon"
 
 function TopLeft(props) {
-    const { token, picture, displayName, setContacts1, setUser, contacts1 } = props
+    const { token, picture, displayName, setContacts, setUser, contacts } = props
+    // top left where the user info and icons are (icons of add person and logout)
     return (
         <div className="col-5 no-padding my-box-bottom">
             <div className="list-group no-rounded my-box-left">
@@ -15,7 +16,7 @@ function TopLeft(props) {
                             <ContactImage picture={picture}></ContactImage>
                             <DisplayName displayName={displayName}></DisplayName>
                             {/* icons */}
-                            <AddContactIcon token={token} setContacts1={setContacts1} contacts1={contacts1}></AddContactIcon>
+                            <AddContactIcon token={token} setContacts={setContacts} contacts={contacts} setUser={setUser}></AddContactIcon>
                             <EscapeIcon setUser={setUser}></EscapeIcon>
                         </div>
                     </div>

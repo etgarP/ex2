@@ -6,9 +6,10 @@ import { useNavigate } from 'react-router-dom'
 //todos
 
 function AddContactIcon(props) {
-    const { setContacts, token, contacts } = props
+    const { setContacts, token, contacts, setUser } = props
     const inputRef = useRef(null)
     const [value, setValue] = useState("")
+    const navigate = useNavigate()
     // adding contact to contacts list
     async function getNewContacts(username) {
         try {
@@ -33,7 +34,8 @@ function AddContactIcon(props) {
             console.error("Error while fetching new contacts", error) // Handle any other errors that occur during the process
         }
     }
-
+    
+    
     async function addPersonToServer(input) {
         try {
             const url = "http://localhost:12345/api/Chats"
@@ -45,7 +47,6 @@ function AddContactIcon(props) {
             } else if (res.status === 401) {
                 console.log("Unauthorized token.")
                 window.alert("Authorization expired. Please log in again.")
-                const navigate = useNavigate()
                 // logging out
                 setUser('')
                 navigate('/')

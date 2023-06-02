@@ -3,10 +3,10 @@ import ContactName from "./contactName"
 import DeleteContactIcon from './deleteContactIcon.js'
 
 function TopRight(props) {
-    const { contacts1, contactId, user, setContacts1 } = props
+    const { contacts, contactId, user, setContacts } = props
     var contact = null;
-    if (contacts1 != null) {
-        contact = contacts1.find(contact => contact.id === contactId)
+    if (contacts != null) {
+        contact = contacts.find(contact => contact.id === contactId)
     }
     // the default background when no contact was chosen yet
     if (!contact) {
@@ -28,7 +28,7 @@ function TopRight(props) {
                             {/* name of contact we talk to */}
                             <ContactName contactName={contact.user.displayName}></ContactName>
                         </div>
-                        <DeleteContactIcon contactId={contactId} contacts1={contacts1} setContacts1={setContacts1} token={user.token}></DeleteContactIcon>
+                        <DeleteContactIcon contactId={contactId} contacts={contacts} setContacts={setContacts} token={user.token}></DeleteContactIcon>
                     </div>
                 </div>
             </div>
