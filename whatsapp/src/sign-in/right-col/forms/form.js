@@ -59,8 +59,8 @@ function Form({ setUser, setContacts }) {
         }
     }
 
+    // the form itself
     return (
-        // the form itself
         <form onSubmit={handleSubmit}>
             <Username setName={setName}></Username>
             <Password setPassword={setPassword}></Password>

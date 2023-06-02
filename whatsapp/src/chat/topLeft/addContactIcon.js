@@ -1,6 +1,7 @@
 import { useRef, useState } from "react"
 import { postReqAuthorized } from "../../postReq"
 import { getReq } from "../../getReq"
+import { useNavigate } from 'react-router-dom'
 
 //todos
 
@@ -20,12 +21,16 @@ function AddContactIcon(props) {
                         return contact
                     }
                 })
-                setContacts((prevContacts) => ([...prevContacts, newContact]))
+                if (newContact) {
+                    setContacts((prevContacts) => [...prevContacts, newContact])
+                }
             } else {
                 //todo
+                console.error("Failed to fetch new contacts") // Handle the case where the API request was not successful
             }
         } catch (error) {
             //todo
+            console.error("Error while fetching new contacts", error) // Handle any other errors that occur during the process
         }
     }
 
@@ -36,12 +41,17 @@ function AddContactIcon(props) {
             var res = await postReqAuthorized(data, url, token)
             if (res.ok) {
             } else if (res.status === 400) {
-                window.alert("Wrong username");
+                window.alert("Wrong username")
             } else if (res.status === 401) {
-                // todo delete and handle
-                window.alert("Unauthorized token. Please refresh the page and start again.");
+                console.log("Unauthorized token.")
+                window.alert("Authorization expired. Please log in again.")
+                const navigate = useNavigate()
+                // logging out
+                setUser('')
+                navigate('/')
             } else {
-                //todo
+                console.error("Failed to add person to server")
+                //todo check if needs to handle somehow
             }
             return res.ok
         } catch (error) {
@@ -57,7 +67,7 @@ function AddContactIcon(props) {
             if (contact.user.username === input) {
                 return contact;
             }
-        });
+        })
         if (found) {
             window.alert("Username already exist");
             return

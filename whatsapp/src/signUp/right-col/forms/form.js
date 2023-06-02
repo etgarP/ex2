@@ -57,14 +57,16 @@ function Form() {
                 };
                 try {
                     var response = await postReq(newUser, "http://localhost:12345/api/Users");
-                    var stat = response.status;
-                    if (stat === 409) {
+                    var status = response.status;
+                    if (status === 409) {
                         setRUText("Username is taken.")
                         return;
-                    } else if (stat === 400) {
+                    } else if (status === 400) {
+                        // todo handle
                         console.log("returned 400");
                         return;
                     } else if (!response.ok) {
+                        // todo handle
                         console.log("didnt come through");
                     }
                     // goes to sign in
@@ -74,7 +76,6 @@ function Form() {
                     setBadCon("Oops! Our server seems to be taking a coffee break ☕️. We're working hard to fix it and get things back on track. Please bear with us and try again shortly. Thank you for your patience!")
                 }
             };
-
             fileReader.readAsDataURL(picture);
         }
     }
