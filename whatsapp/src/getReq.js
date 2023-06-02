@@ -1,5 +1,3 @@
-//todos
-
 export async function getReq(url, token) {
     try {
         const res = await fetch(url, {
@@ -11,7 +9,6 @@ export async function getReq(url, token) {
         })
         return res;
     } catch (error) {
-        //todo
         throw error; // Rethrow the error to propagate it to the caller
     }
 }

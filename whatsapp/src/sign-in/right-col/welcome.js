@@ -1,5 +1,4 @@
 function Welcome() {
-    // headers
     return (
         <>
             <h1>

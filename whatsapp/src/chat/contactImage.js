@@ -1,6 +1,6 @@
 import defaultUserAvatar from './pictures/default-avatar.jpg'
 
-function ContactImage({ picture = defaultUserAvatar }) {
+function ContactImage({ picture }) {
     return (
         // contact's picture
         <div className='picture-col'>

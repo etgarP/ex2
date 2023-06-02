@@ -11,20 +11,15 @@ import {
 import { postReq } from '../../../postReq.js'
 import { useNavigate } from 'react-router-dom'
 
-//todos
-
 function Form() {
-
     // needed to use the function in an inner function context
     const navigate = useNavigate()
-
     //sets states for all of the fields
     const [name, setName] = useState('')
     const [password, setPassword] = useState('')
     const [cPassword, setCPassword] = useState('')
     const [displayName, setDisplayName] = useState('')
     const [picture, setPicture] = useState('')
-
     // sets the state for the explanation lines for all of the fields
     const [reqUText, setRUText] = useState("Your username must be 5-20 characters long, and may contain letters, numbers and '_'.")
     const [reqCpText, setCpText] = useState("Must match entered password.")
@@ -32,11 +27,9 @@ function Form() {
     const [reqPiText, setPiText] = useState("You must upload a picture of the following formats: .jpg, .jpeg, .png, with a max size of 5MB.")
     const [reqPext, setPText] = useState("Your password must be 8-20 characters long, must contain a uppercase letter, lower case charecter and a number.")
     const [badConnction, setBadCon] = useState("")
-
     // on submit, if the input are valid, saves them and go to sign in page
     async function handleSubmit(e) {
         e.preventDefault()
-
         // check the field is valid and changes the explanation text if its not valid
         var nameFlag = validateUsername(name, setRUText)
         var passFlag = validatePassword(password, setPText)
@@ -70,7 +63,6 @@ function Form() {
                     // goes to sign in
                     navigate("/");
                 } catch (error) {
-                    // todo
                     setBadCon("Oops! Our server seems to be taking a coffee break ☕️. We're working hard to fix it and get things back on track. Please bear with us and try again shortly. Thank you for your patience!")
                 }
             };

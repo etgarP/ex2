@@ -5,8 +5,6 @@ import { useNavigate } from 'react-router-dom'
 import { postReq } from '../../../postReq.js'
 import { getReq } from '../../../getReq.js'
 
-//todos
-
 function Form({ setUser, setContacts }) {
     // needed to use navigate in and inner function context
     const navigate = useNavigate()
@@ -14,7 +12,6 @@ function Form({ setUser, setContacts }) {
     const [name, setName] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
-
     // checks if the details are correct and if so connects to chat page and saves user info
     async function handleSubmit(e) {
         e.preventDefault()
@@ -30,19 +27,18 @@ function Form({ setUser, setContacts }) {
                     console.error("Invalid data format: ", gotten);
                 }
             } catch (error) {
-                //todo
+    
             }
         }
-
-        const data = { username: name, password: password }
+        const data = { username: name, password : password }
         try {
-            const url = "http://localhost:12345/api/Tokens"
+            const url =  "http://localhost:12345/api/Tokens"
             var res = await postReq(data, url);
             const token = (await res.text()).trim()
-            const url2 = `http://localhost:12345/api/Users/${name}`
-            var res2 = await getReq(url2, token)
+            const url2 = `http://localhost:12345/api/Users/${name}` 
+            var res2 = await getReq(url2, token) 
             var user = await res2.json()
-            user = { ...user, token: token };
+            user = {...user, token: token};
             if (res2.ok) {
                 setUser(user)
                 navigate('/chat')
@@ -52,15 +48,12 @@ function Form({ setUser, setContacts }) {
                 setError("Wrong Credentials")
                 return;
             }
-        } catch (error) {
-            //todo
+        } catch (error){
             // console.error('Error', error)
             setError("Oops! Our server seems to be taking a coffee break ☕️. We're working hard to fix it and get things back on track. Please bear with us and try again shortly. Thank you for your patience!")
         }
     }
-
     return (
-        // the form itself
         <form onSubmit={handleSubmit}>
             <Username setName={setName}></Username>
             <Password setPassword={setPassword}></Password>

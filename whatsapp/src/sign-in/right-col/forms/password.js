@@ -4,7 +4,6 @@ function Password({ setPassword }) {
     function updatePassword(e) {
         setPassword(e.target.value)
     }
-    // password field
     return (
         <>
             <div className="form-group">

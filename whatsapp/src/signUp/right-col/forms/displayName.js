@@ -1,18 +1,15 @@
 function DisplayName({ value, set, text, setText }) {
-
     // sets the state using the value that changed
     function setInfo(e) {
         set(e.target.value)
     }
-
     // removes error text on click of the input
     function changeReq(e) {
         setText("Your Displayname must be 3-20 characters long, and may contain letters, numbers and spaces.")
     }
-
-    // Display name 
     return (
         <>
+            {/* Display name  */}
             <label htmlFor="validationDefaultUsername">Display name</label>
             <div className="input-group">
                 <div className="input-group-prepend">

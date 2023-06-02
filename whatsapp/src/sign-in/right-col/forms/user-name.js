@@ -1,9 +1,9 @@
+
 function Username({ setName }) {
     // saves the value change
     function changeVal(e) {
         setName(e.target.value)
     }
-    // username field
     return (
         <div className="col mb-3">
             <label htmlFor="validationDefaultUsername">Username</label>
