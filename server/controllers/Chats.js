@@ -1,4 +1,5 @@
 const chatService = require('../services/Chats')
+const userService = require('../services/Users')
 const jwt = require('jsonwebtoken')
 
 //Returns array with 
@@ -6,7 +7,6 @@ const getChats = async (req, res) => {
     let decoded
     try {
         let aut = req.headers.authorization
-        console.log(aut)
         const words = aut.split(' ')
         const token = words[1];
         decoded = jwt.verify(token, 'hemi-hemi-is-never-gonna-give-you-up');
@@ -32,6 +32,14 @@ const postChat = async (req, res) => {
         return res.status(401).send("Unable to authenticate");
     }
     try {
+        if (!req.body.username || req.body.username == decoded.username) {
+            return res.status(400).send("Bad request");
+        }
+        let exist1 = await userService.getUser(req.body.username)
+        let exist2 = await userService.getUser(decoded.username)
+        if (!exist1 || !exist2) {
+            return res.status(400).send("Bad request");
+        }
         let isFound = await chatService.findByTwoUsers(decoded.username, req.body.username)
         if (isFound) 
             return res.status(409).send("Chat already exists");
@@ -114,6 +122,8 @@ const postChatMessagesById = async (req, res) => {
             return res.status(404).send("Chat not found")
         }
         let newMessage = req.body.msg
+        if (!newMessage) 
+        return res.status(400).send("Invalid request parameters")
         const messages = await chatService.postChatMessagesById(id, newMessage, username)
         return res.status(200).send(messages)
     } catch (error) {

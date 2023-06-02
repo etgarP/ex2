@@ -2,6 +2,7 @@ const User = require('../models/Users');
 const userService = require('../services/Users')
 const Chat = require('../models/Chats').Chat
 const Message = require('../models/Chats').Message
+const Counter = require('../models/Chats').Counter
 
 const getChatById = async (id) => {
     try {
@@ -25,9 +26,26 @@ const findByTwoUsers = async (user1, user2) => {
     }
 }
 
+// creates a new counter for a chat and returns its id
+const createCounter = async () => {
+    try {
+        const lastEntry = await Counter.findOne().sort({ _id: -1 }).exec();
+        let id = (lastEntry ? lastEntry.id : 0) + 1 
+        const counter = new Counter({
+            id: id,
+            messageCount: 0
+        })
+        await counter.save()
+        return id
+    } catch {
+        throw error
+    }
+}
+
 const createByUsername = async (myUser, otherUser) => {
     try {
-        const chat = new Chat({
+        let id = await createCounter()
+        const chat = await new Chat({
             id: id,
             users: [await userService.getUser(myUser), await userService.getUser(otherUser)],
             messages: []
@@ -42,60 +60,47 @@ const createByUsername = async (myUser, otherUser) => {
 
 const getChatMessagesById = async (id) => {
     try {
-        const messages = await Chat.findOne({ "id": id }).exec().messages
-        return messages
+        const chat = await Chat.findOne({ "id": id }).populate({ path: 'messages', model: 'Message' })
+        return chat.messages.reverse()
     } catch (error) {
         throw error
     }
 }
 
-const findHighestMessageId = async (chat) => {
+const addToCounter = async (id) => {
     try {
-      const highestId = await chat.aggregate([
-        // outputs a document for each element of an array field
-        { $unwind: "$messages" }, 
-        // 
-        { $lookup: { from: "messages", localField: "messages", foreignField: "id", as: "message" } }, // Populate the messages
-        { $unwind: "$message" }, // Unwind the message object
-        { $group: { _id: null, maxId: { $max: "$message.id" } } } // Find the maximum id
-      ]);
-  
-      if (highestId.length === 0) {
-        // No messages found in the chat
-        return null;
+        const counter = await Counter.findOne({ id }).exec();
+        const updatedCount = counter.messageCount + 1;
+        await Counter.findOneAndUpdate({ id }, { messageCount: updatedCount });
+    
+        return updatedCount;
+      } catch (error) {
+        throw error;
       }
-  
-      return highestId[0].maxId;
-    } catch (error) {
-      throw error;
-    }
-};
+}
 
-const postChatMessagesById = async (id, newMessage, username) => {
+const postChatMessagesById = async (id, content, username) => {
     try {
-        let chat = await Chat.findOne({ "id": id }).populate('users').populate('messages').exec()
-        const user = await User.findOne({ username });
-        console.log(user._id)
-        const userIds = chat.users.map(user => user._id);
-        console.log(userIds[0])
-        const chats = await Chat.find({ users: user._id }).populate('users');
-        console.log(chat.messages)
-        chat.messages.updateOne({})
-        await chat.save()
+        let messageCount = await addToCounter(id)
+        const user = await userService.getUser(username)
+        let newMessage = await getNewMessage(messageCount, user, content)
+        const chat = await Chat.findOne({ id });
+        chat.messages.push(newMessage);
+        await chat.save();
         return
     } catch (error) {
         throw error
     }
 }
 
-const getNewMessage = async (id, senderId, content) => {
+const getNewMessage = async (id, sender, content) => {
     try {
         const newMessage = new Message({
-            id: id, // Set the id to a value greater than existing messages
-            sender: senderId,
+            id: id,
+            sender: sender,
             content: content
         });
-        await message.save()
+        await newMessage.save()
         return newMessage
     } catch (error) {
         throw error
@@ -115,28 +120,21 @@ const deleteChatById = async (id) => {
     }
 };
 
-function getBiggest(array) {
-    if (array == null) return null;
-    let max = array[0];
-    for (let i = 1; i < array.length; i++) {
-        if (array[i].id > max.id) {
-            max = array[i];
-        }
-    }
-    return max
-}
-
 const getUserChats = async (username) => {
     try {
         const user = await User.findOne({ username });
-        const chats = await Chat.find({ users: user._id }).populate('users');
+        const chats = await Chat.find({ users: user._id }).populate('users').populate({ path: 'messages', model: 'Message' });
 
         const transformedChats = [];
 
         chats.forEach((chat) => {
-            const otherUser = chat.users.find((user) => user.username !== username);
+            const otherUser = chat.users.find((user) => user.username !== username)
             if (otherUser != null) {
-                const lastMessage = getBiggest(chat.messages);
+                let messages = chat.messages
+                const keys = Object.keys(messages);
+                const lastKey = keys[keys.length - 1];
+                const lastMessage = messages[lastKey];
+
                 transformedChats.push({
                     id: chat.id,
                     user: otherUser,
@@ -154,4 +152,4 @@ const getUserChats = async (username) => {
 
 
 
-module.exports = { getChatById, deleteChatById, getUserChats, getChatMessagesById, postChatMessagesById, createByUsername, findByTwoUsers }
+module.exports = { getChatById, deleteChatById, getUserChats, getChatMessagesById, postChatMessagesById, createByUsername, findByTwoUsers, getNewMessage }

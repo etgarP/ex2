@@ -14,9 +14,9 @@ const Chat = new Schema({
     messages: [{ type: Schema.Types.ObjectId, ref: 'Message' }]
 });
 
-const Counter = newSchema({
+const Counter = new Schema({
     id: { type: Number },
-    chats: { type: Number }
+    messageCount: { type: Number }
 })
 
 module.exports = {
