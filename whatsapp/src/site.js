@@ -10,9 +10,10 @@ function Site() {
   const [user, setUser] = useState(null)
   const [contacts1, setContacts1] = useState(null)
   const middleElement = useRef(null)
+
   return (
     <div className="middle-area" ref={middleElement}>
-      {/* created rouths for each page, each routh has a component */}
+      {/* created routes for each page, each routh has a component */}
       <BrowserRouter>
         <Routes>
           <Route
@@ -21,7 +22,7 @@ function Site() {
           />
           <Route
             path="/signup"
-            element={<SignUp/>}
+            element={<SignUp />}
           />
           {/* set user to null to return to sign in */}
           <Route

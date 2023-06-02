@@ -1,4 +1,7 @@
-import { getReq } from "../../getReq";
+import { getReq } from "../../getReq"
+
+//todos
+
 async function getMesseges(id, user) {
     try {
         const url = `http://localhost:12345/api/Chats/${id}/Messages`
@@ -11,18 +14,18 @@ async function getMesseges(id, user) {
             console.error("Invalid data format: ", data);
         }
     } catch (error) {
-
+        //todo
     }
 }
 
-export async function applyMessages(user, id, setContacts1) {
+export async function applyMessages(user, id, setContacts) {
     try {
         var messages = await getMesseges(id, user)
     } catch (error) {
         // todo: add actions maybe
         console.log("error at apply messeges")
     }
-    setContacts1(contacts => {
+    setContacts(contacts => {
         const index = contacts.findIndex(contact => contact.id === id);
         if (index !== -1) {
             const updatedContact = {

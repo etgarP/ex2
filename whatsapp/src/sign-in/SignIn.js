@@ -3,6 +3,7 @@ import LeftCol from './leftCol'
 import RightCol from './right-col/rightCol'
 
 function SignIn({ setUser, setContacts }) {
+  // devision of sign in page to right and left
   return (
     <>
       <div className="row" id="container-sign">

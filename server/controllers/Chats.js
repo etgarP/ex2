@@ -27,7 +27,7 @@ const postChat = async (req, res) => {
         let aut = req.headers.authorization
         const words = aut.split(' ')
         const token = words[1];
-        decoded = jwt.verify(token, 'hemi-hemi-is-never-gonna-give-you-up');        
+        decoded = jwt.verify(token, 'hemi-hemi-is-never-gonna-give-you-up');
     } catch (error) {
         return res.status(401).send("Unable to authenticate");
     }

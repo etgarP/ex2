@@ -2,8 +2,10 @@ import { useRef, useState } from "react"
 import { postReqAuthorized } from "../../postReq"
 import { getReq } from "../../getReq"
 
+//todos
+
 function AddContactIcon(props) {
-    const { setContacts1, token, contacts1 } = props
+    const { setContacts, token, contacts } = props
     const inputRef = useRef(null)
     const [value, setValue] = useState("")
     // adding contact to contacts list
@@ -13,18 +15,17 @@ function AddContactIcon(props) {
             var res = await getReq(url, token)
             if (res.ok) {
                 var newContacts = await res.json()
-                const newContact = newContacts.find((contact)=>{
-                    if(contact.user.username === username){
+                const newContact = newContacts.find((contact) => {
+                    if (contact.user.username === username) {
                         return contact
                     }
                 })
-                setContacts1((prevContacts) => ([...prevContacts, newContact]))
-
+                setContacts((prevContacts) => ([...prevContacts, newContact]))
             } else {
                 //todo
             }
         } catch (error) {
-
+            //todo
         }
     }
 
@@ -37,24 +38,24 @@ function AddContactIcon(props) {
             } else if (res.status === 400) {
                 window.alert("Wrong username");
             } else if (res.status === 401) {
-                // todo delete
+                // todo delete and handle
                 window.alert("Unauthorized token. Please refresh the page and start again.");
             } else {
                 //todo
             }
             return res.ok
         } catch (error) {
+            // todo
             // console.error('Error', error)
             // setError("Oops! Our server seems to be taking a coffee break ☕️. We're working hard to fix it and get things back on track. Please bear with us and try again shortly. Thank you for your patience!")
         }
     }
 
-
     const addPersonButtonHandler = async () => {
         let input = inputRef.current.value
-        const found = contacts1.find((contact) => {
+        const found = contacts.find((contact) => {
             if (contact.user.username === input) {
-              return contact;
+                return contact;
             }
         });
         if (found) {
@@ -63,13 +64,12 @@ function AddContactIcon(props) {
         }
         if (input) {
             let ok = await addPersonToServer(input)
-            if(ok){
+            if (ok) {
                 getNewContacts(input)
             }
             setValue("")
         }
     }
-
 
     return (
         <div className="col-2 center align-right">
