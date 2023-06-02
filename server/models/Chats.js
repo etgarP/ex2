@@ -14,7 +14,13 @@ const Chat = new Schema({
     messages: [{ type: Schema.Types.ObjectId, ref: 'Message' }]
 });
 
+const Counter = newSchema({
+    id: { type: Number },
+    chats: { type: Number }
+})
+
 module.exports = {
     Chat: mongoose.model('Chat', Chat),
-    Message: mongoose.model('Message', Message)
+    Message: mongoose.model('Message', Message),
+    Counter: mongoose.model('Counter', Counter)
 };

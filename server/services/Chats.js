@@ -1,8 +1,7 @@
 const User = require('../models/Users');
 const userService = require('../services/Users')
 const Chat = require('../models/Chats').Chat
-
-id = 1
+const Message = require('../models/Chats').Message
 
 const getChatById = async (id) => {
     try {
@@ -15,11 +14,10 @@ const getChatById = async (id) => {
 
 const findByTwoUsers = async (user1, user2) => {
     try {
-        const chats = await Chat.find({ users: { $all: [user1, user2] } }).exec();
+        const chats = await getUserChats(user1)
         if (!chats) return false
-        for (let chat in chats) {
-            const otherUser = chat.users.find((user) => user.username == user2);
-            if (otherUser != null) return true
+        for (const chat of chats) {
+            if (chat.user.username == user2) return true
         }
         return false
     } catch (error) {
@@ -51,13 +49,54 @@ const getChatMessagesById = async (id) => {
     }
 }
 
-const postChatMessagesById = async (id) => {
+const findHighestMessageId = async (chat) => {
     try {
-        let aut = req.headers.authorization
-        const words = aut.split(' ')
-        const newMessage = words[0];
-        const messages = [...Chat.findOne({ "id": id }).exec().messages, newMessage]
-        return messages
+      const highestId = await chat.aggregate([
+        // outputs a document for each element of an array field
+        { $unwind: "$messages" }, 
+        // 
+        { $lookup: { from: "messages", localField: "messages", foreignField: "id", as: "message" } }, // Populate the messages
+        { $unwind: "$message" }, // Unwind the message object
+        { $group: { _id: null, maxId: { $max: "$message.id" } } } // Find the maximum id
+      ]);
+  
+      if (highestId.length === 0) {
+        // No messages found in the chat
+        return null;
+      }
+  
+      return highestId[0].maxId;
+    } catch (error) {
+      throw error;
+    }
+};
+
+const postChatMessagesById = async (id, newMessage, username) => {
+    try {
+        let chat = await Chat.findOne({ "id": id }).populate('users').populate('messages').exec()
+        const user = await User.findOne({ username });
+        console.log(user._id)
+        const userIds = chat.users.map(user => user._id);
+        console.log(userIds[0])
+        const chats = await Chat.find({ users: user._id }).populate('users');
+        console.log(chat.messages)
+        chat.messages.updateOne({})
+        await chat.save()
+        return
+    } catch (error) {
+        throw error
+    }
+}
+
+const getNewMessage = async (id, senderId, content) => {
+    try {
+        const newMessage = new Message({
+            id: id, // Set the id to a value greater than existing messages
+            sender: senderId,
+            content: content
+        });
+        await message.save()
+        return newMessage
     } catch (error) {
         throw error
     }
@@ -69,7 +108,7 @@ const deleteChatById = async (id) => {
         if (!chat) {
             return false
         }
-        await Chat.deleteOne({ "id": id }).exec()
+        await Chat.deleteOne({ "id": id })
         return true
     } catch (error) {
         throw error
@@ -112,5 +151,7 @@ const getUserChats = async (username) => {
         throw error;
     }
 };
+
+
 
 module.exports = { getChatById, deleteChatById, getUserChats, getChatMessagesById, postChatMessagesById, createByUsername, findByTwoUsers }
