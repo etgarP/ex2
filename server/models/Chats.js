@@ -1,8 +1,5 @@
 const mongoose = require('mongoose')
-const User = require('../models/Users')
-
 const Schema = mongoose.Schema
-
 
 const Message = new Schema({
     id: { type: Number },

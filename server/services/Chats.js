@@ -1,6 +1,6 @@
-const Chat = require('../models/Chats').Chat
 const User = require('../models/Users');
 const userService = require('../services/Users')
+const Chat = require('../models/Chats').Chat
 
 id = 1
 
@@ -15,11 +15,11 @@ const getChatById = async (id) => {
 
 const findByTwoUsers = async (user1, user2) => {
     try {
-        const chats = await Chat.find({ "username": user1 }).exec()
+        const chats = await Chat.find({ users: { $all: [user1, user2] } }).exec();
         if (!chats) return false
         for (let chat in chats) {
             const otherUser = chat.users.find((user) => user.username == user2);
-            if(otherUser != null) return true
+            if (otherUser != null) return true
         }
         return false
     } catch (error) {
@@ -31,7 +31,7 @@ const createByUsername = async (myUser, otherUser) => {
     try {
         const chat = new Chat({
             id: id,
-            users: [await userService.getUser(myUser).exec(), await userService.getUser(otherUser).exec()],
+            users: [await userService.getUser(myUser), await userService.getUser(otherUser)],
             messages: []
         })
         await chat.save()
@@ -89,12 +89,11 @@ function getBiggest(array) {
 
 const getUserChats = async (username) => {
     try {
-        const chats = await User.find({
-            Users: { $elemMatch: { "username": username } }
-        }).exec();
-        
+        const user = await User.findOne({ username });
+        const chats = await Chat.find({ users: user._id }).populate('users');
+
         const transformedChats = [];
-        
+
         chats.forEach((chat) => {
             const otherUser = chat.users.find((user) => user.username !== username);
             if (otherUser != null) {
@@ -106,9 +105,9 @@ const getUserChats = async (username) => {
                 });
             }
         });
-        
-        return transformedChats; 
-        
+
+        return transformedChats;
+
     } catch (error) {
         throw error;
     }
