@@ -3,40 +3,44 @@ import { postReqAuthorized } from "../../postReq"
 import { applyMessages } from "../contactsList/getMessages"
 import { getReq } from "../../getReq"
 
+//todos
+
 function SendMessage(props) {
     const { user, setContacts, contactId } = props
     const inputRef = useRef(null)
     const [value, setValue] = useState("")
-    // enter sends the message
-    // sending the message when pressing on button/enter
+    
+    // update contacts list with new lastMessage
     const reGetContacts = async () => {
         try {
-            const url = "http://localhost:12345/api/Chats"
+            const url = "http://localhost:5000/api/Chats"
             var res = await getReq(url, user.token)
             if (res.status === 401) {
                 console.log("Unauthorized token.")
                 window.alert("Authorization expired. Please log in again.")
-            } 
-            var gotten = await res.json();
-            if (Array.isArray(gotten)) {
-                setContacts(gotten);
+            }
+            var newContacts = await res.json();
+            if (Array.isArray(newContacts)) {
+                setContacts(newContacts)
             } else {
                 // Handle the case where the response is not a valid array
-                console.error("Invalid data format: ", gotten);
+                console.error("Invalid data format: ", newContacts);
             }
         } catch (error) {
             throw error
         }
     }
+
+    // sending the message when pressing on button/enter
     const sendButtonHandler = async () => {
-        if (inputRef.current.value.trim() !== '') {
+            if (inputRef.current.value.trim() !== '') {
             let message = inputRef.current.value.trim();
             const newMessage = { msg: message }
             try {
-                const url = `http://localhost:12345/api/Chats/${contactId}/Messages`
+                const url = `http://localhost:5000/api/Chats/${contactId}/Messages`
                 var res = await postReqAuthorized(newMessage, url, user.token)
-                if(res.status===400){
-                    window.alert("Invalid request parameters.") 
+                if (res.status === 400) {
+                    window.alert("Invalid request parameters.")
                 } else if (res.status === 401) {
                     console.log("Unauthorized token.")
                     window.alert("Authorization expired. Please log in again.")
@@ -52,12 +56,16 @@ function SendMessage(props) {
             applyMessages(user, contactId, setContacts)
         }
     }
+
+    // if enter pressed handle send
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
             event.preventDefault()
             sendButtonHandler()
         }
     }
+
+    // send textbox and button
     return (
         <div className="input-group message-box" id="send-text">
             {/* message textbox */}

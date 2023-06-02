@@ -6,7 +6,7 @@ function DeleteContactIcon(props) {
     // deletes contact from contacts list
     async function deletePersonFromServer(id) {
         try {
-            const url = `http://localhost:12345/api/Chats/${id}`
+            const url = `http://localhost:5000/api/Chats/${id}`
             const data = { id: id }
             var res = await deleteReq(data, url, token)
             if (res.status === 401) {
@@ -25,7 +25,7 @@ function DeleteContactIcon(props) {
 
     const reGetContacts = async () => {
         try {
-            const url = "http://localhost:12345/api/Chats"
+            const url = "http://localhost:5000/api/Chats"
             var res = await getReq(url, token);
             if (res.status === 401) {
                 console.log("Unauthorized token.")

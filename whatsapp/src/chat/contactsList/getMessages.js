@@ -2,7 +2,7 @@ import { getReq } from "../../getReq"
 
 async function getMesseges(id, user) {
     try {
-        const url = `http://localhost:12345/api/Chats/${id}/Messages`
+        const url = `http://localhost:5000/api/Chats/${id}/Messages`
         const res = await getReq(url, user.token);
         if(res.status===400){
             window.alert("Invalid request parameters.") 

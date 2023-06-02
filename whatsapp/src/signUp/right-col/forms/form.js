@@ -56,7 +56,7 @@ function Form() {
                     profilePic: base64Image // assign the base64 image to the profilePic property
                 };
                 try {
-                    var response = await postReq(newUser, "http://localhost:12345/api/Users");
+                    var response = await postReq(newUser, "http://localhost:5000/api/Users");
                     var status = response.status;
                     if (status === 409) {
                         setRUText("Username is taken.")

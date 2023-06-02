@@ -18,7 +18,7 @@ function Form({ setUser, setContacts }) {
         e.preventDefault()
         async function getChats() {
             try {
-                const url = "http://localhost:12345/api/Chats"
+                const url = "http://localhost:5000/api/Chats"
                 var res = await getReq(url, user.token);
                 if (res.status === 401) {
                     console.log("Unauthorized token.")
@@ -38,7 +38,7 @@ function Form({ setUser, setContacts }) {
 
         const data = { username: name, password: password }
         try {
-            const url = "http://localhost:12345/api/Tokens"
+            const url = "http://localhost:5000/api/Tokens"
             var res = await postReq(data, url)
             if (res.status === 409) {
                 window.alert("User doesnt exists.")
@@ -49,7 +49,7 @@ function Form({ setUser, setContacts }) {
                 return;
             }
             const token = (await res.text()).trim()
-            const url2 = `http://localhost:12345/api/Users/${name}`
+            const url2 = `http://localhost:5000/api/Users/${name}`
             var res2 = await getReq(url2, token)
             if (res2.status === 401) {
                 console.log("Unauthorized token.")
