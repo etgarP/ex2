@@ -21,6 +21,6 @@ const Counter = newSchema({
 
 module.exports = {
     Chat: mongoose.model('Chat', Chat),
-    Message: mongoose.model('Message', Message)
-    Counter: mongoose.model('Message', Counter)
+    Message: mongoose.model('Message', Message),
+    Counter: mongoose.model('Counter', Counter)
 };
