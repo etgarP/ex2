@@ -2,6 +2,7 @@ const User = require('../models/Users');
 const userService = require('../services/Users')
 const Chat = require('../models/Chats').Chat
 
+//todo should add type let?
 id = 1
 
 const getChatById = async (id) => {

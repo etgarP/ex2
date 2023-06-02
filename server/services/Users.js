@@ -4,7 +4,7 @@ const createUser = async (username, displayName, profilePic) => {
     try {
         const user = new User({ username, displayName, profilePic })
         await user.save()
-        return 
+        return
     } catch (error) {
         throw error
     }
@@ -12,7 +12,7 @@ const createUser = async (username, displayName, profilePic) => {
 
 const getUser = async (username) => {
     try {
-        const user = await User.findOne({ "username" : username }).exec()
+        const user = await User.findOne({ "username": username }).exec()
         return user
     } catch (error) {
         throw error

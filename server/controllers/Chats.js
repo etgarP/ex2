@@ -26,14 +26,14 @@ const postChat = async (req, res) => {
         let aut = req.headers.authorization
         const words = aut.split(' ')
         const token = words[1];
-        decoded = jwt.verify(token, 'hemi-hemi-is-never-gonna-give-you-up');        
+        decoded = jwt.verify(token, 'hemi-hemi-is-never-gonna-give-you-up');
     } catch (error) {
         return res.status(401).send("Unable to authenticate");
     }
     try {
         let isFound = await chatService.findByTwoUsers(decoded.username, req.body.username)
         console.log(isFound)
-        if (isFound) 
+        if (isFound)
             return res.status(409).send("Chat already exists");
         chatService.createByUsername(decoded.username, req.body.username)
     } catch (error) {

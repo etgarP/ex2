@@ -1,3 +1,5 @@
+// todos
+
 export async function postReq(data, url) {
     try {
         const res = await fetch(url, {
@@ -9,9 +11,11 @@ export async function postReq(data, url) {
         });
         return res;
     } catch (error) {
+        //todo
         throw error; // Rethrow the error to propagate it to the caller
     }
 }
+
 export async function postReqAuthorized(data, url, token) {
     try {
         const res = await fetch(url, {
@@ -24,6 +28,7 @@ export async function postReqAuthorized(data, url, token) {
         });
         return res;
     } catch (error) {
+        //todo
         throw error; // Rethrow the error to propagate it to the caller
     }
 }

@@ -15,6 +15,7 @@ function TopRight(props) {
         )
     }
     return (
+        // the top right with contact info and button are
         <div className="col-7 no-padding">
             <div className="list-group no-rounded my-box" id="talking-to">
                 <div id="person-container">
@@ -24,7 +25,7 @@ function TopRight(props) {
                             <ContactImage picture={contact.user.profilePic}></ContactImage>
                         </div>
                         <div className="col center">
-                        {/* name of contact we talk to */}
+                            {/* name of contact we talk to */}
                             <ContactName contactName={contact.user.displayName}></ContactName>
                         </div>
                         <DeleteContactIcon contactId={contactId} contacts1={contacts1} setContacts1={setContacts1} token={user.token}></DeleteContactIcon>

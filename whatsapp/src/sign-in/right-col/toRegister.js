@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom'
+
 function ToRegister() {
+    // "not registered?" line
     return (
         <span id="register-button">
             <p id="register-text">
