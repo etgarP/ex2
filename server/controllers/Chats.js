@@ -13,7 +13,7 @@ const getChats = async (req, res) => {
         return res.status(401).send("Unable to authenticate");
     }
     try {
-        let chats = chatService.getUserChats(decoded.username)
+        let chats = await chatService.getUserChats(decoded.username)
         return res.status(200).send(chats)
     } catch (error) {
         return res.status(500).send("Internal Server Error");
@@ -31,7 +31,9 @@ const postChat = async (req, res) => {
         return res.status(401).send("Unable to authenticate");
     }
     try {
-        if (chatService. findByTwoUsers(decoded.username, req.body.username)) 
+        let isFound = await chatService.findByTwoUsers(decoded.username, req.body.username)
+        console.log(isFound)
+        if (isFound) 
             return res.status(409).send("Chat already exists");
         chatService.createByUsername(decoded.username, req.body.username)
     } catch (error) {

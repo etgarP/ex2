@@ -10,7 +10,6 @@ const getToken = async (username) => {
 const postToken = async (req, res) => {
     try {
         var user = req.body
-        console.log(user)
         // Check if required request parameters are present
         if (!(user.username && user.password)) {
             return res.status(400).send("Invalid request parameters");

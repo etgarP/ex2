@@ -1,4 +1,4 @@
-const Chat = require('../models/Chats')
+const Chat = require('../models/Chats').Chat
 const User = require('../models/Users');
 const userService = require('../services/Users')
 
@@ -31,7 +31,7 @@ const createByUsername = async (myUser, otherUser) => {
     try {
         const chat = new Chat({
             id: id,
-            users: [userService.getUser(myUser), userService.getUser(otherUser)],
+            users: [await userService.getUser(myUser).exec(), await userService.getUser(otherUser).exec()],
             messages: []
         })
         await chat.save()
@@ -91,20 +91,27 @@ const getUserChats = async (username) => {
     try {
         const chats = await User.find({
             Users: { $elemMatch: { "username": username } }
-        }).exec()
-        const transformedChats = chats.map((chat) => {
+        }).exec();
+        
+        const transformedChats = [];
+        
+        chats.forEach((chat) => {
             const otherUser = chat.users.find((user) => user.username !== username);
-            const lastMessage = getBiggest(chat.messages);
-            return {
-                id: chat.id,
-                user: otherUser,
-                lastMessage: lastMessage
-            };
+            if (otherUser != null) {
+                const lastMessage = getBiggest(chat.messages);
+                transformedChats.push({
+                    id: chat.id,
+                    user: otherUser,
+                    lastMessage: lastMessage
+                });
+            }
         });
-        return transformedChats
+        
+        return transformedChats; 
+        
     } catch (error) {
-        throw error
+        throw error;
     }
 };
 
-module.exports = { getChatById, deleteChatById, getUserChats, getChatMessagesById, postChatMessagesById, createByUsername }
+module.exports = { getChatById, deleteChatById, getUserChats, getChatMessagesById, postChatMessagesById, createByUsername, findByTwoUsers }
