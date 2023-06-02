@@ -11,7 +11,7 @@ function PrivateChat(props) {
     if (!contact) {
         return (
             <div className="col-7 right-side whots-container" id='bottom-right'>
-                <img src={background} className="background-img" />
+                <img alt="" src={background} className="background-img" />
             </div>
         )
     }

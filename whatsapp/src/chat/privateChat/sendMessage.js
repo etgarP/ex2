@@ -3,10 +3,6 @@ import { postReqAuthorized } from "../../postReq"
 import { applyMessages } from "../contactsList/getMessages"
 import { getReq } from "../../getReq"
 
-//todos
-
-let newMessageId = 1
-
 function SendMessage(props) {
     const { user, setContacts, contactId } = props
     const inputRef = useRef(null)
@@ -16,7 +12,11 @@ function SendMessage(props) {
     const reGetContacts = async () => {
         try {
             const url = "http://localhost:12345/api/Chats"
-            var res = await getReq(url, user.token);
+            var res = await getReq(url, user.token)
+            if (res.status === 401) {
+                console.log("Unauthorized token.")
+                window.alert("Authorization expired. Please log in again.")
+            } 
             var gotten = await res.json();
             if (Array.isArray(gotten)) {
                 setContacts(gotten);
@@ -25,7 +25,7 @@ function SendMessage(props) {
                 console.error("Invalid data format: ", gotten);
             }
         } catch (error) {
-            //todo
+            throw error
         }
     }
     const sendButtonHandler = async () => {
@@ -34,11 +34,18 @@ function SendMessage(props) {
             const newMessage = { msg: message }
             try {
                 const url = `http://localhost:12345/api/Chats/${contactId}/Messages`
-                //todo why res
                 var res = await postReqAuthorized(newMessage, url, user.token)
+                if(res.status===400){
+                    window.alert("Invalid request parameters.") 
+                } else if (res.status === 401) {
+                    console.log("Unauthorized token.")
+                    window.alert("Authorization expired. Please log in again.")
+                } else if (res.status === 404) {
+                    window.alert("There is no such chat.")
+                }
             } catch (error) {
-                // todo: do something here maybe
-                console.log("error in send message.js", error)
+                console.log("error in sendMessage.js", error)
+                throw error
             }
             setValue("")
             await reGetContacts();

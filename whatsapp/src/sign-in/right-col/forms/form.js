@@ -5,8 +5,6 @@ import { useNavigate } from 'react-router-dom'
 import { postReq } from '../../../postReq.js'
 import { getReq } from '../../../getReq.js'
 
-//todos
-
 function Form({ setUser, setContacts }) {
     // needed to use navigate in and inner function context
     const navigate = useNavigate()
@@ -22,6 +20,10 @@ function Form({ setUser, setContacts }) {
             try {
                 const url = "http://localhost:12345/api/Chats"
                 var res = await getReq(url, user.token);
+                if (res.status === 401) {
+                    console.log("Unauthorized token.")
+                    window.alert("Authorization expired. Please log in again.")
+                }
                 var gotten = await res.json();
                 if (Array.isArray(gotten)) {
                     setContacts(gotten);
@@ -30,17 +32,33 @@ function Form({ setUser, setContacts }) {
                     console.error("Invalid data format: ", gotten);
                 }
             } catch (error) {
-                //todo
+                throw error
             }
         }
 
         const data = { username: name, password: password }
         try {
             const url = "http://localhost:12345/api/Tokens"
-            var res = await postReq(data, url);
+            var res = await postReq(data, url)
+            if (res.status === 409) {
+                window.alert("User doesnt exists.")
+                return;
+            } else if (res.status === 400) {
+                console.log("Invalid request parameters");
+                window.alert("User doesnt exists.")
+                return;
+            }
             const token = (await res.text()).trim()
             const url2 = `http://localhost:12345/api/Users/${name}`
             var res2 = await getReq(url2, token)
+            if (res2.status === 401) {
+                console.log("Unauthorized token.")
+                window.alert("Authorization expired. Please log in again.")
+                return;
+            } else if (res2.status === 404) {
+                console.log("User not found");
+                return;
+            }
             var user = await res2.json()
             user = { ...user, token: token };
             if (res2.ok) {
@@ -53,8 +71,7 @@ function Form({ setUser, setContacts }) {
                 return;
             }
         } catch (error) {
-            //todo
-            // console.error('Error', error)
+            console.error('Error', error)
             setError("Oops! Our server seems to be taking a coffee break ☕️. We're working hard to fix it and get things back on track. Please bear with us and try again shortly. Thank you for your patience!")
         }
     }

@@ -62,18 +62,16 @@ function Form() {
                         setRUText("Username is taken.")
                         return;
                     } else if (status === 400) {
-                        // todo handle
-                        console.log("returned 400");
+                        console.log("Invalid request parameters");
                         return;
                     } else if (!response.ok) {
-                        // todo handle
                         console.log("didnt come through");
                     }
                     // goes to sign in
                     navigate("/");
                 } catch (error) {
-                    // todo
                     setBadCon("Oops! Our server seems to be taking a coffee break ☕️. We're working hard to fix it and get things back on track. Please bear with us and try again shortly. Thank you for your patience!")
+                    throw error
                 }
             };
             fileReader.readAsDataURL(picture);

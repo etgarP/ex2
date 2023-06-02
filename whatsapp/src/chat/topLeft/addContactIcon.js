@@ -3,8 +3,6 @@ import { postReqAuthorized } from "../../postReq"
 import { getReq } from "../../getReq"
 import { useNavigate } from 'react-router-dom'
 
-//todos
-
 function AddContactIcon(props) {
     const { setContacts, token, contacts, setUser } = props
     const inputRef = useRef(null)
@@ -15,23 +13,24 @@ function AddContactIcon(props) {
         try {
             const url = "http://localhost:12345/api/Chats"
             var res = await getReq(url, token)
+            if (res.status === 401) {
+                console.log("Unauthorized token.")
+                window.alert("Authorization expired. Please log in again.")
+            }
             if (res.ok) {
                 var newContacts = await res.json()
                 const newContact = newContacts.find((contact) => {
-                    if (contact.user.username === username) {
-                        return contact
-                    }
+                    return contact.user.username === username
                 })
                 if (newContact) {
                     setContacts((prevContacts) => [...prevContacts, newContact])
                 }
             } else {
-                //todo
                 console.error("Failed to fetch new contacts") // Handle the case where the API request was not successful
             }
         } catch (error) {
-            //todo
             console.error("Error while fetching new contacts", error) // Handle any other errors that occur during the process
+            throw error
         }
     }
     
@@ -41,8 +40,7 @@ function AddContactIcon(props) {
             const url = "http://localhost:12345/api/Chats"
             const data = { username: input }
             var res = await postReqAuthorized(data, url, token)
-            if (res.ok) {
-            } else if (res.status === 400) {
+            if (res.status === 400) {
                 window.alert("Wrong username")
             } else if (res.status === 401) {
                 console.log("Unauthorized token.")
@@ -50,24 +48,22 @@ function AddContactIcon(props) {
                 // logging out
                 setUser('')
                 navigate('/')
+            } else if (res.status === 409) {
+                window.alert("Chat already exists")
             } else {
                 console.error("Failed to add person to server")
-                //todo check if needs to handle somehow
             }
             return res.ok
         } catch (error) {
-            // todo
-            // console.error('Error', error)
-            // setError("Oops! Our server seems to be taking a coffee break ☕️. We're working hard to fix it and get things back on track. Please bear with us and try again shortly. Thank you for your patience!")
+            console.error('Error', error)
+            throw error
         }
     }
 
     const addPersonButtonHandler = async () => {
         let input = inputRef.current.value
         const found = contacts.find((contact) => {
-            if (contact.user.username === input) {
-                return contact;
-            }
+            return contact.user.username === input
         })
         if (found) {
             window.alert("Username already exist");

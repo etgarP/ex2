@@ -1,8 +1,5 @@
-import { useRef, useState } from "react"
 import { deleteReq } from "../deleteReq"
 import { getReq } from "../getReq"
-
-//todos
 
 function DeleteContactIcon(props) {
     const { setContacts, token, contactId } = props
@@ -12,14 +9,17 @@ function DeleteContactIcon(props) {
             const url = `http://localhost:12345/api/Chats/${id}`
             const data = { id: id }
             var res = await deleteReq(data, url, token)
-            if (res.ok) {
-                //todo
-            } else {
-                //todo
+            if (res.status === 401) {
+                console.log("Unauthorized token.")
+                window.alert("Authorization expired. Please log in again.")
+            } else if (res.status === 400) {
+                window.alert("Invalid request parameters")
+            } else if (res.status === 404) {
+                window.alert("Chat not found.")
             }
             return res.ok
         } catch (error) {
-            //todo
+            throw error
         }
     }
 
@@ -27,16 +27,19 @@ function DeleteContactIcon(props) {
         try {
             const url = "http://localhost:12345/api/Chats"
             var res = await getReq(url, token);
+            if (res.status === 401) {
+                console.log("Unauthorized token.")
+                window.alert("Authorization expired. Please log in again.")
+            }
             var gotten = await res.json();
             if (Array.isArray(gotten)) {
                 setContacts(gotten);
             } else {
-                //todo
                 // Handle the case where the response is not a valid array
                 console.error("Invalid data format: ", gotten);
             }
         } catch (error) {
-            //todo
+            throw error
         }
     }
 

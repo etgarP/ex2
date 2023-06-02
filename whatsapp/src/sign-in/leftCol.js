@@ -4,7 +4,7 @@ function LeftCol() {
     // picture in left side of the sign-in page
     return (
         <div className="col left-col">
-            <img src={pastoralPic} className="photo"></img>
+            <img alt="" src={pastoralPic} className="photo"></img>
         </div>
     )
 }
