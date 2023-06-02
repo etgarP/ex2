@@ -94,11 +94,12 @@ const deleteChatById = async (req, res) => {
 }
 
 const postChatMessagesById = async (req, res) => {
+    let username
     try {
         let aut = req.headers.authorization
         const words = aut.split(' ')
         const token = words[1]
-        jwt.verify(token, 'hemi-hemi-is-never-gonna-give-you-up')
+        username = jwt.verify(token, 'hemi-hemi-is-never-gonna-give-you-up').username
     } catch (error) {
         return res.status(401).send("Unable to authenticate")
     }
@@ -113,7 +114,7 @@ const postChatMessagesById = async (req, res) => {
             return res.status(404).send("Chat not found")
         }
         let newMessage = req.body.msg
-        const messages = await chatService.postChatMessagesById(id, newMessage)
+        const messages = await chatService.postChatMessagesById(id, newMessage, username)
         return res.status(200).send(messages)
     } catch (error) {
         return res.status(500).send("Internal Server Error")
