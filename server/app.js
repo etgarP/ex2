@@ -47,8 +47,8 @@ io.on('connection', (socket) => {
     socket.on('idDel', (id)=>{
         socket.broadcast.emit('idDel',id)
     })
-    socket.on('usernameAdd', (username)=>{
-        socket.broadcast.emit('usernameAdd',username)
+    socket.on('usernameAdd', ({ sender, receiver })=>{
+        socket.broadcast.emit('usernameAdd', { sender, receiver })
     })
     socket.on('disconnect', ()=>{
         console.log('disconntected')

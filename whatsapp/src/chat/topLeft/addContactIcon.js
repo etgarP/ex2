@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { socket } from "../../sockets/socket"
 
 function AddContactIcon(props) {
-    const { setContacts, token, contacts, setUser } = props
+    const { user, setContacts, token, contacts, setUser } = props
     const inputRef = useRef(null)
     const [value, setValue] = useState("")
     const navigate = useNavigate()
@@ -70,7 +70,7 @@ function AddContactIcon(props) {
                     await getNewContacts(input)
                 }
                 setValue("")
-                socket.emit('usernameAdd', input)
+                socket.emit('usernameAdd', {sender: user.username, receiver: input})
             }
         } catch (error) {
             window.alert("Disconnected, please try logging in again.")
