@@ -2,11 +2,13 @@ import { useRef, useState } from "react"
 import { postReqAuthorized } from "../../postReq"
 import { applyMessages } from "../contactsList/getMessages"
 import { getReq } from "../../getReq"
+import { useNavigate } from 'react-router-dom'
 
 function SendMessage(props) {
     const { user, setContacts, contactId } = props
     const inputRef = useRef(null)
     const [value, setValue] = useState("")
+    const navigate = useNavigate()
     
     // update contacts list with new lastMessage
     const reGetContacts = async () => {
@@ -14,8 +16,7 @@ function SendMessage(props) {
             const url = "http://localhost:12345/api/Chats"
             var res = await getReq(url, user.token)
             if (res.status === 401) {
-                console.log("Unauthorized token.")
-                window.alert("Authorization expired. Please log in again.")
+                window.alert("Please log in again.")
             }
             var newContacts = await res.json();
             if (Array.isArray(newContacts)) {
@@ -23,11 +24,10 @@ function SendMessage(props) {
                 return contact
             } else {
                 // Handle the case where the response is not a valid array
-                console.error("Invalid data format: ", newContacts);
                 return null
             }
         } catch (error) {
-            console.log(error)
+                throw error
         }
     }
 
@@ -42,15 +42,20 @@ function SendMessage(props) {
                 if (res.status === 400) {
                     window.alert("Invalid request parameters.")
                 } else if (res.status === 401) {
-                    console.log("Unauthorized token.")
-                    window.alert("Authorization expired. Please log in again.")
-                } else if (res.status === 404) {
-                    window.alert("There is no such chat.")
+                    window.alert("Please log in again.")
+                    navigate('/')
+                    return;
+                } else if (!res.ok) {
+                    window.alert("Please log in again.")
+                    navigate('/')
+                    return;
                 }
             } catch (error) {
-                console.log("error in sendMessage.js", error)
+                navigate('/')
+                return;
             }
             let upContact = await reGetContacts();
+            if (!upContact) return;
             applyMessages(user, contactId, setContacts, upContact)
             setValue("")
         }

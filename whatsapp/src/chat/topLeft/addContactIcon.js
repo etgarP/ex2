@@ -14,8 +14,7 @@ function AddContactIcon(props) {
             const url = "http://localhost:12345/api/Chats"
             var res = await getReq(url, token)
             if (res.status === 401) {
-                console.log("Unauthorized token.")
-                window.alert("Authorization expired. Please log in again.")
+                window.alert("Please log in again.")
             }
             if (res.ok) {
                 var newContacts = await res.json()
@@ -25,11 +24,9 @@ function AddContactIcon(props) {
                 if (newContact) {
                     setContacts((prevContacts) => [...prevContacts, newContact])
                 }
-            } else {
-                console.error("Failed to fetch new contacts") // Handle the case where the API request was not successful
             }
         } catch (error) {
-            console.error("Error while fetching new contacts", error) // Handle any other errors that occur during the process
+            throw error
         }
     }
 
@@ -40,40 +37,43 @@ function AddContactIcon(props) {
             const data = { username: input }
             var res = await postReqAuthorized(data, url, token)
             if (res.ok) { }
-            else if (res.status === 400) {
-                window.alert("Wrong username")
-            } else if (res.status === 401) {
-                console.log("Unauthorized token.")
-                window.alert("Authorization expired. Please log in again.")
+            else if (res.status === 401) {
+                window.alert("Disconnected, please try logging in again.")
                 // logging out
                 setUser('')
                 navigate('/')
             } else if (res.status === 409) {
                 window.alert("Chat already exists")
             } else {
-                console.error("Failed to add person to server")
+                window.alert("Not a valid username")
             }
             return res.ok
         } catch (error) {
-            console.error('Error', error)
+            throw error
         }
     }
 
     const addPersonButtonHandler = async () => {
-        let input = inputRef.current.value
-        const found = contacts.find((contact) => {
-            return contact.user.username === input
-        })
-        if (found) {
-            window.alert("Username already exist");
-            return
-        }
-        if (input) {
-            let ok = await addPersonToServer(input)
-            if (ok) {
-                getNewContacts(input)
+        try {
+            let input = inputRef.current.value
+            const found = contacts.find((contact) => {
+                return contact.user.username === input
+            })
+            if (found) {
+                window.alert("Username already exist");
+                return
             }
-            setValue("")
+            if (input) {
+                let ok = await addPersonToServer(input)
+                if (ok) {
+                    getNewContacts(input)
+                }
+                setValue("")
+            }
+        } catch (error) {
+            window.alert("Disconnected, please try logging in again.")
+            setUser('')
+            navigate('/')
         }
     }
 

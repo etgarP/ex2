@@ -1,8 +1,11 @@
 import { deleteReq } from "../deleteReq"
 import { getReq } from "../getReq"
+import { useNavigate } from 'react-router-dom'
 
 function DeleteContactIcon(props) {
     const { setContacts, token, contactId } = props
+    const navigate = useNavigate()
+
     // deletes contact from contacts list
     async function deletePersonFromServer(id) {
         try {
@@ -10,16 +13,14 @@ function DeleteContactIcon(props) {
             const data = { id: id }
             var res = await deleteReq(data, url, token)
             if (res.status === 401) {
-                console.log("Unauthorized token.")
-                window.alert("Authorization expired. Please log in again.")
+                window.alert("Please log in again.")
+                navigate("/")
             } else if (res.status === 400) {
                 window.alert("Invalid request parameters")
-            } else if (res.status === 404) {
-                window.alert("Chat not found.")
             }
             return res.ok
         } catch (error) {
-            console.log(error)
+            throw error
         }
     }
 
@@ -28,25 +29,27 @@ function DeleteContactIcon(props) {
             const url = "http://localhost:12345/api/Chats"
             var res = await getReq(url, token);
             if (res.status === 401) {
-                console.log("Unauthorized token.")
-                window.alert("Authorization expired. Please log in again.")
+                window.alert("Please log in again.")
+                navigate("/")
             }
             var gotten = await res.json();
             if (Array.isArray(gotten)) {
                 setContacts(gotten);
-            } else {
-                // Handle the case where the response is not a valid array
-                console.error("Invalid data format: ", gotten);
             }
         } catch (error) {
-            console.log(error)
+            throw error
         }
     }
 
     const deletePersonButtonHandler = async () => {
         let ok = await deletePersonFromServer(contactId)
         if (ok) {
-            reGetContacts()
+            try {
+                reGetContacts()
+            } catch (error) {
+                window.alert("Please log in again.")
+                navigate("/")
+            }
         }
     }
 

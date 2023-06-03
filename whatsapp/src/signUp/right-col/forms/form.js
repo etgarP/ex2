@@ -62,14 +62,14 @@ function Form() {
                         setRUText("Username is taken.")
                         return;
                     } else if (status === 400) {
-                        console.log("Invalid request parameters")
+                        setBadCon("Invalid request parameters")
                         return;
                     } else if (status === 413) {
-                        console.log("picture too big")
-                        window.alert("please pick a smaller sized picture")
+                        setBadCon("please pick a smaller sized picture")
                         return;
                     } else if (!response.ok) {
-                        console.log("didnt come through")
+                        setBadCon("sign up was not successfull")
+                        return;
                     }
                     // goes to sign in
                     navigate("/");

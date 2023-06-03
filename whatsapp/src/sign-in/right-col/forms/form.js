@@ -21,44 +21,30 @@ function Form({ setUser, setContacts }) {
                 const url = "http://localhost:12345/api/Chats"
                 var res = await getReq(url, user.token);
                 if (res.status === 401) {
-                    console.log("Unauthorized token.")
-                    window.alert("Authorization expired. Please log in again.")
+                    setError("Please try again.")
                 }
                 var gotten = await res.json();
                 if (Array.isArray(gotten)) {
                     setContacts(gotten);
-                } else {
-                    // Handle the case where the response is not a valid array
-                    console.error("Invalid data format: ", gotten);
                 }
             } catch (error) {
-                console.log(error)
+                throw error
             }
         }
 
         const data = { username: name, password: password }
         try {
+            setUser("")
             const url = "http://localhost:12345/api/Tokens"
             var res = await postReq(data, url)
-            if (res.status === 409) {
-                window.alert("User doesnt exists.")
-                return;
-            } else if (res.status === 400) {
-                console.log("Invalid request parameters");
-                window.alert("User doesnt exists.")
-                return;
-            } else if (!res.ok) {
-                return;
+            if (!res.ok) {
+                setError("Wrong username or password.")
             }
             const token = (await res.text()).trim()
             const url2 = `http://localhost:12345/api/Users/${name}`
             var res2 = await getReq(url2, token)
-            if (res2.status === 401) {
-                console.log("Unauthorized token.")
-                window.alert("Authorization expired. Please log in again.")
-                return;
-            } else if (res2.status === 404) {
-                console.log("User not found");
+            if (!res2.ok) {
+                setError("Please try again in a few minutes.")
                 return;
             }
             var user = await res2.json()
@@ -73,7 +59,6 @@ function Form({ setUser, setContacts }) {
                 return;
             }
         } catch (error) {
-            console.error('Error', error)
             setError("Oops! Our server seems to be taking a coffee break ☕️. We're working hard to fix it and get things back on track. Please bear with us and try again shortly. Thank you for your patience!")
         }
     }
