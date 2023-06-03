@@ -1,7 +1,56 @@
 import ListedContact from "./listedContact"
+import { socket } from "../../sockets/socket"
+import { Navigate, useNavigate } from "react-router-dom"
+import { useEffect } from "react"
+import { applyMessages } from "./getMessages"
+import { getReq } from "../../getReq"
 
 function ContactsList(props) {
   const { contacts, setContacts, setContactId, contactId, upH, user } = props
+  const navigate = useNavigate()
+  
+  useEffect(() => { 
+    const handleAdd = async (sentUsername) => {
+        if (user.username === sentUsername) {
+            try {
+                let upContact = await reGetContact();
+                if (!upContact) return;
+                await applyMessages(user, upContact.id, setContacts, upContact)
+            } catch (error) {
+                window.alert("Please log in again.")
+                navigate('/')
+            }
+        }
+    }
+
+    socket.on('usernameAdd', handleAdd)
+    return () => {
+        // Unregister event listeners and disconnect socket
+        socket.off('usernameAdd', handleAdd)
+    };
+})
+
+// update contacts list with new lastMessage
+const reGetContact = async () => {
+    try {
+        const url = "http://localhost:12345/api/Chats"
+        var res = await getReq(url, user.token)
+        if (res.status === 401) {
+            window.alert("Please log in again.")
+        }
+        var newContacts = await res.json();
+        if (Array.isArray(newContacts)) {
+            let contact = newContacts.find((contact) => contact.id === contactId)
+            return contact
+        } else {
+            // Handle the case where the response is not a valid array
+            return null
+        }
+    } catch (error) {
+        throw error
+    }
+}
+
 
   if (Array.isArray(contacts)) {
     // mapping the contacts list

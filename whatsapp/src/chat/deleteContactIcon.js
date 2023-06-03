@@ -1,6 +1,7 @@
 import { deleteReq } from "../deleteReq"
 import { getReq } from "../getReq"
 import { useNavigate } from 'react-router-dom'
+import { socket } from "../sockets/socket"
 
 function DeleteContactIcon(props) {
     const { setContacts, token, contactId } = props
@@ -47,6 +48,7 @@ function DeleteContactIcon(props) {
             if (ok) {
                 try {
                     await reGetContacts()
+                    socket.emit('idDel', contactId)
                 } catch (error) {
                     window.alert("Please log in again.")
                     navigate("/")

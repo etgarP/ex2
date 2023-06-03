@@ -2,6 +2,7 @@ import { useRef, useState } from "react"
 import { postReqAuthorized } from "../../postReq"
 import { getReq } from "../../getReq"
 import { useNavigate } from 'react-router-dom'
+import { socket } from "../../sockets/socket"
 
 function AddContactIcon(props) {
     const { setContacts, token, contacts, setUser } = props
@@ -69,6 +70,7 @@ function AddContactIcon(props) {
                     await getNewContacts(input)
                 }
                 setValue("")
+                socket.emit('usernameAdd', input)
             }
         } catch (error) {
             window.alert("Disconnected, please try logging in again.")

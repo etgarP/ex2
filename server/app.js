@@ -1,38 +1,3 @@
-// todo before
-// const express = require('express'); 
-// var app = express();
-
-// const bodyParser = require('body-parser'); 
-// app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(express.json());
-
-// const cors = require('cors'); 
-// app.use(cors());
-
-// const customEnv = require('custom-env'); 
-// customEnv.env(process.env.NODE_ENV, './config'); 
-// console.log(process.env.CONNECTION_STRING)
-// console.log(process.env.PORT)
-
-// const mongoose = require('mongoose')
-// mongoose.connect(process.env.CONNECTION_STRING, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true
-// })
-
-// app.use(express.static('public'))
-
-// const Chats = require('./routes/Chats')
-// app.use('/api/Chats', Chats);
-// const Users = require('./routes/Users')
-// app.use('/api/Users', Users);
-// const Tokens = require('./routes/Tokens')
-// app.use('/api/Tokens', Tokens);
-
-// app.listen(process.env.PORT)
-
-// todo after
-
 const express = require('express'); 
 const bodyParser = require('body-parser'); 
 var app = express();
@@ -61,7 +26,6 @@ const io = new Server(server, {
     }
 })
 
-
 mongoose.connect(process.env.CONNECTION_STRING, {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -76,16 +40,15 @@ app.use('/api/Users', Users);
 const Tokens = require('./routes/Tokens')
 app.use('/api/Tokens', Tokens);
 
-// io.use(cors())
-
 io.on('connection', (socket) => {
-    console.log("the socket id is", socket.id)
-    socket.on('msg', (msg)=>{
-        console.log(msg)
-        socket.emit('client log','ooooo' + msg)
-    })
     socket.on('idmsg', (id)=>{
         socket.broadcast.emit('idmsg',id)
+    })
+    socket.on('idDel', (id)=>{
+        socket.broadcast.emit('idDel',id)
+    })
+    socket.on('usernameAdd', (username)=>{
+        socket.broadcast.emit('usernameAdd',username)
     })
     socket.on('disconnect', ()=>{
         console.log('disconntected')
@@ -93,8 +56,5 @@ io.on('connection', (socket) => {
 })
 
 server.listen(process.env.PORT,()=>{
-
     console.log(`app is listening on poort ${process.env.PORT}`);
 })
-
-// app.listen(process.env.PORT)
