@@ -1,7 +1,7 @@
 import ListedContact from "./listedContact"
 
 function ContactsList(props) {
-  const { contacts, setContacts, setContactId, upH, user } = props
+  const { contacts, setContacts, setContactId, contactId, upH, user } = props
 
   if (Array.isArray(contacts)) {
     // mapping the contacts list
@@ -22,6 +22,7 @@ function ContactsList(props) {
         <ListedContact
           key={contact.id}
           id={contact.id}
+          contactId={contactId}
           contactName={contact.user.displayName}
           picture={contact.user.profilePic}
           date={contact.lastMessage ? timeAndDate : null}
