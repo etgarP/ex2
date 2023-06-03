@@ -17,7 +17,9 @@ function SendMessage(props) {
             var res = await getReq(url, user.token);
             var gotten = await res.json();
             if (Array.isArray(gotten)) {
-                setContacts1(gotten);
+                let contact = gotten.find((contact) => contact.id === contactId)
+                console.log(contact)
+                return contact
             } else {
                 // Handle the case where the response is not a valid array
                 console.error("Invalid data format: ", gotten);
@@ -38,8 +40,9 @@ function SendMessage(props) {
                 console.log("error in send message.js", error)
             }
             setValue("")
-            await reGetContacts();
-            applyMessages(user, contactId, setContacts1)
+            let upContact = await reGetContacts();
+            console.log(upContact)
+            applyMessages(user, contactId, setContacts1, upContact)
         }
     }
     const handleKeyDown = (event) => {

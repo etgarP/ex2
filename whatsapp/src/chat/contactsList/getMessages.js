@@ -15,7 +15,32 @@ async function getMesseges(id, user) {
     }
 }
 
-export async function applyMessages(user, id, setContacts1) {
+export async function applyMessages(user, id, setContacts1, upContact) {
+    try {
+        var messages = await getMesseges(id, user)
+    } catch (error) {
+        // todo: add actions maybe
+        console.log("error at apply messeges")
+    }
+    setContacts1(contacts => {
+        const index = contacts.findIndex(contact => contact.id === id);
+        if (index !== -1) {
+            const updatedContact = {
+                ...upContact,
+                messages: messages,
+            };
+            const updatedContactsList = [
+                ...contacts.slice(0, index),
+                updatedContact,
+                ...contacts.slice(index + 1)
+            ];
+            return updatedContactsList;
+        }
+        return contacts;
+    });
+}
+
+export async function applyMessagesListed(user, id, setContacts1) {
     try {
         var messages = await getMesseges(id, user)
     } catch (error) {
@@ -27,7 +52,7 @@ export async function applyMessages(user, id, setContacts1) {
         if (index !== -1) {
             const updatedContact = {
                 ...contacts[index],
-                messages: messages
+                messages: messages,
             };
             const updatedContactsList = [
                 ...contacts.slice(0, index),

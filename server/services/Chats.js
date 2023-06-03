@@ -60,7 +60,7 @@ const createByUsername = async (myUser, otherUser) => {
 
 const getChatMessagesById = async (id) => {
     try {
-        const chat = await Chat.findOne({ "id": id }).populate({ path: 'messages', model: 'Message' })
+        const chat = await Chat.findOne({ id }).populate({ path: 'messages', model: 'Message', populate: { path: 'sender', model: 'User' } }).lean().exec();
         return chat.messages.reverse()
     } catch (error) {
         throw error
