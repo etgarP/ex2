@@ -4,6 +4,7 @@ const Chat = require('../models/Chats').Chat
 const Message = require('../models/Chats').Message
 const Counter = require('../models/Chats').Counter
 
+//
 const getChatById = async (id) => {
     try {
         const chat = await Chat.findOne({ "id": id }).exec()
@@ -113,7 +114,13 @@ const deleteChatById = async (id) => {
         if (!chat) {
             return false
         }
-        await Chat.deleteOne({ "id": id })
+        chat.messages.forEach(async message => {
+            let messageModel =await Message.findOne(message)
+            await Message.deleteOne(messageModel)
+        });
+        let counter = await Counter.findOne({ id: chat.id })
+        await Counter.deleteOne(counter)
+        await Chat.deleteOne(chat)
         return true
     } catch (error) {
         throw error

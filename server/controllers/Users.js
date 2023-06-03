@@ -2,6 +2,7 @@ const userService = require('../services/Users');
 const tokenService = require('../services/Tokens');
 const jwt = require('jsonwebtoken');
 
+// adds a user to the database aka registers him
 const postUser = async (req, res) => {
     try {
         // Check if required request parameters are present
@@ -28,8 +29,13 @@ const postUser = async (req, res) => {
     }
 };
 
+// gets user data and sends it back to the authenticated user
 const getUser = async (req, res) => {
     try {
+        // verifing a user
+        if (!req.headers.authorization) {
+            return res.status(400).send("Bad request")
+        }
         let aut = req.headers.authorization
         const words = aut.split(' ')
         const token = words[1]
@@ -39,6 +45,7 @@ const getUser = async (req, res) => {
     }
     
     try {
+        // sending  the info
         const username = req.params.username;
         const existingUser = await userService.getUser(username)
         if (existingUser) {
