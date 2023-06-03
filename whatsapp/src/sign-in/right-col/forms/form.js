@@ -32,7 +32,7 @@ function Form({ setUser, setContacts }) {
                     console.error("Invalid data format: ", gotten);
                 }
             } catch (error) {
-                throw error
+                console.log(error)
             }
         }
 

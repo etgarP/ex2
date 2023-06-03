@@ -21,23 +21,45 @@ async function getMesseges(id, user) {
         }
     } catch (error) {
         console.error(error)
-        throw error
     }
 }
 
-export async function applyMessages(user, id, setContacts) {
+export async function applyMessages(user, id, setContacts, upContact) {
     try {
         var messages = await getMesseges(id, user)
     } catch (error) {
         console.log("error at apply messeges")
-        return
+    }
+    setContacts(contacts => {
+        const index = contacts.findIndex(contact => contact.id === id);
+        if (index !== -1) {
+            const updatedContact = {
+                ...upContact,
+                messages: messages
+            };
+            const updatedContactsList = [
+                ...contacts.slice(0, index),
+                updatedContact,
+                ...contacts.slice(index + 1)
+            ];
+            return updatedContactsList;
+        }
+        return contacts;
+    });
+}
+
+export async function applyMessagesListed(user, id, setContacts) {
+    try {
+        var messages = await getMesseges(id, user)
+    } catch (error) {
+        console.log("error at apply messeges listed")
     }
     setContacts(contacts => {
         const index = contacts.findIndex(contact => contact.id === id);
         if (index !== -1) {
             const updatedContact = {
                 ...contacts[index],
-                messages: messages
+                messages: messages,
             };
             const updatedContactsList = [
                 ...contacts.slice(0, index),

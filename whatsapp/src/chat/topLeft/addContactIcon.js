@@ -30,7 +30,6 @@ function AddContactIcon(props) {
             }
         } catch (error) {
             console.error("Error while fetching new contacts", error) // Handle any other errors that occur during the process
-            throw error
         }
     }
 
@@ -56,7 +55,6 @@ function AddContactIcon(props) {
             return res.ok
         } catch (error) {
             console.error('Error', error)
-            throw error
         }
     }
 

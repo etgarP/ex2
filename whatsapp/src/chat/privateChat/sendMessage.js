@@ -3,8 +3,6 @@ import { postReqAuthorized } from "../../postReq"
 import { applyMessages } from "../contactsList/getMessages"
 import { getReq } from "../../getReq"
 
-//todos
-
 function SendMessage(props) {
     const { user, setContacts, contactId } = props
     const inputRef = useRef(null)
@@ -21,13 +19,16 @@ function SendMessage(props) {
             }
             var newContacts = await res.json();
             if (Array.isArray(newContacts)) {
-                setContacts(newContacts)
+                let contact = newContacts.find((contact) => contact.id === contactId)
+                console.log(contact)
+                return contact
             } else {
                 // Handle the case where the response is not a valid array
                 console.error("Invalid data format: ", newContacts);
+                return null
             }
         } catch (error) {
-            throw error
+            console.log(error)
         }
     }
 
@@ -49,11 +50,10 @@ function SendMessage(props) {
                 }
             } catch (error) {
                 console.log("error in sendMessage.js", error)
-                throw error
             }
+            let upContact = await reGetContacts();
+            applyMessages(user, contactId, setContacts, upContact)
             setValue("")
-            await reGetContacts();
-            applyMessages(user, contactId, setContacts)
         }
     }
 

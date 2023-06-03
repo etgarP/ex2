@@ -19,7 +19,7 @@ function DeleteContactIcon(props) {
             }
             return res.ok
         } catch (error) {
-            throw error
+            console.log(error)
         }
     }
 
@@ -39,7 +39,7 @@ function DeleteContactIcon(props) {
                 console.error("Invalid data format: ", gotten);
             }
         } catch (error) {
-            throw error
+            console.log(error)
         }
     }
 

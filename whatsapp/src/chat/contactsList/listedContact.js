@@ -2,14 +2,14 @@ import ContactImage from "../contactImage"
 import ContactName from "../contactName"
 import Date from "./date"
 import LastMessage from "./lastMassage"
-import { applyMessages } from './getMessages.js'
+import { applyMessagesListed } from './getMessages.js'
 
 function ListedContact(props) {
     const { id, picture, contactName, date = "", lastMessage = "", setContactId, upH, setContacts, user } = props
 
     // change the contact to the contact chosen
     const changeContact = async () => {
-        applyMessages(user, id, setContacts)
+        applyMessagesListed(user, id, setContacts)
         setContactId(id)
     }
     return (

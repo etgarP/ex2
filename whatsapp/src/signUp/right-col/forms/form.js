@@ -62,16 +62,19 @@ function Form() {
                         setRUText("Username is taken.")
                         return;
                     } else if (status === 400) {
-                        console.log("Invalid request parameters");
+                        console.log("Invalid request parameters")
+                        return;
+                    } else if (status === 413) {
+                        console.log("picture too big")
+                        window.alert("please pick a smaller sized picture")
                         return;
                     } else if (!response.ok) {
-                        console.log("didnt come through");
+                        console.log("didnt come through")
                     }
                     // goes to sign in
                     navigate("/");
                 } catch (error) {
                     setBadCon("Oops! Our server seems to be taking a coffee break ☕️. We're working hard to fix it and get things back on track. Please bear with us and try again shortly. Thank you for your patience!")
-                    throw error
                 }
             };
             fileReader.readAsDataURL(picture);
