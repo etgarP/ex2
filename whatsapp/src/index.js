@@ -8,8 +8,10 @@ const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <React.StrictMode>
     <>
+      {/* background */}
       <div id="green-top"></div>
-      <img src={image} className='grey-back' />
+      <img alt="" src={image} className='grey-back' />
+      {/* the app */}
       <Site></Site>
     </>
   </React.StrictMode>

@@ -1,75 +1,81 @@
 import { useRef, useState } from "react"
 import { postReqAuthorized } from "../../postReq"
 import { getReq } from "../../getReq"
+import { useNavigate } from 'react-router-dom'
 
 function AddContactIcon(props) {
-    const { setContacts1, token, contacts1 } = props
+    const { setContacts, token, contacts, setUser } = props
     const inputRef = useRef(null)
     const [value, setValue] = useState("")
+    const navigate = useNavigate()
     // adding contact to contacts list
     async function getNewContacts(username) {
         try {
-            const url = "http://localhost:5000/api/Chats"
+            const url = "http://localhost:12345/api/Chats"
             var res = await getReq(url, token)
+            if (res.status === 401) {
+                window.alert("Please log in again.")
+            }
             if (res.ok) {
                 var newContacts = await res.json()
-                const newContact = newContacts.find((contact)=>{
-                    if(contact.user.username === username){
-                        return contact
-                    }
+                const newContact = newContacts.find((contact) => {
+                    return contact.user.username === username
                 })
-                setContacts1((prevContacts) => ([...prevContacts, newContact]))
-
-            } else {
-                //todo
+                if (newContact) {
+                    setContacts((prevContacts) => [...prevContacts, newContact])
+                }
             }
         } catch (error) {
-
+            throw error
         }
     }
+
 
     async function addPersonToServer(input) {
         try {
-            const url = "http://localhost:5000/api/Chats"
+            const url = "http://localhost:12345/api/Chats"
             const data = { username: input }
             var res = await postReqAuthorized(data, url, token)
-            if (res.ok) {
-            } else if (res.status === 400) {
-                window.alert("Wrong username");
-            } else if (res.status === 401) {
-                // todo delete
-                window.alert("Unauthorized token. Please refresh the page and start again.");
+            if (res.ok) { }
+            else if (res.status === 401) {
+                window.alert("Disconnected, please try logging in again.")
+                // logging out
+                setUser('')
+                navigate('/')
+            } else if (res.status === 409) {
+                window.alert("Chat already exists")
             } else {
-                //todo
+                window.alert("Not a valid username")
             }
             return res.ok
         } catch (error) {
-            // console.error('Error', error)
-            // setError("Oops! Our server seems to be taking a coffee break ☕️. We're working hard to fix it and get things back on track. Please bear with us and try again shortly. Thank you for your patience!")
+            throw error
         }
     }
-
 
     const addPersonButtonHandler = async () => {
-        let input = inputRef.current.value
-        const found = contacts1.find((contact) => {
-            if (contact.user.username === input) {
-              return contact;
+        try {
+            let input = inputRef.current.value
+            const found = contacts.find((contact) => {
+                return contact.user.username === input
+            })
+            if (found) {
+                window.alert("Username already exist");
+                return
             }
-        });
-        if (found) {
-            window.alert("Username already exist");
-            return
-        }
-        if (input) {
-            let ok = await addPersonToServer(input)
-            if(ok){
-                getNewContacts(input)
+            if (input) {
+                let ok = await addPersonToServer(input)
+                if (ok) {
+                    await getNewContacts(input)
+                }
+                setValue("")
             }
-            setValue("")
+        } catch (error) {
+            window.alert("Disconnected, please try logging in again.")
+            setUser('')
+            navigate('/')
         }
     }
-
 
     return (
         <div className="col-2 center align-right">

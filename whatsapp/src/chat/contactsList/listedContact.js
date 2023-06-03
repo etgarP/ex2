@@ -2,15 +2,22 @@ import ContactImage from "../contactImage"
 import ContactName from "../contactName"
 import Date from "./date"
 import LastMessage from "./lastMassage"
-import { applyMessages } from './getMessages.js'
+import { applyMessagesListed } from './getMessages.js'
+import { useNavigate } from 'react-router-dom'
 
 function ListedContact(props) {
-    const { id, picture, contactName, date = "", lastMessage = "", setContactId, upH, setContacts1, contacts1, user } = props
+    const { id, picture, contactName, date = "", lastMessage = "", setContactId, upH, setContacts, user } = props
+    const navigate = useNavigate()
 
     // change the contact to the contact chosen
     const changeContact = async () => {
-        applyMessages(user, id, setContacts1)
-        setContactId(id)
+        try {
+            await applyMessagesListed(user, id, setContacts)
+            setContactId(id)
+        } catch (error) {
+            window.alert("Disconnected, please log in.")
+            navigate('/')
+        }
     }
     return (
         // the contacted list person which is a button

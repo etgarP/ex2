@@ -8,25 +8,26 @@ import { useRef } from 'react'
 function Site() {
   // hook to save the username of the signed in user
   const [user, setUser] = useState(null)
-  const [contacts1, setContacts1] = useState(null)
+  const [contacts, setContacts] = useState(null)
   const middleElement = useRef(null)
+
   return (
     <div className="middle-area" ref={middleElement}>
-      {/* created rouths for each page, each routh has a component */}
+      {/* created routes for each page, each routh has a component */}
       <BrowserRouter>
         <Routes>
           <Route
             path="/"
-            element={<SignIn setUser={setUser} setContacts={setContacts1} />}
+            element={<SignIn setUser={setUser} setContacts={setContacts} />}
           />
           <Route
             path="/signup"
-            element={<SignUp/>}
+            element={<SignUp />}
           />
           {/* set user to null to return to sign in */}
           <Route
             path="/chat"
-            element={user ? <Chat user={user} setContacts1={setContacts1} contacts1={contacts1} setUser={setUser} middleElement={middleElement} /> : <Navigate to="/" />}
+            element={user ? <Chat user={user} setContacts={setContacts} contacts={contacts} setUser={setUser} middleElement={middleElement} /> : <Navigate to="/" />}
           />
         </Routes>
       </BrowserRouter>

@@ -9,9 +9,9 @@
 }
 
 #talking-to {
-  border: 1px solid #dbe1e6;
+  border-style: solid;
+  border-width: 1px;
   height: 100%;
-  border-color: solid black;
 }
 
 .my-box {

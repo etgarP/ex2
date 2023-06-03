@@ -12,47 +12,58 @@ function Form({ setUser, setContacts }) {
     const [name, setName] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
+
     // checks if the details are correct and if so connects to chat page and saves user info
     async function handleSubmit(e) {
         e.preventDefault()
         async function getChats() {
             try {
-                const url = "http://localhost:5000/api/Chats"
+                const url = "http://localhost:12345/api/Chats"
                 var res = await getReq(url, user.token);
+                if (res.status === 401) {
+                    setError("Please try again.")
+                }
                 var gotten = await res.json();
                 if (Array.isArray(gotten)) {
                     setContacts(gotten);
-                } else {
-                    // Handle the case where the response is not a valid array
-                    console.error("Invalid data format: ", gotten);
                 }
             } catch (error) {
-    
+                throw error
             }
         }
-        const data = { username: name, password : password }
+
+        const data = { username: name, password: password }
         try {
-            const url =  "http://localhost:5000/api/Tokens"
-            var res = await postReq(data, url);
+            setUser("")
+            const url = "http://localhost:12345/api/Tokens"
+            var res = await postReq(data, url)
+            if (!res.ok) {
+                setError("Wrong username or password.")
+            }
             const token = (await res.text()).trim()
-            const url2 = `http://localhost:5000/api/Users/${name}` 
-            var res2 = await getReq(url2, token) 
+            const url2 = `http://localhost:12345/api/Users/${name}`
+            var res2 = await getReq(url2, token)
+            if (!res2.ok) {
+                setError("Please try again in a few minutes.")
+                return;
+            }
             var user = await res2.json()
-            user = {...user, token: token};
+            user = { ...user, token: token };
             if (res2.ok) {
                 setUser(user)
                 navigate('/chat')
-                getChats();
+                await getChats();
                 return;
             } else {
                 setError("Wrong Credentials")
                 return;
             }
-        } catch (error){
-            // console.error('Error', error)
+        } catch (error) {
             setError("Oops! Our server seems to be taking a coffee break ☕️. We're working hard to fix it and get things back on track. Please bear with us and try again shortly. Thank you for your patience!")
         }
     }
+
+    // the form itself
     return (
         <form onSubmit={handleSubmit}>
             <Username setName={setName}></Username>

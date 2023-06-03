@@ -1,41 +1,64 @@
-import { getReq } from "../../getReq";
+import { getReq } from "../../getReq"
+
 async function getMesseges(id, user) {
     try {
-        const url = `http://localhost:5000/api/Chats/${id}/Messages`
-        var res = await getReq(url, user.token);
-        var data = await res.json();
+        const url = `http://localhost:12345/api/Chats/${id}/Messages`
+        const res = await getReq(url, user.token);
+        if(!res.ok) return null
+        const data = await res.json();
         if (Array.isArray(data)) {
             return data;
-        } else {
-            // Handle the case where the response is not a valid array
-            console.error("Invalid data format: ", data);
         }
     } catch (error) {
-
+        throw error
     }
 }
 
-export async function applyMessages(user, id, setContacts1) {
+export async function applyMessages(user, id, setContacts, upContact) {
     try {
         var messages = await getMesseges(id, user)
+        if (!messages) return
+        setContacts(contacts => {
+            const index = contacts.findIndex(contact => contact.id === id);
+            if (index !== -1) {
+                const updatedContact = {
+                    ...upContact,
+                    messages: messages
+                };
+                const updatedContactsList = [
+                    ...contacts.slice(0, index),
+                    updatedContact,
+                    ...contacts.slice(index + 1)
+                ];
+                return updatedContactsList;
+            }
+            return contacts;
+        });
     } catch (error) {
-        // todo: add actions maybe
-        console.log("error at apply messeges")
+        throw error
     }
-    setContacts1(contacts => {
-        const index = contacts.findIndex(contact => contact.id === id);
-        if (index !== -1) {
-            const updatedContact = {
-                ...contacts[index],
-                messages: messages
-            };
-            const updatedContactsList = [
-                ...contacts.slice(0, index),
-                updatedContact,
-                ...contacts.slice(index + 1)
-            ];
-            return updatedContactsList;
-        }
-        return contacts;
-    });
+}
+
+export async function applyMessagesListed(user, id, setContacts) {
+    try {
+        var messages = await getMesseges(id, user)
+        setContacts(contacts => {
+            const index = contacts.findIndex(contact => contact.id === id);
+            if (index !== -1) {
+                const updatedContact = {
+                    ...contacts[index],
+                    messages: messages,
+                };
+                const updatedContactsList = [
+                    ...contacts.slice(0, index),
+                    updatedContact,
+                    ...contacts.slice(index + 1)
+                ];
+                return updatedContactsList;
+            }
+            return contacts;
+        });
+    } catch (error) {
+        throw error
+    }
 }

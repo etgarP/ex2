@@ -2,52 +2,80 @@ import { useRef, useState } from "react"
 import { postReqAuthorized } from "../../postReq"
 import { applyMessages } from "../contactsList/getMessages"
 import { getReq } from "../../getReq"
-
-let newMessageId = 1
+import { useNavigate } from 'react-router-dom'
 
 function SendMessage(props) {
-    const { user, contact, setContacts1, contactId } = props
+    const { user, setContacts, contactId } = props
     const inputRef = useRef(null)
     const [value, setValue] = useState("")
-    // enter sends the message
-    // sending the message when pressing on button/enter
+    const navigate = useNavigate()
+
+    // update contacts list with new lastMessage
     const reGetContacts = async () => {
         try {
-            const url = "http://localhost:5000/api/Chats"
-            var res = await getReq(url, user.token);
-            var gotten = await res.json();
-            if (Array.isArray(gotten)) {
-                setContacts1(gotten);
+            const url = "http://localhost:12345/api/Chats"
+            var res = await getReq(url, user.token)
+            if (res.status === 401) {
+                window.alert("Please log in again.")
+            }
+            var newContacts = await res.json();
+            if (Array.isArray(newContacts)) {
+                let contact = newContacts.find((contact) => contact.id === contactId)
+                return contact
             } else {
                 // Handle the case where the response is not a valid array
-                console.error("Invalid data format: ", gotten);
+                return null
             }
         } catch (error) {
-
+            throw error
         }
     }
+
+    // sending the message when pressing on button/enter
     const sendButtonHandler = async () => {
         if (inputRef.current.value.trim() !== '') {
             let message = inputRef.current.value.trim();
-            const newMessage = { msg : message }
+            const newMessage = { msg: message }
             try {
-                const url = `http://localhost:5000/api/Chats/${contactId}/Messages`
+                const url = `http://localhost:12345/api/Chats/${contactId}/Messages`
                 var res = await postReqAuthorized(newMessage, url, user.token)
+                if (res.status === 400) {
+                    window.alert("Invalid request parameters.")
+                } else if (res.status === 401) {
+                    window.alert("Please log in again.")
+                    navigate('/')
+                    return;
+                } else if (!res.ok) {
+                    window.alert("Please log in again.")
+                    navigate('/')
+                    return;
+                }
             } catch (error) {
-                // todo: do something here maybe
-                console.log("error in send message.js", error)
+                window.alert("Please log in again.")
+                navigate('/')
+                return;
             }
-            setValue("")
-            await reGetContacts();
-            applyMessages(user, contactId, setContacts1)
+            try {
+                let upContact = await reGetContacts();
+                if (!upContact) return;
+                await applyMessages(user, contactId, setContacts, upContact)
+                setValue("")
+            } catch (error) {
+                window.alert("Please log in again.")
+                navigate('/')
+            }
         }
     }
+
+    // if enter pressed handle send
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
             event.preventDefault()
             sendButtonHandler()
         }
     }
+
+    // send textbox and button
     return (
         <div className="input-group message-box" id="send-text">
             {/* message textbox */}

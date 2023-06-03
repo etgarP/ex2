@@ -7,6 +7,7 @@ export function Username({ value, set, text, setText }) {
     function changeReq(e) {
         setText("Your username must be 5-20 characters long, and may contain letters, numbers and '_'.")
     }
+
     return (
         <>
             {/* takes Username  */}
