@@ -20,7 +20,6 @@ function SendMessage(props) {
             var newContacts = await res.json();
             if (Array.isArray(newContacts)) {
                 let contact = newContacts.find((contact) => contact.id === contactId)
-                console.log(contact)
                 return contact
             } else {
                 // Handle the case where the response is not a valid array

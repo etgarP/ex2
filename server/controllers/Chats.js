@@ -117,9 +117,11 @@ const deleteChatById = async (req, res) => {
     }
     try {
         // returs 404 if chat not found
-        if (!chatService.deleteChatById(id)) {
+        let chat = await chatService.getChatById(id)
+        if (!chat) {
             return res.status(404).send("Chat not found")
         }
+        chatService.deleteChatById(chat, id)
         return res.status(200).send("Chat successfully deleted")
     } catch (error) {
         return res.status(500).send("Internal Server Error")

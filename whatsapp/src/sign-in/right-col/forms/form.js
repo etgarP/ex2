@@ -47,6 +47,8 @@ function Form({ setUser, setContacts }) {
                 console.log("Invalid request parameters");
                 window.alert("User doesnt exists.")
                 return;
+            } else if (!res.ok) {
+                return;
             }
             const token = (await res.text()).trim()
             const url2 = `http://localhost:12345/api/Users/${name}`

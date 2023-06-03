@@ -39,7 +39,8 @@ function AddContactIcon(props) {
             const url = "http://localhost:12345/api/Chats"
             const data = { username: input }
             var res = await postReqAuthorized(data, url, token)
-            if (res.status === 400) {
+            if (res.ok) { }
+            else if (res.status === 400) {
                 window.alert("Wrong username")
             } else if (res.status === 401) {
                 console.log("Unauthorized token.")

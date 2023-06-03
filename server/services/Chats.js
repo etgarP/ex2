@@ -119,13 +119,8 @@ const getNewMessage = async (id, sender, content) => {
 }
 
 // delets the chat and its messages and counter
-const deleteChatById = async (id) => {
+const deleteChatById = async (chat, id) => {
     try {
-        //gets the chat
-        const chat = await Chat.findOne({ "id": id }).exec()
-        if (!chat) {
-            return false
-        }
         // deletes its messages
         chat.messages.forEach(async message => {
             let messageModel = await Message.findOne(message)
