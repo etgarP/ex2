@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { postReqAuthorized } from "../../postReq"
 import { applyMessages } from "../contactsList/getMessages"
 import { getReq } from "../../getReq"
@@ -10,6 +10,23 @@ function SendMessage(props) {
     const inputRef = useRef(null)
     const [value, setValue] = useState("")
     const navigate = useNavigate()
+
+    useEffect(()=>{
+        socket.on('idmsg',async (id)=>{
+            if(id===contactId){
+                try {
+                    let upContact = await reGetContacts();
+                    if (!upContact) return;
+                    await applyMessages(user, id, setContacts, upContact)
+                    setValue("")
+                } catch (error) {
+                    window.alert("Please log in again.")
+                    navigate('/')
+                }
+            }            
+        })
+    })
+
 
     // update contacts list with new lastMessage
     const reGetContacts = async () => {
@@ -34,7 +51,7 @@ function SendMessage(props) {
 
     // sending the message when pressing on button/enter
     const sendButtonHandler = async () => {
-        socket.emit('msg', 'asaaaaaaaaaa')
+        socket.emit('idmsg', contactId)
         if (inputRef.current.value.trim() !== '') {
             let message = inputRef.current.value.trim();
             const newMessage = { msg: message }

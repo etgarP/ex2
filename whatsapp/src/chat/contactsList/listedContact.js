@@ -4,11 +4,15 @@ import Date from "./date"
 import LastMessage from "./lastMassage"
 import { applyMessagesListed } from './getMessages.js'
 import { useNavigate } from 'react-router-dom'
+import { socket } from "../../sockets/socket"
 
 function ListedContact(props) {
     const { id, picture, contactName, date = "", lastMessage = "", setContactId, upH, setContacts, user } = props
     const navigate = useNavigate()
 
+    socket.on('id', (id)=>{
+        console.log('sdfdsf')
+    })
     // change the contact to the contact chosen
     const changeContact = async () => {
         try {
