@@ -1,75 +1,80 @@
 import { useRef, useState } from "react"
 import { postReqAuthorized } from "../../postReq"
 import { getReq } from "../../getReq"
+import { useNavigate } from 'react-router-dom'
 
 function AddContactIcon(props) {
-    const { setContacts1, token, contacts1 } = props
+    const { setContacts, token, contacts, setUser } = props
     const inputRef = useRef(null)
     const [value, setValue] = useState("")
+    const navigate = useNavigate()
     // adding contact to contacts list
     async function getNewContacts(username) {
         try {
             const url = "http://localhost:12345/api/Chats"
             var res = await getReq(url, token)
+            if (res.status === 401) {
+                console.log("Unauthorized token.")
+                window.alert("Authorization expired. Please log in again.")
+            }
             if (res.ok) {
                 var newContacts = await res.json()
-                const newContact = newContacts.find((contact)=>{
-                    if(contact.user.username === username){
-                        return contact
-                    }
+                const newContact = newContacts.find((contact) => {
+                    return contact.user.username === username
                 })
-                setContacts1((prevContacts) => ([...prevContacts, newContact]))
-
+                if (newContact) {
+                    setContacts((prevContacts) => [...prevContacts, newContact])
+                }
             } else {
-                //todo
+                console.error("Failed to fetch new contacts") // Handle the case where the API request was not successful
             }
         } catch (error) {
-
+            console.error("Error while fetching new contacts", error) // Handle any other errors that occur during the process
         }
     }
+
 
     async function addPersonToServer(input) {
         try {
             const url = "http://localhost:12345/api/Chats"
             const data = { username: input }
             var res = await postReqAuthorized(data, url, token)
-            if (res.ok) {
-            } else if (res.status === 400) {
-                window.alert("Wrong username");
+            if (res.status === 400) {
+                window.alert("Wrong username")
             } else if (res.status === 401) {
-                // todo delete
-                window.alert("Unauthorized token. Please refresh the page and start again.");
+                console.log("Unauthorized token.")
+                window.alert("Authorization expired. Please log in again.")
+                // logging out
+                setUser('')
+                navigate('/')
+            } else if (res.status === 409) {
+                window.alert("Chat already exists")
             } else {
-                //todo
+                console.error("Failed to add person to server")
             }
             return res.ok
         } catch (error) {
-            // console.error('Error', error)
-            // setError("Oops! Our server seems to be taking a coffee break ☕️. We're working hard to fix it and get things back on track. Please bear with us and try again shortly. Thank you for your patience!")
+            console.error('Error', error)
         }
     }
 
-
     const addPersonButtonHandler = async () => {
         let input = inputRef.current.value
-        const found = contacts1.find((contact) => {
-            if (contact.user.username === input) {
-              return contact;
-            }
-        });
+        const found = contacts.find((contact) => {
+            return contact.user.username === input
+        })
         if (found) {
             window.alert("Username already exist");
             return
         }
         if (input) {
             let ok = await addPersonToServer(input)
-            if(ok){
+            if (ok) {
                 getNewContacts(input)
             }
             setValue("")
         }
     }
-
 
     return (
         <div className="col-2 center align-right">

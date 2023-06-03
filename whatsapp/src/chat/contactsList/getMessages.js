@@ -1,9 +1,18 @@
-import { getReq } from "../../getReq";
+import { getReq } from "../../getReq"
+
 async function getMesseges(id, user) {
     try {
         const url = `http://localhost:12345/api/Chats/${id}/Messages`
-        var res = await getReq(url, user.token);
-        var data = await res.json();
+        const res = await getReq(url, user.token);
+        if(res.status===400){
+            window.alert("Invalid request parameters.") 
+        } else if (res.status === 401) {
+            console.log("Unauthorized token.")
+            window.alert("Authorization expired. Please log in again.")
+        } else if (res.status === 404) {
+            window.alert("There is no such chat.")
+        }
+        const data = await res.json();
         if (Array.isArray(data)) {
             return data;
         } else {
@@ -11,23 +20,22 @@ async function getMesseges(id, user) {
             console.error("Invalid data format: ", data);
         }
     } catch (error) {
-
+        console.error(error)
     }
 }
 
-export async function applyMessages(user, id, setContacts1, upContact) {
+export async function applyMessages(user, id, setContacts, upContact) {
     try {
         var messages = await getMesseges(id, user)
     } catch (error) {
-        // todo: add actions maybe
         console.log("error at apply messeges")
     }
-    setContacts1(contacts => {
+    setContacts(contacts => {
         const index = contacts.findIndex(contact => contact.id === id);
         if (index !== -1) {
             const updatedContact = {
                 ...upContact,
-                messages: messages,
+                messages: messages
             };
             const updatedContactsList = [
                 ...contacts.slice(0, index),
@@ -40,14 +48,13 @@ export async function applyMessages(user, id, setContacts1, upContact) {
     });
 }
 
-export async function applyMessagesListed(user, id, setContacts1) {
+export async function applyMessagesListed(user, id, setContacts) {
     try {
         var messages = await getMesseges(id, user)
     } catch (error) {
-        // todo: add actions maybe
-        console.log("error at apply messeges")
+        console.log("error at apply messeges listed")
     }
-    setContacts1(contacts => {
+    setContacts(contacts => {
         const index = contacts.findIndex(contact => contact.id === id);
         if (index !== -1) {
             const updatedContact = {

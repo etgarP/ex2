@@ -11,6 +11,7 @@ export function validateUsername(name, setText) {
     }
     return false
 }
+
 // checks if the password is valid, if so returns true
 export function validatePassword(password, setText) {
     // needs to have lower and higher case letter and be length 8-20
@@ -24,6 +25,7 @@ export function validatePassword(password, setText) {
         return false
     }
 }
+
 // checks if the confirm password is valid, if so returns true
 export function validateConfirmPass(password, conPass, setText) {
     // checks if the confirm doesnt match or empty
@@ -34,6 +36,7 @@ export function validateConfirmPass(password, conPass, setText) {
     }
     return true
 }
+
 // checks if the display name is valid, if so returns true
 export function validateDisplayName(name, setText) {
 
@@ -48,6 +51,7 @@ export function validateDisplayName(name, setText) {
         return false
     }
 }
+
 // checks if the picture is valid, if so returns true
 export function validatePicture(picture, setText) {
     const MAXSIZE = 5 * 1024 * 1024

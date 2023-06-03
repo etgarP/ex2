@@ -3,10 +3,10 @@ import Welcome from './welcome.js'
 import ToSign from './toSign.js'
 
 function RightCol({ users, setUsers }) {
+  // devision of right side to 3 parts - the register area
   return (
     <div className="col right-col">
       <div className="p-5">
-        {/* the register area */}
         <Welcome></Welcome>
         <Form ></Form>
         <ToSign></ToSign>
@@ -14,5 +14,4 @@ function RightCol({ users, setUsers }) {
     </div>
   )
 }
-
 export default RightCol

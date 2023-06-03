@@ -3,15 +3,15 @@ import SendMessage from "./sendMessage"
 import background from "../pictures/whotsApp.png"
 
 function PrivateChat(props) {
-    const { setContacts, contactId, contacts, setContacts1, contacts1, user } = props
+    const { contactId, setContacts, contacts, user } = props
     var contact = null;
-    if (contacts1 != null)
-        contact = contacts1.find(contact => contact.id === contactId)
+    if (contacts != null)
+        contact = contacts.find(contact => contact.id === contactId)
     // default background when no contact was chosen yet
     if (!contact) {
         return (
             <div className="col-7 right-side whots-container" id='bottom-right'>
-                <img src={background} className="background-img" />
+                <img alt="" src={background} className="background-img" />
             </div>
         )
     }
@@ -36,7 +36,7 @@ function PrivateChat(props) {
                 </section>
             </div>
             {/* send message area */}
-            <SendMessage user={user} setContacts1={setContacts1} contact={contact} contactId={contactId}></SendMessage>
+            <SendMessage user={user} setContacts={setContacts} contact={contact} contactId={contactId}></SendMessage>
         </div>
     )
 }

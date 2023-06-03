@@ -12,6 +12,7 @@ export async function postReq(data, url) {
         throw error; // Rethrow the error to propagate it to the caller
     }
 }
+
 export async function postReqAuthorized(data, url, token) {
     try {
         const res = await fetch(url, {
