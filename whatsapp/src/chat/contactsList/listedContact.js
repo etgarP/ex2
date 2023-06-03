@@ -6,7 +6,7 @@ import { applyMessagesListed } from './getMessages.js'
 import { useNavigate } from 'react-router-dom'
 import { socket } from "../../sockets/socket"
 import { useEffect } from "react"
-import Badge from './badge'
+import Badge from './badge.js'
 import { useState } from 'react'
 
 function ListedContact(props) {
@@ -18,7 +18,7 @@ function ListedContact(props) {
             if (id === sentId && id != contactId) {
                 setBadge(badge + 1)
             }
-            if (id === sentId)
+            if (contactId === sentId)
                 setBadge(0)
 
         }
