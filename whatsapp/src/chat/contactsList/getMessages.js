@@ -18,25 +18,25 @@ export async function applyMessages(user, id, setContacts, upContact) {
     try {
         var messages = await getMesseges(id, user)
         if (!messages) return
+        setContacts(contacts => {
+            const index = contacts.findIndex(contact => contact.id === id);
+            if (index !== -1) {
+                const updatedContact = {
+                    ...upContact,
+                    messages: messages
+                };
+                const updatedContactsList = [
+                    ...contacts.slice(0, index),
+                    updatedContact,
+                    ...contacts.slice(index + 1)
+                ];
+                return updatedContactsList;
+            }
+            return contacts;
+        });
     } catch (error) {
         throw error
     }
-    setContacts(contacts => {
-        const index = contacts.findIndex(contact => contact.id === id);
-        if (index !== -1) {
-            const updatedContact = {
-                ...upContact,
-                messages: messages
-            };
-            const updatedContactsList = [
-                ...contacts.slice(0, index),
-                updatedContact,
-                ...contacts.slice(index + 1)
-            ];
-            return updatedContactsList;
-        }
-        return contacts;
-    });
 }
 
 export async function applyMessagesListed(user, id, setContacts) {
@@ -59,6 +59,6 @@ export async function applyMessagesListed(user, id, setContacts) {
             return contacts;
         });
     } catch (error) {
-        throw new error("Server issues")
+        throw error
     }
 }

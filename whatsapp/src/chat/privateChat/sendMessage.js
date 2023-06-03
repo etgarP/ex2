@@ -9,7 +9,7 @@ function SendMessage(props) {
     const inputRef = useRef(null)
     const [value, setValue] = useState("")
     const navigate = useNavigate()
-    
+
     // update contacts list with new lastMessage
     const reGetContacts = async () => {
         try {
@@ -27,13 +27,13 @@ function SendMessage(props) {
                 return null
             }
         } catch (error) {
-                throw error
+            throw error
         }
     }
 
     // sending the message when pressing on button/enter
     const sendButtonHandler = async () => {
-            if (inputRef.current.value.trim() !== '') {
+        if (inputRef.current.value.trim() !== '') {
             let message = inputRef.current.value.trim();
             const newMessage = { msg: message }
             try {
@@ -51,13 +51,19 @@ function SendMessage(props) {
                     return;
                 }
             } catch (error) {
+                window.alert("Please log in again.")
                 navigate('/')
                 return;
             }
-            let upContact = await reGetContacts();
-            if (!upContact) return;
-            applyMessages(user, contactId, setContacts, upContact)
-            setValue("")
+            try {
+                let upContact = await reGetContacts();
+                if (!upContact) return;
+                await applyMessages(user, contactId, setContacts, upContact)
+                setValue("")
+            } catch (error) {
+                window.alert("Please log in again.")
+                navigate('/')
+            }
         }
     }
 

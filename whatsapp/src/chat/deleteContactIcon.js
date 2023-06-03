@@ -42,14 +42,20 @@ function DeleteContactIcon(props) {
     }
 
     const deletePersonButtonHandler = async () => {
-        let ok = await deletePersonFromServer(contactId)
-        if (ok) {
-            try {
-                reGetContacts()
-            } catch (error) {
-                window.alert("Please log in again.")
-                navigate("/")
+        try {
+            let ok = await deletePersonFromServer(contactId)
+            if (ok) {
+                try {
+                    await reGetContacts()
+                } catch (error) {
+                    window.alert("Please log in again.")
+                    navigate("/")
+                }
             }
+            
+        } catch (error) {
+            window.alert("Disconnected from the server")
+            navigate('/')
         }
     }
 

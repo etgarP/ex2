@@ -72,7 +72,6 @@ const getChatById = async (req, res) => {
             return res.status(400).send("Bad request")
         }
         let aut = req.headers.authorization
-        console.log(aut)
         const words = aut.split(' ')
         const token = words[1]
         jwt.verify(token, 'hemi-hemi-is-never-gonna-give-you-up')

@@ -24,7 +24,6 @@ const postUser = async (req, res) => {
         // User created successfully
         return res.status(200).send();
     } catch (error) {
-        console.error("Error creating user:", error);
         return res.status(500).send("Internal Server Error");
     }
 };

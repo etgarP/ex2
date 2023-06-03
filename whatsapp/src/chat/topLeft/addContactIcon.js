@@ -66,7 +66,7 @@ function AddContactIcon(props) {
             if (input) {
                 let ok = await addPersonToServer(input)
                 if (ok) {
-                    getNewContacts(input)
+                    await getNewContacts(input)
                 }
                 setValue("")
             }

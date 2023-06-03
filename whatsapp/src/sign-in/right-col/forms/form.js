@@ -52,7 +52,7 @@ function Form({ setUser, setContacts }) {
             if (res2.ok) {
                 setUser(user)
                 navigate('/chat')
-                getChats();
+                await getChats();
                 return;
             } else {
                 setError("Wrong Credentials")
