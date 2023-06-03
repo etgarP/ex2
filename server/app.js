@@ -84,6 +84,9 @@ io.on('connection', (socket) => {
         console.log(msg)
         socket.emit('client log','ooooo' + msg)
     })
+    socket.on('id', (id)=>{
+        socket.broadcast.emit('id',id)
+    })
     socket.on('disconnect', ()=>{
         console.log('disconntected')
     })

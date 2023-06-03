@@ -3,6 +3,7 @@ import { postReqAuthorized } from "../../postReq"
 import { applyMessages } from "../contactsList/getMessages"
 import { getReq } from "../../getReq"
 import { useNavigate } from 'react-router-dom'
+import { socket } from '../../sockets/socket.js'
 
 function SendMessage(props) {
     const { user, setContacts, contactId } = props
@@ -33,6 +34,7 @@ function SendMessage(props) {
 
     // sending the message when pressing on button/enter
     const sendButtonHandler = async () => {
+        socket.emit('msg', 'asaaaaaaaaaa')
         if (inputRef.current.value.trim() !== '') {
             let message = inputRef.current.value.trim();
             const newMessage = { msg: message }
