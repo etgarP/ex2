@@ -5,13 +5,29 @@ import LastMessage from "./lastMassage"
 import { applyMessagesListed } from './getMessages.js'
 import { useNavigate } from 'react-router-dom'
 import { socket } from "../../sockets/socket"
+import { useEffect } from "react"
+import Badge from './badge.js'
+import { useState } from 'react'
 
 function ListedContact(props) {
-    const { id, picture, contactName, date = "", lastMessage = "", setContactId, upH, setContacts, user } = props
+    const [ badge, setBadge ] = useState(0)
+    const { contactId, id, picture, contactName, date = "", lastMessage = "", setContactId, upH, setContacts, user } = props
     const navigate = useNavigate()
+    useEffect(()=>{ //todo =
+        const handleHello = (sentId) => {
+            if(id===sentId&&id!=contactId){
+                setBadge(badge + 1)
+                console.log('inside ', contactName)
+            }
+            console.log('outside')
 
-    socket.on('id', (id)=>{
-        console.log('sdfdsf')
+        }
+        socket.on('idmsg', handleHello)
+        return () => {
+            // Unregister event listeners and disconnect socket
+            socket.off('idmsg', handleHello);
+          };
+          
     })
     // change the contact to the contact chosen
     const changeContact = async () => {
@@ -37,6 +53,7 @@ function ListedContact(props) {
                             <ContactName contactName={contactName}></ContactName>
                             {/* the date of the last message the contact recieved */}
                             <Date date={date}></Date>
+                            <Badge unReadNum={badge} setNum={setBadge} contactId={contactId} id={id} />
                         </div >
                         {/* the last message the contact recieved */}
                         <LastMessage lastMessage={lastMessage}></LastMessage>

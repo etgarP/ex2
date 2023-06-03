@@ -11,9 +11,9 @@ function SendMessage(props) {
     const [value, setValue] = useState("")
     const navigate = useNavigate()
 
-    useEffect(()=>{
-        socket.on('idmsg',async (id)=>{
-            if(id===contactId){
+    useEffect(() => {
+        const handleSendSocket = async (id) => {
+            if (id === contactId) {
                 try {
                     let upContact = await reGetContacts();
                     if (!upContact) return;
@@ -23,8 +23,14 @@ function SendMessage(props) {
                     window.alert("Please log in again.")
                     navigate('/')
                 }
-            }            
-        })
+            }
+            
+        }
+        socket.on('idmsg',handleSendSocket)
+        return () => {
+            // Unregister event listeners and disconnect socket
+            socket.off('idmsg', handleSendSocket);
+        };
     })
 
 
@@ -51,8 +57,8 @@ function SendMessage(props) {
 
     // sending the message when pressing on button/enter
     const sendButtonHandler = async () => {
-        socket.emit('idmsg', contactId)
         if (inputRef.current.value.trim() !== '') {
+
             let message = inputRef.current.value.trim();
             const newMessage = { msg: message }
             try {
@@ -79,6 +85,7 @@ function SendMessage(props) {
                 if (!upContact) return;
                 await applyMessages(user, contactId, setContacts, upContact)
                 setValue("")
+                socket.emit('idmsg', contactId)
             } catch (error) {
                 window.alert("Please log in again.")
                 navigate('/')
