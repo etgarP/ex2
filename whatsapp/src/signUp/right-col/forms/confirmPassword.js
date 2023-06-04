@@ -1,5 +1,5 @@
 function ConfirmPassword({ value, set, text, setText }) {
-    
+
     // sets the state using the value that changed
     function setInfo(e) {
         set(e.target.value)

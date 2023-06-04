@@ -1,4 +1,4 @@
-function Badge({ unReadNum, contactId, id }) {
+function Badge({ unReadNum }) {
     if (unReadNum > 0) {
         return <div className={`col-1`}>
             <span className="badge badge-pill badge-success notif">{unReadNum}</span>
@@ -7,5 +7,4 @@ function Badge({ unReadNum, contactId, id }) {
         return null
     }
 }
-
 export default Badge

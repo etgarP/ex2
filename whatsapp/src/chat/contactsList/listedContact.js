@@ -15,14 +15,14 @@ function ListedContact(props) {
     const [badge, setBadge] = useState(0)
     const { contactId, id, picture, contactName, date = "", lastMessage = "", setContactId, upH, setContacts, user } = props
     const navigate = useNavigate()
-    useEffect(() => { 
+    useEffect(() => {
 
         // handling sent messages
         const handleSendSocket = async (sentId) => {
             if (id === sentId && id !== contactId) {
                 setBadge(badge + 1)
             }
-            if (contactId === sentId){
+            if (contactId === sentId) {
                 setBadge(0)
             }
             if (sentId === contactId && id === contactId) {
@@ -38,16 +38,17 @@ function ListedContact(props) {
             if (id === sentId && id !== contactId) {
                 console.log("were in")
                 try {
-                  let upContact = await reGetContact(id);
-                  if (!upContact) return;
-                  await applyMessages(user, sentId, setContacts, upContact)
+                    let upContact = await reGetContact(id);
+                    if (!upContact) return;
+                    await applyMessages(user, sentId, setContacts, upContact)
                 } catch (error) {
-                  window.alert("Please log in again.")
-                  navigate('/')
+                    window.alert("Please log in again.")
+                    navigate('/')
                 }
-              }
+            }
         }
 
+        // handling delete person
         const handleDelete = async (sentId) => {
             if (sentId === id) {
                 try {
@@ -68,6 +69,7 @@ function ListedContact(props) {
         };
     })
 
+    // update contacts list
     const reGetContacts = async () => {
         try {
             const url = "http://localhost:12345/api/Chats"
@@ -131,7 +133,7 @@ function ListedContact(props) {
                             <ContactName contactName={contactName}></ContactName>
                             {/* the date of the last message the contact recieved */}
                             <Date date={date}></Date>
-                            <Badge unReadNum={badge} contactId={contactId} id={id} />
+                            <Badge unReadNum={badge} />
                         </div >
                         {/* the last message the contact recieved */}
                         <LastMessage lastMessage={lastMessage}></LastMessage>

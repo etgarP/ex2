@@ -25,6 +25,7 @@ function DeleteContactIcon(props) {
         }
     }
 
+    // get to chats updating contacts
     const reGetContacts = async () => {
         try {
             const url = "http://localhost:12345/api/Chats"
@@ -42,6 +43,7 @@ function DeleteContactIcon(props) {
         }
     }
 
+    // handling press on delete button
     const deletePersonButtonHandler = async () => {
         try {
             let ok = await deletePersonFromServer(contactId)
@@ -54,7 +56,6 @@ function DeleteContactIcon(props) {
                     navigate("/")
                 }
             }
-            
         } catch (error) {
             window.alert("Disconnected from the server")
             navigate('/')

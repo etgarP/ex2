@@ -1,4 +1,3 @@
-
 function Password({ setPassword }) {
     // saves the password change
     function updatePassword(e) {
@@ -15,5 +14,4 @@ function Password({ setPassword }) {
         </>
     )
 }
-
 export default Password

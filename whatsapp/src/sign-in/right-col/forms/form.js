@@ -16,6 +16,8 @@ function Form({ setUser, setContacts }) {
     // checks if the details are correct and if so connects to chat page and saves user info
     async function handleSubmit(e) {
         e.preventDefault()
+
+        // get chats from server and updates contact
         async function getChats() {
             try {
                 const url = "http://localhost:12345/api/Chats"

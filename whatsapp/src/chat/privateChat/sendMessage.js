@@ -12,6 +12,8 @@ function SendMessage(props) {
     const navigate = useNavigate()
 
     useEffect(() => {
+
+        // handling sent message
         const handleSendSocket = async (id) => {
             if (id === contactId) {
                 try {
@@ -24,15 +26,13 @@ function SendMessage(props) {
                     navigate('/')
                 }
             }
-            
         }
-        socket.on('idmsg',handleSendSocket)
+        socket.on('idmsg', handleSendSocket)
         return () => {
             // Unregister event listeners and disconnect socket
             socket.off('idmsg', handleSendSocket);
         };
     })
-
 
     // update contacts list with new lastMessage
     const reGetContacts = async () => {

@@ -1,9 +1,9 @@
-const express = require('express'); 
-const bodyParser = require('body-parser'); 
+const express = require('express');
+const bodyParser = require('body-parser');
 var app = express();
 const http = require('http')
-const cors = require('cors'); 
-const customEnv = require('custom-env'); 
+const cors = require('cors');
+const customEnv = require('custom-env');
 const mongoose = require('mongoose')
 
 const server = http.createServer(app)
@@ -14,7 +14,7 @@ app.use(express.json());
 
 app.use(cors());
 
-customEnv.env(process.env.NODE_ENV, './config'); 
+customEnv.env(process.env.NODE_ENV, './config');
 console.log(process.env.CONNECTION_STRING)
 console.log(process.env.PORT)
 
@@ -41,20 +41,20 @@ const Tokens = require('./routes/Tokens')
 app.use('/api/Tokens', Tokens);
 
 io.on('connection', (socket) => {
-    socket.on('idmsg', (id)=>{
-        socket.broadcast.emit('idmsg',id)
+    socket.on('idmsg', (id) => {
+        socket.broadcast.emit('idmsg', id)
     })
-    socket.on('idDel', (id)=>{
-        socket.broadcast.emit('idDel',id)
+    socket.on('idDel', (id) => {
+        socket.broadcast.emit('idDel', id)
     })
-    socket.on('usernameAdd', ({ sender, receiver })=>{
+    socket.on('usernameAdd', ({ sender, receiver }) => {
         socket.broadcast.emit('usernameAdd', { sender, receiver })
     })
-    socket.on('disconnect', ()=>{
+    socket.on('disconnect', () => {
         console.log('disconntected')
     })
 })
 
-server.listen(process.env.PORT,()=>{
-    console.log(`app is listening on poort ${process.env.PORT}`);
+server.listen(process.env.PORT, () => {
+    console.log(`app is listening on port ${process.env.PORT}`);
 })

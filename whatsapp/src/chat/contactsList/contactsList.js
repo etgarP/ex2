@@ -1,8 +1,7 @@
 import ListedContact from "./listedContact"
 import { socket } from "../../sockets/socket"
-import { Navigate, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { useEffect } from "react"
-import { applyMessages } from "./getMessages"
 import { getReq } from "../../getReq"
 
 function ContactsList(props) {
@@ -10,19 +9,19 @@ function ContactsList(props) {
   const navigate = useNavigate()
 
   useEffect(() => {
+    // handling add person
     const handleAdd = async ({ sender, receiver }) => {
       if (user.username === receiver) {
         try {
           let upContact = await reGetContact(sender);
           if (!upContact) return;
-          setContacts(prevContacts => ([ ...prevContacts, upContact ]));
+          setContacts(prevContacts => ([...prevContacts, upContact]));
         } catch (error) {
           window.alert("Please log in again.")
           navigate('/')
         }
       }
     }
-
     socket.on('usernameAdd', handleAdd)
     return () => {
       // Unregister event listeners and disconnect socket
@@ -92,5 +91,4 @@ function ContactsList(props) {
     return null
   }
 }
-
 export default ContactsList

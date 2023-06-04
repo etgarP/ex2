@@ -31,7 +31,7 @@ function AddContactIcon(props) {
         }
     }
 
-
+    // adding person to server
     async function addPersonToServer(input) {
         try {
             const url = "http://localhost:12345/api/Chats"
@@ -54,6 +54,7 @@ function AddContactIcon(props) {
         }
     }
 
+    // handling press on add button
     const addPersonButtonHandler = async () => {
         try {
             let input = inputRef.current.value
@@ -70,7 +71,7 @@ function AddContactIcon(props) {
                     await getNewContacts(input)
                 }
                 setValue("")
-                socket.emit('usernameAdd', {sender: user.username, receiver: input})
+                socket.emit('usernameAdd', { sender: user.username, receiver: input })
             }
         } catch (error) {
             window.alert("Disconnected, please try logging in again.")
