@@ -14,7 +14,7 @@ const getChatById = async (id) => {
     }
 };
 
-
+// 
 const findByTwoUsers = async (user1, user2) => {
     try {
         const chats = await getUserChats(user1)
@@ -63,6 +63,7 @@ const createByUsername = async (myUser, otherUser) => {
         throw error
     }
 }
+
 // gets messages by chat id
 const getChatMessagesById = async (id) => {
     try {
@@ -80,7 +81,6 @@ const addToCounter = async (id) => {
         const counter = await Counter.findOne({ id }).exec();
         const updatedCount = counter.messageCount + 1;
         await Counter.findOneAndUpdate({ id }, { messageCount: updatedCount });
-
         return updatedCount;
     } catch (error) {
         throw error;
@@ -143,7 +143,6 @@ const getUserChats = async (username) => {
         //finds all the chats that user is in
         const user = await User.findOne({ username });
         const chats = await Chat.find({ users: user._id }).populate('users').populate({ path: 'messages', model: 'Message' });
-
         const transformedChats = [];
         // created the json objects and adds it and sends it
         chats.forEach((chat) => {
@@ -153,7 +152,6 @@ const getUserChats = async (username) => {
                 const keys = Object.keys(messages);
                 const lastKey = keys[keys.length - 1];
                 const lastMessage = messages[lastKey];
-
                 transformedChats.push({
                     id: chat.id,
                     user: otherUser,
@@ -161,14 +159,10 @@ const getUserChats = async (username) => {
                 });
             }
         });
-
         return transformedChats;
-
     } catch (error) {
         throw error;
     }
 };
-
-
 
 module.exports = { getChatById, deleteChatById, getUserChats, getChatMessagesById, postChatMessagesById, createByUsername, findByTwoUsers, getNewMessage }

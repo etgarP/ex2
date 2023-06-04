@@ -14,7 +14,7 @@ const postToken = async (req, res) => {
         var user = req.body
         // Check if required request parameters are present
         if (!(user.username && user.password)) {
-            return res.status(400).send("Invalid request parameters");          
+            return res.status(400).send("Invalid request parameters");
         }
 
         // Check if user already exists

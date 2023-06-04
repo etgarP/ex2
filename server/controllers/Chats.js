@@ -163,6 +163,7 @@ const postChatMessagesById = async (req, res) => {
     }
 }
 
+// get chat by id
 const getChatMessagesById = async (req, res) => {
     try {
         // verifing a user
