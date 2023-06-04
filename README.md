@@ -26,9 +26,15 @@ The server is responsible for handling the following API endpoints:
 
 ## Client-Side Integration
 
-We have established a connection between the clients and the server using Socket.IO. This integration allows for real-time messaging between users. When a user sends a message to another user, the recipient immediately sees the message on their chat page or contact list. Even if the messaging page with a specific user is not open, the contact area on the left still receives updates, and a notification is displayed.
+- The client-side web application has been transformed from a local JavaScript site to a site that communicates with the server by making GET, POST, and DELETE requests.
 
-## Running the Site
+- Also, the following functionalities have been implemented:
+
+- Real-time messaging: Whenever a user sends a message to another user, the recipient sees the message appear on their chat page in real-time.
+
+- Real-time contact list updates: The contact area on the left is updated regardless of whether the messaging page is open. If the chat page is not open for a specific contact, a notification is displayed indicating the number of unread messages.
+
+- ## Running the Site
 
 To run the web application, please follow these steps:
 
