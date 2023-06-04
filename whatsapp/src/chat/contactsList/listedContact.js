@@ -18,7 +18,6 @@ function ListedContact(props) {
     useEffect(() => { 
 
         // handling sent messages
-
         const handleSendSocket = async (sentId) => {
             if (id === sentId && id !== contactId) {
                 setBadge(badge + 1)
@@ -28,7 +27,7 @@ function ListedContact(props) {
             }
             if (sentId === contactId && id === contactId) {
                 try {
-                    let upContact = await reGetContact();
+                    let upContact = await reGetContact(contactId);
                     if (!upContact) return;
                     await applyMessages(user, sentId, setContacts, upContact)
                 } catch (error) {
@@ -36,6 +35,17 @@ function ListedContact(props) {
                     navigate('/')
                 }
             }
+            if (id === sentId && id !== contactId) {
+                console.log("were in")
+                try {
+                  let upContact = await reGetContact(id);
+                  if (!upContact) return;
+                  await applyMessages(user, sentId, setContacts, upContact)
+                } catch (error) {
+                  window.alert("Please log in again.")
+                  navigate('/')
+                }
+              }
         }
 
         const handleDelete = async (sentId) => {
@@ -76,7 +86,7 @@ function ListedContact(props) {
     }
 
     // update contacts list with new lastMessage
-    const reGetContact = async () => {
+    const reGetContact = async (id) => {
         try {
             const url = "http://localhost:12345/api/Chats"
             var res = await getReq(url, user.token)
@@ -85,7 +95,7 @@ function ListedContact(props) {
             }
             var newContacts = await res.json();
             if (Array.isArray(newContacts)) {
-                let contact = newContacts.find((contact) => contact.id === contactId)
+                let contact = newContacts.find((contact) => contact.id === id)
                 return contact
             } else {
                 // Handle the case where the response is not a valid array
