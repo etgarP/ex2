@@ -14,7 +14,7 @@ const getChatById = async (id) => {
     }
 };
 
-// 
+// checks if users have a chat
 const findByTwoUsers = async (user1, user2) => {
     try {
         const chats = await getUserChats(user1)
