@@ -51,4 +51,4 @@ npm install
 6. You can now access the web application by opening the following URL in your browser:
 `http://localhost:12345/`
 
-Thank you for using our WhotchApp Web!
+Thank you for using our WhotsApp Web!
