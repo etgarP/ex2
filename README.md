@@ -42,7 +42,7 @@ To run the web application, please follow these steps:
 
 1. Navigate to the "whatsapp" folder in your terminal or command prompt.
 2. Run the following command to install the required dependencies:
-npm install
+`npm install`
 3. Similarly, navigate to the "server" folder in your terminal or command prompt.
 4. Run the following command to install the server dependencies:
 `npm install`
