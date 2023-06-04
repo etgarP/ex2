@@ -1,6 +1,6 @@
 # Ex2 for Advanced Programming Class
 
-This repository contains an advanced programming assignment where we have developed a client-side web application connected to a server. The server utilizes MongoDB with Mongoose and follows the provided API specifications. We have also implemented real-time communication between clients using Socket.IO.
+This repository contains an advanced programming assignment where we have developed a client-side web application connected to a server. The server utilizes Express, MongoDB with Mongoose and follows the provided API specifications. We have also implemented real-time communication between clients using Socket.IO.
 
 ## Server
 
