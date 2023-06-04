@@ -28,7 +28,9 @@ The server is responsible for handling the following API endpoints:
 
 The client-side web application has been transformed from a local JavaScript site to a site that communicates with the server by making GET, POST, and DELETE requests.
 
-Also, the following functionalities have been implemented:
+Also, We have established a connection between the clients and the server using Socket.IO. 
+
+This enables the following functionality:
 
 - Real-time messaging: Whenever a user sends a message to another user, the recipient sees the message appear on their chat page in real-time.
 
