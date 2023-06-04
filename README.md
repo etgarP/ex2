@@ -50,6 +50,5 @@ npm install
 `npm start`
 6. You can now access the web application by opening the following URL in your browser:
 `http://localhost:12345/`
-7. Start using the site and enjoy the real-time messaging functionality!
 
-Thank you for using our application!
+Thank you for using our WotchApp Web!
