@@ -26,15 +26,15 @@ The server is responsible for handling the following API endpoints:
 
 ## Client-Side Integration
 
-- The client-side web application has been transformed from a local JavaScript site to a site that communicates with the server by making GET, POST, and DELETE requests.
+The client-side web application has been transformed from a local JavaScript site to a site that communicates with the server by making GET, POST, and DELETE requests.
 
-- Also, the following functionalities have been implemented:
+Also, the following functionalities have been implemented:
 
 - Real-time messaging: Whenever a user sends a message to another user, the recipient sees the message appear on their chat page in real-time.
 
 - Real-time contact list updates: The contact area on the left is updated regardless of whether the messaging page is open. If the chat page is not open for a specific contact, a notification is displayed indicating the number of unread messages.
 
-- ## Running the Site
+## Running the Site
 
 To run the web application, please follow these steps:
 
