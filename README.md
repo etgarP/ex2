@@ -37,11 +37,11 @@ To run the web application, please follow these steps:
 npm install
 3. Similarly, navigate to the "server" folder in your terminal or command prompt.
 4. Run the following command to install the server dependencies:
-npm install
+'npm install'
 5. Go to the "server" folder and start the server by running:
-npm start
+'npm start'
 6. You can now access the web application by opening the following URL in your browser:
-http://localhost:12345/
+'http://localhost:12345/'
 7. Start using the site and enjoy the real-time messaging functionality!
 
 Thank you for using our application!
