@@ -32,7 +32,7 @@ function Chat(props) {
             <div className='chat-area'>
                 <div className="row row-cols-2 no-margin" ref={topElem}>
                     {/* TopLeft holds the user info from login*/}
-                    <TopLeft token={user.token} picture={user.profilePic} displayName={user.displayName} setContacts={setContacts} contacts={contacts} setUser={setUser}></TopLeft>
+                    <TopLeft user={user} token={user.token} picture={user.profilePic} displayName={user.displayName} setContacts={setContacts} contacts={contacts} setUser={setUser}></TopLeft>
                     {/* TopRight holds the info of contact we talk to */}
                     <TopRight contacts={contacts} contactId={contactId} user={user} setContacts={setContacts}></TopRight>
                 </div>
@@ -40,7 +40,7 @@ function Chat(props) {
                     <div className="col-5 no-padding" id='bottom-left'>
                         <div className="list-group">
                             {/* ContactsList holds the list of all contacts */}
-                            <ContactsList contacts={contacts} setContactId={setContactId} setContacts={setContacts} upH={updateHeight} user={user}></ContactsList>
+                            <ContactsList contactId={contactId} contacts={contacts} setContactId={setContactId} setContacts={setContacts} upH={updateHeight} user={user}></ContactsList>
                         </div>
                     </div>
                     {/* PrivateChat holds the whole chat section */}

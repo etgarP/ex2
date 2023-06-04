@@ -1,14 +1,38 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { postReqAuthorized } from "../../postReq"
 import { applyMessages } from "../contactsList/getMessages"
 import { getReq } from "../../getReq"
 import { useNavigate } from 'react-router-dom'
+import { socket } from '../../sockets/socket.js'
 
 function SendMessage(props) {
     const { user, setContacts, contactId } = props
     const inputRef = useRef(null)
     const [value, setValue] = useState("")
     const navigate = useNavigate()
+
+    useEffect(() => {
+
+        // handling sent message
+        const handleSendSocket = async (id) => {
+            if (id === contactId) {
+                try {
+                    let upContact = await reGetContacts();
+                    if (!upContact) return;
+                    await applyMessages(user, id, setContacts, upContact)
+                    setValue("")
+                } catch (error) {
+                    window.alert("Please log in again.")
+                    navigate('/')
+                }
+            }
+        }
+        socket.on('idmsg', handleSendSocket)
+        return () => {
+            // Unregister event listeners and disconnect socket
+            socket.off('idmsg', handleSendSocket);
+        };
+    })
 
     // update contacts list with new lastMessage
     const reGetContacts = async () => {
@@ -34,6 +58,7 @@ function SendMessage(props) {
     // sending the message when pressing on button/enter
     const sendButtonHandler = async () => {
         if (inputRef.current.value.trim() !== '') {
+
             let message = inputRef.current.value.trim();
             const newMessage = { msg: message }
             try {
@@ -60,6 +85,7 @@ function SendMessage(props) {
                 if (!upContact) return;
                 await applyMessages(user, contactId, setContacts, upContact)
                 setValue("")
+                socket.emit('idmsg', contactId)
             } catch (error) {
                 window.alert("Please log in again.")
                 navigate('/')

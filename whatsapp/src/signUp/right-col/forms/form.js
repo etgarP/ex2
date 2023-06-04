@@ -11,8 +11,6 @@ import {
 import { postReq } from '../../../postReq.js'
 import { useNavigate } from 'react-router-dom'
 
-//todos
-
 function Form() {
 
     // needed to use the function in an inner function context

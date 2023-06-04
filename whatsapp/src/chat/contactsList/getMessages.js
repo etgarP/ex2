@@ -1,10 +1,11 @@
 import { getReq } from "../../getReq"
 
+// get to messages
 async function getMesseges(id, user) {
     try {
         const url = `http://localhost:12345/api/Chats/${id}/Messages`
         const res = await getReq(url, user.token);
-        if(!res.ok) return null
+        if (!res.ok) return null
         const data = await res.json();
         if (Array.isArray(data)) {
             return data;
@@ -14,6 +15,7 @@ async function getMesseges(id, user) {
     }
 }
 
+// setting contacts with new messeages on chat
 export async function applyMessages(user, id, setContacts, upContact) {
     try {
         var messages = await getMesseges(id, user)
@@ -39,6 +41,7 @@ export async function applyMessages(user, id, setContacts, upContact) {
     }
 }
 
+// setting contacts with new messages in listed contacts
 export async function applyMessagesListed(user, id, setContacts) {
     try {
         var messages = await getMesseges(id, user)

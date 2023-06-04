@@ -2,9 +2,10 @@ import { useRef, useState } from "react"
 import { postReqAuthorized } from "../../postReq"
 import { getReq } from "../../getReq"
 import { useNavigate } from 'react-router-dom'
+import { socket } from "../../sockets/socket"
 
 function AddContactIcon(props) {
-    const { setContacts, token, contacts, setUser } = props
+    const { user, setContacts, token, contacts, setUser } = props
     const inputRef = useRef(null)
     const [value, setValue] = useState("")
     const navigate = useNavigate()
@@ -30,7 +31,7 @@ function AddContactIcon(props) {
         }
     }
 
-
+    // adding person to server
     async function addPersonToServer(input) {
         try {
             const url = "http://localhost:12345/api/Chats"
@@ -53,6 +54,7 @@ function AddContactIcon(props) {
         }
     }
 
+    // handling press on add button
     const addPersonButtonHandler = async () => {
         try {
             let input = inputRef.current.value
@@ -69,6 +71,7 @@ function AddContactIcon(props) {
                     await getNewContacts(input)
                 }
                 setValue("")
+                socket.emit('usernameAdd', { sender: user.username, receiver: input })
             }
         } catch (error) {
             window.alert("Disconnected, please try logging in again.")

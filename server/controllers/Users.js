@@ -42,7 +42,7 @@ const getUser = async (req, res) => {
     } catch (error) {
         return res.status(401).send("Unable to authenticate")
     }
-    
+
     try {
         // sending  the info
         const username = req.params.username;

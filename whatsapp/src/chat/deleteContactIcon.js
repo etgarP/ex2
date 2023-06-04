@@ -1,6 +1,7 @@
 import { deleteReq } from "../deleteReq"
 import { getReq } from "../getReq"
 import { useNavigate } from 'react-router-dom'
+import { socket } from "../sockets/socket"
 
 function DeleteContactIcon(props) {
     const { setContacts, token, contactId } = props
@@ -24,6 +25,7 @@ function DeleteContactIcon(props) {
         }
     }
 
+    // get to chats updating contacts
     const reGetContacts = async () => {
         try {
             const url = "http://localhost:12345/api/Chats"
@@ -41,18 +43,19 @@ function DeleteContactIcon(props) {
         }
     }
 
+    // handling press on delete button
     const deletePersonButtonHandler = async () => {
         try {
             let ok = await deletePersonFromServer(contactId)
             if (ok) {
                 try {
                     await reGetContacts()
+                    socket.emit('idDel', contactId)
                 } catch (error) {
                     window.alert("Please log in again.")
                     navigate("/")
                 }
             }
-            
         } catch (error) {
             window.alert("Disconnected from the server")
             navigate('/')

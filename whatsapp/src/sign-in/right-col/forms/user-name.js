@@ -16,5 +16,4 @@ function Username({ setName }) {
         </div>
     )
 }
-
 export default Username
